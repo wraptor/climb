@@ -1,27 +1,107 @@
 <template>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="审批人">
-            <el-input v-model="formInline" placeholder="审批人"></el-input>
+    <el-form ref="clForm"
+             :inline="defaultOption.inline"
+             :label-position="defaultOption.labelPosition"
+             :label-width="defaultOption.labelWidth"
+             :label-suffix="defaultOption.labelSuffix"
+             :hide-required-asterisk="defaultOption.hideRequiredAsterisk"
+             :show-message="defaultOption.showMessage"
+             :inline-message="defaultOption.inlineMessage"
+             :status-icon="defaultOption.statusIcon"
+             :validate-on-rule-change="defaultOption.validateOnRuleChange"
+             :size="defaultOption.size"
+             :disabled="defaultOption.disabled||loading"
+             :model="form">
+        <el-form-item :label="item.label?item.label+'：':''" :prop="item.prop"
+                      v-for="(item,index) in defaultOption.items"
+                      v-bind:key="index">
+            <template v-if="inputTypeArray.indexOf(item.type)>=0">
+                <cl-input v-model="form[item.prop]" :option="item"></cl-input>
+            </template>
         </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-form-item class="center">
+            <el-button type="primary" :icon="loading?'el-icon-loading':defaultOption.submitBtn.icon" @click="onSubmit"
+                       v-if="defaultOption.submitBtn.display">{{defaultOption.submitBtn.text}}
+            </el-button>
+            <el-button type="primary" :icon="loading?'el-icon-loading':defaultOption.resetBtn.icon" @click="onReset"
+                       v-if="defaultOption.resetBtn.display">{{defaultOption.resetBtn.text}}
+            </el-button>
+            <slot name="btn"/>
         </el-form-item>
     </el-form>
 </template>
 
 <script>
+    import deOp from './option'
+    import beanUtil from '../util/bean-util'
+    import {inputTypeArray} from './type'
+    import ClInput from '../input/input'
+
     export default {
         name: "ClForm",
         componentName: 'ClForm',
-        props: {}, watch: {}, created() {
+        components: {
+            ClInput
+        },
+        props: {
+            value: {},
+            option: {type: Object, default: undefined}
+        }, watch: {
+            option: {
+                deep: true,
+                handler(val) {
+                    this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
+                }
+            }
+        }, created() {
+            if (this.option) {
+                this.defaultOption = beanUtil.copyPropertiesNotEmpty(this.option, this.defaultOption)
+            }
+
+        }, mounted() {
+            console.log(this.defaultOption)
         }, data() {
-            return {formInline:''}
-        }, methods: {onSubmit(){
-            this.$message.success(this.formInline)
-            }}
+            return {
+                defaultOption: JSON.parse(JSON.stringify(deOp)),
+                form: this.value,
+                loading: false,
+                inputTypeArray: inputTypeArray
+            }
+        }, methods: {
+            //对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
+            validate(callback) {
+                this.$refs.clForm.validate(callback)
+            },
+            //对部分表单字段进行校验的方法Function(props: array | string, callback: Function(errorMessage: string))
+            validateField(props, callback) {
+                this.$refs.clForm.validateField(props, callback)
+            },
+            //对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
+            resetFields() {
+                this.$refs.clForm.resetFields()
+            },
+            //移除表单项的校验结果。传入待移除的表单项的 prop 属性或者 prop 组成的数组，如不传则移除整个表单的校验结果
+            clearValidate(props) {
+                this.$refs.clForm.clearValidate(props)
+            },
+            onSubmit() {
+                if (this.defaultOption.repeat) {
+                    this.loading = true
+                    this.$emit('submit', beanUtil.deepClone(this.form), _ => {
+                        this.loading = false
+                    })
+                } else {
+                    this.$emit('submit', beanUtil.deepClone(this.form))
+                }
+            }, onReset() {
+                this.$refs.clForm.resetFields()
+            }
+        }
     }
 </script>
 
 <style scoped>
-
+    .center {
+        text-align: center;
+    }
 </style>

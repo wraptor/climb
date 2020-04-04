@@ -1,8 +1,10 @@
 import ClForm from './form';
+import ClInput from './input';
+import ClButton from './button';
 
 
 const components = [
-    ClForm,
+    ClForm,ClInput,ClButton
 ];
 
 const install = function(Vue) {
@@ -21,5 +23,5 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
     install,
-    ClForm,
+    ClForm,ClInput,ClButton
 };
