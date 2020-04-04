@@ -1,22 +1,35 @@
 module.exports = ctx => ({
     base: '/cleme/',
-    title: 'cleme',
-    logo: 'https://www.vuepress.cn/hero.png',
-    description: 'cleme-ui',
+    locales: {
+        '/': {
+            lang: 'zh-CN',
+            title: 'cleme',
+            description: 'cleme-ui'
+        }
+    },
     themeConfig: {
         smoothScroll: true,//页面滚动
-        logo: '/assets/img/logo.png',
         repo: 'seepine/cleme',
+        logo: `/logo.png`,
         editLinks: true,
         docsDir: 'docs',
-        nav: require('./nav/zh'),
-        sidebar: {
-            '/form/': require('./sidebar/form'),
-            '/table/': require('./sidebar/table'),
-            '/menu/': require('./sidebar/menu')
-        },
-        lastUpdated: 'Last Updated'
+        locales: {
+            '/': {
+                label: '简体中文',
+                selectText: '选择语言',
+                ariaLabel: '选择语言',
+                editLinkText: '在 GitHub 上编辑此页',
+                lastUpdated: '上次更新',
+                nav: require('./nav/zh'),
+                sidebar: {
+                    '/form/': require('./sidebar/form'),
+                    '/table/': require('./sidebar/table'),
+                    '/component/': require('./sidebar/component')
+                },
+            }
+        }
     }, head: [
+        ['link', {rel: 'icon', href: `/logo.png`}],
         ['script', {src: 'https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js'}],
         ['script', {src: 'https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js'}],
         ['script', {src: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js'}],
@@ -24,5 +37,8 @@ module.exports = ctx => ({
         ['script', {src: 'https://unpkg.com/element-ui/lib/index.js'}],
         ['link', {rel: "stylesheet", href: 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'}]
     ],
-    plugins: ['demo-block', 'vuepress-plugin-nprogress']
+    plugins: ['demo-block'],
+    extraWatchFiles: [
+        '.vuepress/nav/zh.js', './sidebar/component.js'
+    ]
 })

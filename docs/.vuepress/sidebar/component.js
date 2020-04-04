@@ -1,11 +1,10 @@
-module.exports =  [
+module.exports = [
     {
-        title: '菜单',
+        title: '表单组件',
         collapsable: false,
         sidebarDepth: 2,
         children: [
-            '',
-            'doc'
+            '', 'radio'
         ]
     }
 ]
