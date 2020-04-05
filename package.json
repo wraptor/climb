@@ -1,7 +1,7 @@
 {
-  "name": "cleme-ui",
+  "name": "cleme",
   "description": "cleme:collect element",
-  "version": "0.1.1",
+  "version": "1.1.1",
   "author": "seepine <seepine@163.com>",
   "license": "MIT",
   "private": false,
