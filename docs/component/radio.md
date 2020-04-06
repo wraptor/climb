@@ -117,7 +117,17 @@ export default {
 :::demo
 ```html
 <template>
-    <cl-radio v-model="value"  :option="option" @change="handleChange"></cl-radio>
+    <el-row>
+        <el-col :span="24" style="margin: 10px;">
+            <cl-radio v-model="value"  :option="option" @change="handleChange"></cl-radio>
+        </el-col>
+        <el-col :span="24" style="margin: 10px;">
+            <cl-radio v-model="value"  :option="option2" @change="handleChange"></cl-radio>
+        </el-col>
+        <el-col :span="24" style="margin: 10px;">
+            <cl-radio v-model="value"  :option="option3" @change="handleChange"></cl-radio>
+        </el-col>
+    </el-row>
 </template>
 <script>
 export default {
@@ -126,12 +136,22 @@ export default {
       value: '1',
       option:{
         border:true,
-        dicUrl:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}]
+        textColor:'#FF4D40',
+        fill:'#ffffff',
+        dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data.json'
       },
-      
+      option2:{
+        border:true,
+        dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop.json'
+      },
+      option3:{
+        border:true,
+        dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop2.json'
+      },
     }
   },methods:{
     handleChange(val){
+        this.value=val
       this.$message.success(val)
     }
   }

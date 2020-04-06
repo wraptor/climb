@@ -1,7 +1,7 @@
 {
   "code": 200,
   "msg": "ok",
-  "data": [
+  "res": [
     {
       "key": "key:选择1",
       "attribute": "attribute:1"
