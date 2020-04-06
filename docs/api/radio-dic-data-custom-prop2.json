@@ -1,0 +1,14 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "key": "key:选择1",
+      "attribute": "attribute:1"
+    },
+    {
+      "key": "key:选择2",
+      "attribute": "attribute:2"
+    }
+  ]
+}

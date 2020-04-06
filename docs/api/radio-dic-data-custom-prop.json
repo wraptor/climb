@@ -1,0 +1,14 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "label": "label:选择1",
+      "value": "value:1"
+    },
+    {
+      "label": "label:选择2",
+      "value": "value:2"
+    }
+  ]
+}
