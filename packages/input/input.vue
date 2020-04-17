@@ -8,7 +8,7 @@
             :placeholder="defaultOption.placeholder"
             :clearable="defaultOption.clearable"
             :show-password="defaultOption.showPassword"
-            :disabled="defaultOption.disabled"
+            :disabled="disabled || defaultOption.disabled"
             :size="defaultOption.size"
             :prefix-icon="defaultOption.prefixIcon"
             :suffix-icon="defaultOption.suffixIcon"
@@ -50,17 +50,21 @@
         name: "ClInput",
         props: {
             value: {},
-            option: {type: Object, default: undefined}
+            option: {type: Object, default: undefined},
+            disabled: {type: Boolean, default: false}
+        }, model: {
+            prop: 'value',
+            event: 'updateValue'
         }, watch: {
             option: {
                 deep: true,
                 handler(val) {
-                    this.defaultOption = JSON.parse(JSON.stringify(beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)))
+                    beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                 }
             }
         }, created() {
             if (this.option) {
-                this.defaultOption = JSON.parse(JSON.stringify(beanUtil.copyPropertiesNotEmpty(this.option, this.defaultOption)))
+                beanUtil.copyPropertiesNotEmpty(this.option, this.defaultOption)
             }
         }, data() {
             return {
@@ -73,6 +77,7 @@
             }, handleFocus(event) {
                 this.$emit('focus', event);
             }, handleChange(value) {
+                this.$emit('updateValue', value)
                 this.$emit('change', value);
             }, handleInput(value) {
                 this.$emit('input', value);
