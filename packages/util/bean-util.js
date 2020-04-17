@@ -23,7 +23,7 @@ const beanUtil = {
      * @returns {[]|*}
      */
     copyPropertiesNotEmpty(source, target) {
-        if(!source){
+        if (!source) {
             return source
         }
         const isObject = source.constructor === Object
@@ -42,11 +42,11 @@ const beanUtil = {
         }
         if (isArray) {
             for (let i = 0, len = source.length; i < len; i++) {
-                target.push(this.copyPropertiesNotEmpty(source[i]));
+                target.push(this.copyPropertiesNotEmpty(source[i],target[i]));
             }
         } else if (isObject) {
             for (let key in source) {
-                target[key] = this.copyPropertiesNotEmpty(source[key]);
+                target[key] = this.copyPropertiesNotEmpty(source[key],target[key]);
             }
         }
         return target;
