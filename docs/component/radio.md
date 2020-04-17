@@ -45,7 +45,8 @@ export default {
 <template>
     <div>
         <cl-radio v-model="value" disabled :dicData="dicData"></cl-radio><br/>
-        <cl-radio v-model="value2" :option="{disabled:true}" :dicData="dicData"></cl-radio>
+        <cl-radio v-model="value2" :option="{disabled:true}" :dicData="dicData2"></cl-radio><br/>
+        <cl-radio v-model="value3" :dicData="dicData3"></cl-radio><br/>   
     </div>
 </template>
 <script>
@@ -53,8 +54,11 @@ export default {
   data() {
     return {
       value: '1',
-      value2: '2',
-      dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}]
+      value2: '1',
+      value3: '1',
+      dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}],
+      dicData2:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}],
+      dicData3:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2',disabled:true},{label:'备选项3',value:'3'}]
     }
   }
 }
@@ -125,7 +129,7 @@ export default {
             <cl-radio v-model="value"  :option="option2" @change="handleChange"></cl-radio>
         </el-col>
         <el-col :span="24" style="margin: 10px;">
-            <cl-radio v-model="value"  :option="option3" @change="handleChange"></cl-radio>
+            <cl-radio v-model="value2"  :option="option3" @change="handleChange"></cl-radio>
         </el-col>
     </el-row>
 </template>
@@ -133,12 +137,24 @@ export default {
 export default {
   data() {
     return {
-      value: '1',
+      value: 'value:1',
+      value2: 'attribute:1',
       option:{
         border:true,
         textColor:'#FF4D40',
         fill:'#ffffff',
         dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data.json'
+            /*{
+              "code": 200,
+              "msg": "ok",
+              "data": [{
+                  "label": "label:选择1",
+                  "value": "value:1"
+                },{
+                  "label": "label:选择2",
+                  "value": "value:2"
+                }]
+            }*/
       },
       option2:{
         border:true,
@@ -146,6 +162,13 @@ export default {
             data:''
         },
         dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop.json'
+            /*[{
+                "label": "label:选择1",
+                "value": "value:1"
+              },{
+                "label": "label:选择2",
+                "value": "value:2"
+              }]*/
       },
       option3:{
         border:true,
@@ -155,6 +178,16 @@ export default {
             value:'attribute'
         },
         dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop2.json'
+            /*{"code": 200,
+              "msg": "ok",
+              "res": [{
+                  "key": "key:选择1",
+                  "attribute": "attribute:1"
+                },{
+                  "key": "key:选择2",
+                  "attribute": "attribute:2"
+                }]
+            }*/
       },
     }
   },methods:{
@@ -171,6 +204,7 @@ export default {
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | value / v-model | 绑定值           | string / number  | — | — |
 | type  | 单选框类型，细边框或按钮 | string   | none,border，button | none   |
+| disabled  | 是否禁用    | boolean   | — | false   |
 | option | 配置选项值           | object  | 详见[Option Attributes](#option) | — |
 | dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
 
@@ -182,12 +216,16 @@ export default {
 | size  | Radio 的尺寸，仅在 border 为真时有效  | string  | medium / small / mini | — |
 | name | 原生 name 属性 | string    |      —         |     —    |
 | dicProps  | 字典 | object  | 详见[DicProps Attributes](#dicProps) | — |
+| fill  | 按钮形式的 Radio 激活时的填充色和边框色	 | string  | —  | #ffffff |
+| textColor  | 按钮形式的 Radio 激活时的文本颜色	 | string  | —  | 	#409EFF |
+| border  | 是否显示边框 | boolean  |—  | false |
 
 ## DicData Attributes<span id="dicData"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | label     | Radio 的 label   | string / number / boolean    |       —        |      —   |
 | value  | Radio 的 value    | string / number / boolean   |       —        |      —   |
+| disabled  | 是否禁用    | boolean   | — | false   |
 
 ## DicProps Attributes<span id="dicProps"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |

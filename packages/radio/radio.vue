@@ -6,12 +6,14 @@
                     :fill="defaultOption.fill">
         <template v-if="defaultOption.type==='button'">
             <cl-radio-button @change="handleChange(item)" v-for="(item,index) in myDicData" v-bind:key="index"
+                             :disabled="item.disabled===true"
                              :label="item[defaultOption.dicProps.value]?item[defaultOption.dicProps.value]:item[defaultOption.dicProps.label]">
                 {{item[defaultOption.dicProps.label]}}
             </cl-radio-button>
         </template>
         <template v-else>
             <el-radio @change="handleChange(item)" v-for="(item,index) in myDicData" v-bind:key="index"
+                      :disabled="item.disabled===true"
                       :label="item[defaultOption.dicProps.value]?item[defaultOption.dicProps.value]:item[defaultOption.dicProps.label]"
                       :border="defaultOption.border || defaultOption.type==='border'">
                 {{item[defaultOption.dicProps.label]}}
@@ -35,9 +37,6 @@
             dicData: {type: Array, default: undefined},
             type: {type: String, default: undefined},
             disabled: {type: Boolean, default: false}
-        }, model: {
-            prop: 'value',
-            event: 'updateValue'
         }, watch: {
             option: {
                 deep: true,
@@ -108,7 +107,7 @@
                 } else {
                     theValue = value[this.defaultOption.dicProps.label]
                 }
-                this.$emit('updateValue', theValue)
+                this.$emit('input', theValue)
                 this.$emit('change', theValue);
             }
         }

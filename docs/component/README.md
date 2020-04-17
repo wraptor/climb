@@ -86,8 +86,8 @@ export default {
 ```html
 <template>
     <div>
-        <cl-input v-model="value" :option="option"></cl-input>
-        <cl-input v-model="value" :option="option"></cl-input>
+        <cl-input v-model="value" :option="option" @change="handleChange"></cl-input>
+        <cl-input v-model="value" :option="option" @change="handleChange"></cl-input>
     </div>
 </template>
 <script>
@@ -99,6 +99,10 @@ export default {
             prefixIcon:'el-icon-phone-outline', //输入框头部图标
             suffixIcon:'el-icon-star-off',      //输入框尾部图标
         }
+    }
+  },methods:{
+    handleChange(value){
+      this.$message.success(value)
     }
   }
 }

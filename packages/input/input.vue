@@ -1,7 +1,7 @@
 <template>
     <el-input
             ref="inputRef"
-            v-model="myValue"
+            v-model="value"
             :maxlength="defaultOption.maxlength"
             :minlength="defaultOption.minlength"
             :show-word-limit="defaultOption.showWordLimit"
@@ -52,9 +52,6 @@
             value: {},
             option: {type: Object, default: undefined},
             disabled: {type: Boolean, default: false}
-        }, model: {
-            prop: 'value',
-            event: 'updateValue'
         }, watch: {
             option: {
                 deep: true,
@@ -68,8 +65,7 @@
             }
         }, data() {
             return {
-                defaultOption: JSON.parse(JSON.stringify(deOp)),
-                myValue: this.value
+                defaultOption: JSON.parse(JSON.stringify(deOp))
             }
         }, methods: {
             handleBlur(event) {
@@ -77,9 +73,10 @@
             }, handleFocus(event) {
                 this.$emit('focus', event);
             }, handleChange(value) {
-                this.$emit('updateValue', value)
+                this.$emit('input', value)
                 this.$emit('change', value);
             }, handleInput(value) {
+                //this.$emit('input', value)
                 this.$emit('input', value);
             }, handleClear() {
                 this.$emit('clear');
