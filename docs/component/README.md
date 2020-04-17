@@ -20,7 +20,7 @@ new Vue({
 :::demo
 ```html
 <template>
-    <cl-input v-model="value" :option="option"></cl-input>
+     <cl-input v-model="value" :option="option"></cl-input>
 </template>
 <script>
 export default {
@@ -48,7 +48,10 @@ export default {
 :::demo
 ```html
 <template>
-    <cl-input v-model="value" :option="{disabled:true}"></cl-input>
+    <div>
+        <cl-input v-model="value" :option="{disabled:true}"></cl-input>
+        <cl-input v-model="value" disabled></cl-input>   
+    </div>
 </template>
 <script>
 export default {

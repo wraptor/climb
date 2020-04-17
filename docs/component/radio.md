@@ -43,18 +43,18 @@ export default {
 :::demo
 ```html
 <template>
-    <cl-radio v-model="value" disabled :dicData="dicData"></cl-radio>
+    <div>
+        <cl-radio v-model="value" disabled :dicData="dicData"></cl-radio><br/>
+        <cl-radio v-model="value2" :option="{disabled:true}" :dicData="dicData"></cl-radio>
+    </div>
 </template>
 <script>
 export default {
   data() {
     return {
       value: '1',
+      value2: '2',
       dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}]
-    }
-  },methods:{
-    handleChange(val){
-      this.$message.success(val)
     }
   }
 }
@@ -142,17 +142,24 @@ export default {
       },
       option2:{
         border:true,
+        dicProps:{
+            data:''
+        },
         dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop.json'
       },
       option3:{
         border:true,
+        dicProps:{
+            data:'res',
+            label:'key',
+            value:'attribute'
+        },
         dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop2.json'
       },
     }
   },methods:{
     handleChange(val){
-        this.value=val
-      this.$message.success(val)
+        this.$message.success(val)
     }
   }
 }
@@ -163,6 +170,7 @@ export default {
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | value / v-model | 绑定值           | string / number  | — | — |
+| type  | 单选框类型，细边框或按钮 | string   | none,border，button | none   |
 | option | 配置选项值           | object  | 详见[Option Attributes](#option) | — |
 | dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
 
@@ -178,19 +186,15 @@ export default {
 ## DicData Attributes<span id="dicData"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| label     | Radio 的 value   | string / number / boolean    |       —        |      —   |
-| disabled  | 是否禁用    | boolean   | — | false   |
-| size  | Radio 的尺寸，仅在 border 为真时有效  | string  | medium / small / mini | — |
-| name | 原生 name 属性 | string    |      —         |     —    |
-| type  | 单选框类型，细边框或按钮 | string   | none,border，button | none   |
+| label     | Radio 的 label   | string / number / boolean    |       —        |      —   |
+| value  | Radio 的 value    | string / number / boolean   |       —        |      —   |
 
 ## DicProps Attributes<span id="dicProps"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| label     | Radio 的 label   | string / number / boolean    |       —        |      —   |
-| value  | Radio 的 value    | string / number / boolean   |       —        |      —   |
-| children  | Radio 的尺寸，仅在 border 为真时有效  | string  | medium / small / mini | — |
-| res | 原生 name 属性 | string    |      —         |     —    |
+| label     | Radio 的 label   | string / number / boolean    |       —        |      label   |
+| value  | Radio 的 value    | string / number / boolean   |       —        |      value   |
+| res | 原生 name 属性 | string    |      —         |     data    |
 
 ## Events
 | 事件名称 | 说明 | 回调参数 |
