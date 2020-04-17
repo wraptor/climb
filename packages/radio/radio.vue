@@ -1,5 +1,5 @@
 <template>
-    <el-radio-group v-model="myValue"
+    <el-radio-group v-model="value"
                     :size="defaultOption.size"
                     :disabled="disabled || defaultOption.disabled"
                     :text-color="defaultOption.textColor"
@@ -32,8 +32,12 @@
         props: {
             value: {},
             option: {type: Object, default: undefined},
-            dicData: {},
+            dicData: {type: Array, default: undefined},
+            type: {type: String, default: undefined},
             disabled: {type: Boolean, default: false}
+        }, model: {
+            prop: 'value',
+            event: 'updateValue'
         }, watch: {
             option: {
                 deep: true,
@@ -45,23 +49,30 @@
                 handler(val) {
                     this.setDicData(val)
                 }
+            }, type: {
+                handler(val) {
+                    this.defaultOption = val
+                }
             }
         }, created() {
             this.initData('clRadioInit', this.option)
             if (this.dicData) {
                 this.setDicData(this.dicData)
             }
+            if (this.type) {
+                this.defaultOption = this.type
+            }
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
-                myValue: this.value,
                 myDicData: []
             }
         }, methods: {
             initData(key, val) {
                 if (key && key === 'clRadioInit' && val) {
                     //赋值option
-                    this.defaultOption = JSON.parse(JSON.stringify(beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)))
+                    beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
+                    console.log('defaultOption', this.defaultOption)
                     //初始化字典数据
                     this.setDicUrl(this.defaultOption.dicUrl, () => {
                         this.setDicData(this.defaultOption.dicData)
@@ -70,9 +81,14 @@
             }, setDicUrl(dicUrl, callback) {
                 if (dicUrl) {
                     Axios.get(dicUrl).then((response) => {
-                        this.myDicData = response
+                        console.log(response)
+                        if (this.defaultOption.dicProps.data) {
+                            this.setDicData(response.data[this.defaultOption.dicProps.data])
+                        } else {
+                            this.setDicData(response.data)
+                        }
                     }).catch((error) => {
-                        console.warn(error);
+                        console.error(error);
                         callback()
                     })
                 } else {
@@ -86,11 +102,14 @@
                 }
             },
             handleChange(value) {
+                let theValue = undefined
                 if (value[this.defaultOption.dicProps.value]) {
-                    this.$emit('change', value[this.defaultOption.dicProps.value]);
+                    theValue = value[this.defaultOption.dicProps.value]
                 } else {
-                    this.$emit('change', value[this.defaultOption.dicProps.label]);
+                    theValue = value[this.defaultOption.dicProps.label]
                 }
+                this.$emit('updateValue', theValue)
+                this.$emit('change', theValue);
             }
         }
     }

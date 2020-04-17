@@ -16,6 +16,6 @@ export default {
         label: 'label',
         value: 'value',
         children: 'children',
-        res: 'res'
+        data: 'data'
     }
 }
