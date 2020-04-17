@@ -197,6 +197,7 @@ export default {
 ## Option Attributes<span id="option"></span>
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
+| type     | 输入框类型      | string          |  text,textarea,password  | text |
 | maxlength     | 原生属性，最大输入长度      | number          |  —  | — |
 | minlength     | 原生属性，最小输入长度      | number          | — | — |
 | showWordLimit | 是否显示输入字数统计，只在 `type = "text"` 或 `type = "textarea"` 时有效 | boolean    |  —  | false |
