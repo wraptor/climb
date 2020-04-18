@@ -81,11 +81,11 @@ export default {
     return {
       value: '1',
       option:{
-        type:'button',
+        button:true,
         dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
       },
       option2:{
-        type:'button',
+        button:true,
         fill:'#67C23A',
         dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
       }
@@ -111,7 +111,7 @@ export default {
     return {
       value: '1',
       option:{
-        type:'border',
+        border:true,
         dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}]
       },
       
@@ -149,7 +149,6 @@ export default {
       value: 'value:1',
       value2: 'attribute:1',
       option:{
-        border:true,
         textColor:'#FF4D40',
         fill:'#ffffff',
         dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data.json'
@@ -180,7 +179,7 @@ export default {
               }]*/
       },
       option3:{
-        border:true,
+        button:true,
         dicProps:{
             data:'res',
             label:'key',
@@ -212,7 +211,6 @@ export default {
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | value / v-model | 绑定值           | string / number  | — | — |
-| type  | 单选框类型，细边框或按钮 | string   | none,border，button | none   |
 | disabled  | 是否禁用    | boolean   | — | false   |
 | option | 配置选项值           | object  | 详见[Option Attributes](#option) | — |
 | dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
@@ -224,9 +222,11 @@ export default {
 | disabled  | 是否禁用    | boolean   | — | false   |
 | size  | Radio 的尺寸，仅在 border 为真时有效  | string  | medium / small / mini | — |
 | dicProps  | 字典 | object  | 详见[DicProps Attributes](#dicProps) | — |
+| dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
 | fill  | 按钮形式的 Radio 激活时的填充色和边框色	 | string  | —  | #ffffff |
 | textColor  | 按钮形式的 Radio 激活时的文本颜色	 | string  | —  | 	#409EFF |
-| border  | 是否显示边框,仅在type=none或不指定type有效， | boolean  |—  | false |
+| border  | 是否显示边框 | boolean  |—  | false |
+| button  | 是否为按钮单选框，优先级比border高 | boolean  |—  | false |
 
 ## DicData Attributes<span id="dicData"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |

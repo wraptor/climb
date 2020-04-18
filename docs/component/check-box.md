@@ -91,11 +91,11 @@ export default {
     return {
       value: ['1'],
       option:{
-        type:'button',
+        button:true,
         dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
       },
       option2:{
-        type:'button',
+        button:true,
         fill:'#67C23A',
         dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
       }
@@ -121,7 +121,7 @@ export default {
     return {
       value: ['1'],
       option:{
-        type:'border',
+        border:true,
         dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}]
       },
       
@@ -145,10 +145,10 @@ export default {
             <cl-check-box v-model="value"  :option="option" @change="handleChange"></cl-check-box>
         </el-col>
         <el-col :span="24" style="margin: 10px;">
-            <cl-check-box v-model="value"  :option="option2" @change="handleChange"></cl-check-box>
+            <cl-check-box v-model="value2"  :option="option2" @change="handleChange"></cl-check-box>
         </el-col>
         <el-col :span="24" style="margin: 10px;">
-            <cl-check-box v-model="value2"  :option="option3" @change="handleChange"></cl-check-box>
+            <cl-check-box v-model="value3"  :option="option3" @change="handleChange"></cl-check-box>
         </el-col>
     </el-row>
 </template>
@@ -157,9 +157,9 @@ export default {
   data() {
     return {
       value: ['value:1'],
-      value2: ['attribute:1'],
+      value2: ['value:1'],
+      value3: ['attribute:1'],
       option:{
-        border:true,
         textColor:'#FF4D40',
         fill:'#ffffff',
         dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data.json'
@@ -190,7 +190,7 @@ export default {
               }]*/
       },
       option3:{
-        border:true,
+        button:true,
         dicProps:{
             data:'res',
             label:'key',
@@ -222,23 +222,23 @@ export default {
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | value / v-model | 绑定值           | array  | — | — |
-| type  | 多选框类型，细边框或按钮 | string   | none,border，button | none   |
 | disabled  | 是否禁用    | boolean   | — | false   |
-| min     | 可被勾选的 checkbox 的最小数量   | number    |       —        |     —    |
-| max     | 可被勾选的 checkbox 的最大数量   | number    |       —        |     —    |
 | option | 配置选项值           | object  | 详见[Option Attributes](#option) | — |
 | dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
 
 ## Option Attributes<span id="option"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| type  | 多选框类型，细边框或按钮 | string   | none,border，button | none   |
 | disabled  | 是否禁用    | boolean   | — | false   |
 | size  | Radio 的尺寸，仅在 border 为真时有效  | string  | medium / small / mini | — |    
 | dicProps  | 字典 | object  | 详见[DicProps Attributes](#dicProps) | — |
+| dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
+| min     | 可被勾选的 checkbox 的最小数量   | number    |       —        |     —    |
+| max     | 可被勾选的 checkbox 的最大数量   | number    |       —        |     —    |
 | fill  | 仅按钮形式的 Checkbox 激活时的填充色和边框色	 | string  | —  | #ffffff |
 | textColor  | 仅按钮形式的 Checkbox 激活时的文本颜色		 | string  | —  | 	#409EFF |
-| border  | 是否显示边框,仅在type=none或不指定type有效， | boolean  |—  | false |
+| border  | 是否显示边框 | boolean  |—  | false |
+| button  | 是否为按钮多选框，优先级比border高 | boolean  |—  | false |
 
 ## DicData Attributes<span id="dicData"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
@@ -247,13 +247,13 @@ export default {
 | value  | 返回的 value    | string / number / boolean   |       —        |      —   |
 | disabled  | 是否禁用    | boolean   | — | false   |
 | name | 原生 name 属性 | string    |      —         |     —    |
-| indeterminate  | 设置 indeterminate 状态，只负责样式控制，仅type不为`button`有效    | boolean   |  — | false   |
+| indeterminate  | 设置 indeterminate 状态，只负责样式控制，仅Option.button不为`true`有效    | boolean   |  — | false   |
 
 ## DicProps Attributes<span id="dicProps"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| label     | Radio 的 label   | string / number / boolean    |       —        |      label   |
-| value  | Radio 的 value    | string / number / boolean   |       —        |      value   |
+| label     | CheckBox 的 label   | string / number / boolean    |       —        |      label   |
+| value  | CheckBox 的 value    | string / number / boolean   |       —        |      value   |
 | res | 原生 name 属性 | string    |      —         |     data    |
 
 ## Events
