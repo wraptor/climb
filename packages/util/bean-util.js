@@ -34,7 +34,6 @@ const beanUtil = {
         } else if (isObject) {
             obj = {};
         } else {
-            //不再具有下一层次
             return source;
         }
         if (!target) {
@@ -52,6 +51,9 @@ const beanUtil = {
         return target;
     },
     deepClone(data) {
+        if (!data) {
+            return data
+        }
         const isObject = data.constructor === Object
         const isArray = data.constructor === Array
         let obj;
@@ -60,7 +62,6 @@ const beanUtil = {
         } else if (isObject) {
             obj = {};
         } else {
-            //不再具有下一层次
             return data;
         }
         if (isArray) {
