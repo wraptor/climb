@@ -1,11 +1,10 @@
 import ClForm from './form';
 import ClInput from './input';
 import ClRadio from './radio';
-import ClButton from './button';
-
+import ClCheckBox from './check-box'
 
 const components = [
-    ClForm, ClInput, ClButton, ClRadio
+    ClForm, ClInput, ClRadio,ClCheckBox
 ];
 
 const install = function (Vue) {
@@ -24,5 +23,5 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
     install,
-    ClForm, ClInput, ClButton, ClRadio
+    ClForm, ClInput, ClRadio,ClCheckBox
 };
