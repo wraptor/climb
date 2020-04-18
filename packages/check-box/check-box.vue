@@ -36,7 +36,7 @@
     export default {
         name: "ClCheckBox",
         props: {
-            value: {},
+            value: {default:[]},
             option: {type: Object, default: undefined},
             dicData: {type: Array, default: undefined},
             type: {type: String, default: undefined},
