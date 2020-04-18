@@ -63,13 +63,14 @@
             if (this.option) {
                 this.defaultOption = beanUtil.copyPropertiesNotEmpty(this.option, this.defaultOption)
             }
-
+            this.formBack = JSON.parse(JSON.stringify(this.value))
         }, mounted() {
             console.log(this.defaultOption)
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 form: this.value,
+                formBack: {},
                 loading: false,
                 inputTypeArray: inputTypeArray,
                 radioTypeArray: radioTypeArray,
@@ -102,7 +103,8 @@
                     this.$emit('submit', beanUtil.deepClone(this.form))
                 }
             }, onReset() {
-                this.$refs.clForm.resetFields()
+                this.form = JSON.parse(JSON.stringify(this.formBack))
+                //this.$refs.clForm.resetFields()
             }
         }
     }
