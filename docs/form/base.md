@@ -28,21 +28,22 @@
                         prop:'sex',
                         label:'性别',
                         type:'radio',
+                        border:true,
                         dicData:[{label:'男',value:'man'},{label:'女',value:'woman'}]
-                    },
+                    },{
+                        prop:'hobby',
+                        label:'爱好',
+                        type:'checkbox',
+                        button:true,
+                        dicData:[{label:'打篮球',value:'basketball'},{label:'踢足球',value:'football'},{label:'游泳',value:'swimming'}]
+                    }
                 ]
             }           
       }
-    },created(){
-        let this_=this
-        setInterval(_=>{
-        
-            console.log(this_.form.username,this_.form.password)
-        },1000)
     },
     methods: {
       onSubmit(form,done) {
-        this.$message.success('ok')
+        this.$message.success(JSON.stringify(form))
         console.log(form)
         setTimeout(_=>done(),2000)
       }
