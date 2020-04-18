@@ -45,7 +45,7 @@ export default {
 <template>
     <div>
         <cl-radio v-model="value" disabled :dicData="dicData"></cl-radio><br/>
-        <cl-radio v-model="value2" :option="{disabled:true}" :dicData="dicData2"></cl-radio><br/>
+        <cl-radio v-model="value2" :option="option" :dicData="dicData2"></cl-radio><br/>
         <cl-radio v-model="value3" :dicData="dicData3"></cl-radio><br/>   
     </div>
 </template>
@@ -56,6 +56,7 @@ export default {
       value: '1',
       value2: '1',
       value3: '1',
+      option:{disabled:true},
       dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}],
       dicData2:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}],
       dicData3:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2',disabled:true},{label:'备选项3',value:'3'}]
@@ -69,7 +70,10 @@ export default {
 :::demo
 ```html
 <template>
-    <cl-radio v-model="value"  :option="option" @change="handleChange"></cl-radio>
+    <div>
+        <cl-radio v-model="value"  :option="option" @change="handleChange"></cl-radio><br/><br/>
+        <cl-radio v-model="value"  :option="option2" @change="handleChange"></cl-radio>
+    </div>
 </template>
 <script>
 export default {
@@ -78,7 +82,12 @@ export default {
       value: '1',
       option:{
         type:'button',
-        dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'}]
+        dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
+      },
+      option2:{
+        type:'button',
+        fill:'#67C23A',
+        dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
       }
     }
   },methods:{
@@ -214,11 +223,10 @@ export default {
 | type  | 单选框类型，细边框或按钮 | string   | none,border，button | none   |
 | disabled  | 是否禁用    | boolean   | — | false   |
 | size  | Radio 的尺寸，仅在 border 为真时有效  | string  | medium / small / mini | — |
-| name | 原生 name 属性 | string    |      —         |     —    |
 | dicProps  | 字典 | object  | 详见[DicProps Attributes](#dicProps) | — |
 | fill  | 按钮形式的 Radio 激活时的填充色和边框色	 | string  | —  | #ffffff |
 | textColor  | 按钮形式的 Radio 激活时的文本颜色	 | string  | —  | 	#409EFF |
-| border  | 是否显示边框 | boolean  |—  | false |
+| border  | 是否显示边框,仅在type=none或不指定type有效， | boolean  |—  | false |
 
 ## DicData Attributes<span id="dicData"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
@@ -226,6 +234,7 @@ export default {
 | label     | Radio 的 label   | string / number / boolean    |       —        |      —   |
 | value  | Radio 的 value    | string / number / boolean   |       —        |      —   |
 | disabled  | 是否禁用    | boolean   | — | false   |
+| name | 原生 name 属性 | string    |      —         |     —    |
 
 ## DicProps Attributes<span id="dicProps"></span>
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
