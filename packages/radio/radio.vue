@@ -4,7 +4,7 @@
                     :disabled="disabled || defaultOption.disabled"
                     :text-color="defaultOption.textColor"
                     :fill="defaultOption.fill">
-        <template v-if="defaultOption.type==='button'">
+        <template v-if="defaultOption.button">
             <cl-radio-button @change="handleChange(item)" v-for="(item,index) in myDicData" v-bind:key="index"
                              :disabled="item.disabled===true"
                              :label="item[defaultOption.dicProps.value]?item[defaultOption.dicProps.value]:item[defaultOption.dicProps.label]">
@@ -15,7 +15,7 @@
             <el-radio @change="handleChange(item)" v-for="(item,index) in myDicData" v-bind:key="index"
                       :disabled="item.disabled===true"
                       :label="item[defaultOption.dicProps.value]?item[defaultOption.dicProps.value]:item[defaultOption.dicProps.label]"
-                      :border="defaultOption.border || defaultOption.type==='border'">
+                      :border="defaultOption.border">
                 {{item[defaultOption.dicProps.label]}}
             </el-radio>
         </template>
@@ -71,7 +71,6 @@
                 if (key && key === 'clRadioInit' && val) {
                     //赋值option
                     beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
-                    console.log('defaultOption', this.defaultOption)
                     //初始化字典数据
                     this.setDicUrl(this.defaultOption.dicUrl, () => {
                         this.setDicData(this.defaultOption.dicData)
@@ -80,7 +79,6 @@
             }, setDicUrl(dicUrl, callback) {
                 if (dicUrl) {
                     Axios.get(dicUrl).then((response) => {
-                        console.log(response)
                         if (this.defaultOption.dicProps.data) {
                             this.setDicData(response.data[this.defaultOption.dicProps.data])
                         } else {

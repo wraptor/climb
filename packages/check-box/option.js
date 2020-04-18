@@ -10,7 +10,7 @@ export default {
     min: undefined,
     max: undefined,
     //ext
-    type: 'none',                           //border/button，单选框类型，细边框或按钮
+    button: false,
     dicData: [],                            //字典数据
     dicUrl: undefined,                      //字典数据Url，优先级比dicData高，当url获取数据失败时，默认展示dicData
     dicProps: {                             //字典的prop修改
