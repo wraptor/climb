@@ -34,8 +34,8 @@ module.exports = ctx => ({
         ['script', {src: 'https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js'}],
         ['script', {src: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js'}],
         ['script', {src: 'https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js'}],
-        ['script', {src: 'https://unpkg.com/element-ui/lib/index.js'}],
-        ['link', {rel: "stylesheet", href: 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'}]
+        ['script', {src: 'https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js'}],
+        ['link', {rel: "stylesheet", href: 'https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css'}]
     ],
     plugins: ['demo-block'],
     extraWatchFiles: [

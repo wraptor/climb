@@ -18,6 +18,9 @@
             <template v-if="inputTypeArray.indexOf(item.type)>=0">
                 <cl-input v-model="form[item.prop]" :option="item"></cl-input>
             </template>
+            <template v-if="inputNumberTypeArray.indexOf(item.type)>=0">
+                <cl-input-number v-model="form[item.prop]" :option="item"></cl-input-number>
+            </template>
             <template v-else-if="radioTypeArray.indexOf(item.type)>=0">
                 <cl-radio v-model="form[item.prop]" :option="item"></cl-radio>
             </template>
@@ -40,7 +43,7 @@
 <script>
     import deOp from './option'
     import beanUtil from '../util/bean-util'
-    import {inputTypeArray, radioTypeArray, checkboxTypeArray} from './type'
+    import {inputTypeArray, inputNumberTypeArray, radioTypeArray, checkboxTypeArray} from './type'
     import ClInput from '../input/input'
 
     export default {
@@ -74,7 +77,8 @@
                 loading: false,
                 inputTypeArray: inputTypeArray,
                 radioTypeArray: radioTypeArray,
-                checkboxTypeArray: checkboxTypeArray
+                checkboxTypeArray: checkboxTypeArray,
+                inputNumberTypeArray: inputNumberTypeArray
             }
         }, methods: {
             //对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise

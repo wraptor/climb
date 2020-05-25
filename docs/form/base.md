@@ -13,7 +13,7 @@
   export default {
     data() {
       return {
-            form:{username:'admin',password:'123456',sex:'man'},
+            form:{username:'admin',password:'123456',age:25,sex:'man'},
             option:{
                 items:[
                     {
@@ -24,6 +24,12 @@
                         prop:'password',
                         label:'密码',
                         type:'password'
+                    },{
+                        prop:'age',
+                        label:'年龄',
+                        type:'number',
+                        min:0,
+                        max:500
                     },{
                         prop:'sex',
                         label:'性别',
