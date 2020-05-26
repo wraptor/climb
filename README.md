@@ -1,24 +1,22 @@
-# cleme
+# climb-ui
 
-## Project setup
+### npm安装
+推荐使用npm的方式安装，它能更好地和 [webpack](https://webpack.js.org/) 打包工具配合使用。
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+npm i climb-ui -S
 ```
 
-### Compiles and minifies for production
+### 引入 Climb-UI
 ```
-npm run build
-```
+import Vue from 'vue';
+import ClimbUI from 'climb-ui';
+import 'climb-ui/lib/climb-ui.css';
+import App from './App.vue';
 
-### Lints and fixes files
-```
-npm run lint
-```
+Vue.use(ClimbUI);
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+```

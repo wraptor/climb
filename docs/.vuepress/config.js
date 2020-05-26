@@ -1,15 +1,15 @@
 module.exports = ctx => ({
-    base: '/cleme/',
+    base: '/climb/',
     locales: {
         '/': {
             lang: 'zh-CN',
-            title: 'cleme',
-            description: 'cleme-ui'
+            title: 'climb',
+            description: 'climb-ui'
         }
     },
     themeConfig: {
         smoothScroll: true,//页面滚动
-        repo: 'seepine/cleme',
+        repo: 'seepine/climb',
         logo: `/logo.png`,
         editLinks: true,
         docsDir: 'docs',

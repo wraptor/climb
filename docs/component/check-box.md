@@ -2,7 +2,7 @@
 推荐使用npm的方式安装，它能更好地和 [webpack](https://webpack.js.org/) 打包工具配合使用。
 ```
 import Vue from 'vue';
-import { ClCheckBox } from 'cleme-ui';
+import { ClCheckBox } from 'climb-ui';
 import App from './App.vue';
 
 Vue.component(ClCheckBox.name, ClCheckBox);
@@ -162,7 +162,7 @@ export default {
       option:{
         textColor:'#FF4D40',
         fill:'#ffffff',
-        dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data.json'
             /*{
               "code": 200,
               "msg": "ok",
@@ -180,7 +180,7 @@ export default {
         dicProps:{
             data:''
         },
-        dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop.json'
             /*[{
                 "label": "label:选择1",
                 "value": "value:1"
@@ -196,7 +196,7 @@ export default {
             label:'key',
             value:'attribute'
         },
-        dicUrl:'https://raw.githubusercontent.com/seepine/cleme/master/docs/api/radio-dic-data-custom-prop2.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop2.json'
             /*{"code": 200,
               "msg": "ok",
               "res": [{
