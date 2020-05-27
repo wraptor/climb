@@ -1,26 +1,9 @@
 // BeanUtils
 const beanUtil = {
     /**
-     *
-     * @param treeData
-     * @returns {[]|*}
-     */
-    copyProperties(source, target) {
-        if (source && typeof source === 'object') {
-            for (let key in source) {
-                if (source[key] && typeof source[key] === 'object') {
-                    target[key] = this.copyProperties(source[key], target[key]);//如果对象的属性值为object的时候，递归调用deepClone,即在吧某个值对象复制一份到新的对象的对应值中。
-                } else {
-                    target[key] = source[key];//如果对象的属性值不为object的时候，直接复制参数对象的每一个键值到新的对象对应的键值对中。
-                }
-            }
-        }
-        return target;
-    },
-    /**
-     *
-     * @param treeData
-     * @returns {[]|*}
+     * @param source source
+     * @param target target
+     * @returns target
      */
     copyPropertiesNotEmpty(source, target) {
         if (!source) {
@@ -28,25 +11,23 @@ const beanUtil = {
         }
         const isObject = source.constructor === Object
         const isArray = source.constructor === Array
-        let obj;
         if (isArray) {
-            obj = [];
-        } else if (isObject) {
-            obj = {};
-        } else {
-            return source;
-        }
-        if (!target) {
-            target = obj
-        }
-        if (isArray) {
+            target = []
             for (let i = 0, len = source.length; i < len; i++) {
-                target.push(this.copyPropertiesNotEmpty(source[i],target[i]));
+                target.push(this.copyPropertiesNotEmpty(source[i], target[i]));
             }
         } else if (isObject) {
-            for (let key in source) {
-                target[key] = this.copyPropertiesNotEmpty(source[key],target[key]);
+            if (!target) {
+                target = {}
             }
+            for (let key in source) {
+                // eslint-disable-next-line no-prototype-builtins
+                if (source.hasOwnProperty(key)) {
+                    target[key] = this.copyPropertiesNotEmpty(source[key], target[key]);
+                }
+            }
+        } else {
+            target = source;
         }
         return target;
     },
@@ -70,7 +51,10 @@ const beanUtil = {
             }
         } else if (isObject) {
             for (let key in data) {
-                obj[key] = this.deepClone(data[key]);
+                // eslint-disable-next-line no-prototype-builtins
+                if (data.hasOwnProperty(key)) {
+                    obj[key] = this.deepClone(data[key]);
+                }
             }
         }
         return obj;
