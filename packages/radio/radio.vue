@@ -1,7 +1,7 @@
 <template>
     <el-radio-group v-model="value"
                     :size="defaultOption.size"
-                    :disabled="disabled || defaultOption.disabled"
+                    :disabled="disabled===true || defaultOption.disabled===true"
                     :text-color="defaultOption.textColor"
                     :fill="defaultOption.fill">
         <template v-if="defaultOption.button">
@@ -70,7 +70,8 @@
             initData(key, val) {
                 if (key && key === 'clRadioInit' && val) {
                     //赋值option
-                    beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
+                    this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
+                    console.log('radio.defaultOption', this.defaultOption)
                     //初始化字典数据
                     this.setDicUrl(this.defaultOption.dicUrl, () => {
                         this.setDicData(this.defaultOption.dicData)

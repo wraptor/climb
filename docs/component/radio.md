@@ -151,7 +151,7 @@ export default {
       option:{
         textColor:'#FF4D40',
         fill:'#ffffff',
-        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data.json'
+        dicUrl:'https://down.ws59.cn/dzf9aw7/2/ml/2ml7dzf9aw7?cdn_sign=1590568879-9-0-b91bbbf880cf4915b10111c68a2933c9&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data.json'
             /*{
               "code": 200,
               "msg": "ok",
@@ -169,7 +169,7 @@ export default {
         dicProps:{
             data:''
         },
-        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop.json'
+        dicUrl:'https://down.ws59.cn/cd6y259/2/ml/2ml8cd6y259?cdn_sign=1590568916-77-0-d51f6dd490745cbad60c25a69ad7bc9c&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data-custom-prop.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data-custom-prop.json'
             /*[{
                 "label": "label:选择1",
                 "value": "value:1"
@@ -185,7 +185,7 @@ export default {
             label:'key',
             value:'attribute'
         },
-        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop2.json'
+        dicUrl:'https://down.ws59.cn/cdgxkkn/2/ml/2ml8cdgxkkn?cdn_sign=1590568940-27-0-6f3b8406019f838fc36f135d3097c6cf&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data-custom-prop2.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data-custom-prop2.json'
             /*{"code": 200,
               "msg": "ok",
               "res": [{
