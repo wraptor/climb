@@ -71,7 +71,6 @@
                 if (key && key === 'clRadioInit' && val) {
                     //赋值option
                     this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
-                    console.log('radio.defaultOption', this.defaultOption)
                     //初始化字典数据
                     this.setDicUrl(this.defaultOption.dicUrl, () => {
                         this.setDicData(this.defaultOption.dicData)
@@ -79,16 +78,20 @@
                 }
             }, setDicUrl(dicUrl, callback) {
                 if (dicUrl) {
-                    Axios.get(dicUrl).then((response) => {
-                        if (this.defaultOption.dicProps.data) {
-                            this.setDicData(response.data[this.defaultOption.dicProps.data])
-                        } else {
-                            this.setDicData(response.data)
-                        }
-                    }).catch((error) => {
-                        console.error(error);
-                        callback()
-                    })
+                    if (Axios) {
+                        Axios.get(dicUrl).then((response) => {
+                            if (this.defaultOption.dicProps.data) {
+                                this.setDicData(response.data[this.defaultOption.dicProps.data])
+                            } else {
+                                this.setDicData(response.data)
+                            }
+                        }).catch((error) => {
+                            console.error(error);
+                            callback()
+                        })
+                    } else {
+                        console.error('axios is null,please install axios')
+                    }
                 } else {
                     callback()
                 }
