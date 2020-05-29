@@ -3,9 +3,9 @@
 :::demo
 ```html
 <template>
-<cl-form :option="option" v-model="form" @submit="onSubmit">
+<cl-form :option="option" :loading="loading" v-model="form" @submit="onSubmit">
     <template slot="btn">
-        <el-button type="primary" @click="onSubmit">自定义按钮</el-button>
+        <el-button type="primary" @click="onCustom">自定义按钮</el-button>
     </template>
 </cl-form>
 </template>
@@ -14,6 +14,7 @@
     data() {
       return {
             form:{username:'admin',password:'123456',age:25,sex:'man'},
+            loading:false,
             option:{
                 items:[
                     {
@@ -51,7 +52,14 @@
       onSubmit(form,done) {
         this.$message.success(JSON.stringify(form))
         console.log(form)
+        //doSomething
         setTimeout(_=>done(),2000)
+      },
+      onCustom(){
+        this.loading=true
+        this.$message.success('onCustom to do something')
+        //doSomething
+        setTimeout(_=>this.loading=false,2000)
       }
     }
   }

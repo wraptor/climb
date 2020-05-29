@@ -10,7 +10,7 @@
              :status-icon="defaultOption.statusIcon"
              :validate-on-rule-change="defaultOption.validateOnRuleChange"
              :size="defaultOption.size"
-             :disabled="defaultOption.disabled||loading"
+             :disabled="defaultOption.disabled||defaultLoading"
              :model="form">
         <el-form-item :label="item.label?item.label+'：':''" :prop="item.prop"
                       v-for="(item,index) in defaultOption.items"
@@ -29,13 +29,17 @@
             </template>
         </el-form-item>
         <el-form-item class="center">
-            <el-button type="primary" :icon="loading?'el-icon-loading':defaultOption.submitBtn.icon" @click="onSubmit"
-                       v-if="defaultOption.submitBtn.display">{{defaultOption.submitBtn.text}}
-            </el-button>
-            <el-button type="primary" :icon="loading?'el-icon-loading':defaultOption.resetBtn.icon" @click="onReset"
-                       v-if="defaultOption.resetBtn.display">{{defaultOption.resetBtn.text}}
-            </el-button>
-            <slot name="btn"/>
+            <div :style="'margin-left:-' + defaultOption.labelWidth">
+                <el-button type="primary" :icon="defaultLoading?'el-icon-loading':defaultOption.submitBtn.icon"
+                           @click="onSubmit"
+                           v-if="defaultOption.submitBtn.display">{{defaultOption.submitBtn.text}}
+                </el-button>
+                <el-button type="primary" :icon="defaultLoading?'el-icon-loading':defaultOption.resetBtn.icon"
+                           @click="onReset"
+                           v-if="defaultOption.resetBtn.display">{{defaultOption.resetBtn.text}}
+                </el-button>
+                <slot name="btn"/>
+            </div>
         </el-form-item>
     </el-form>
 </template>
@@ -54,12 +58,17 @@
         },
         props: {
             value: {},
-            option: {type: Object, default: undefined}
+            option: {type: Object, default: undefined},
+            loading: {type: Boolean, default: false}
         }, watch: {
             option: {
                 deep: true,
                 handler(val) {
                     this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
+                }
+            }, loading: {
+                handler(val) {
+                    this.defaultLoading = val
                 }
             }
         }, created() {
@@ -74,7 +83,7 @@
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 form: this.value,
                 formBack: {},
-                loading: false,
+                defaultLoading: false,
                 inputTypeArray: inputTypeArray,
                 radioTypeArray: radioTypeArray,
                 checkboxTypeArray: checkboxTypeArray,
@@ -99,9 +108,9 @@
             },
             onSubmit() {
                 if (this.defaultOption.repeat) {
-                    this.loading = true
-                    this.$emit('submit', beanUtil.deepClone(this.form), _ => {
-                        this.loading = false
+                    this.defaultLoading = true
+                    this.$emit('submit', beanUtil.deepClone(this.form), () => {
+                        this.defaultLoading = false
                     })
                 } else {
                     this.$emit('submit', beanUtil.deepClone(this.form))
