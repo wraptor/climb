@@ -48,14 +48,10 @@
     import deOp from './option'
     import beanUtil from '../util/bean-util'
     import {inputTypeArray, inputNumberTypeArray, radioTypeArray, checkboxTypeArray} from './type'
-    import ClInput from '../input/input'
 
     export default {
         name: "ClForm",
         componentName: 'ClForm',
-        components: {
-            ClInput
-        },
         props: {
             value: {},
             option: {type: Object, default: undefined},
