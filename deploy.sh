@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+npm run lib
+
+npm publish
+
 # 确保脚本抛出遇到的错误
 set -e
 
