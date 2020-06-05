@@ -5,7 +5,7 @@ module.exports =  [
         sidebarDepth: 2,
         children: [
             '',
-            'doc'
+            'base'
         ]
     }
 ]

@@ -1,4 +1,5 @@
 import ClForm from './form';
+import ClTable from './table';
 import ClInput from './input';
 import ClRadio from './radio';
 import ClCheckBox from './check-box'
@@ -7,7 +8,7 @@ import ClMenu from './menu'
 
 
 const components = [
-    ClForm, ClInput, ClRadio, ClCheckBox, ClInputNumber, ClMenu
+    ClForm, ClTable, ClInput, ClRadio, ClCheckBox, ClInputNumber, ClMenu
 ];
 
 const install = function (Vue) {
@@ -26,5 +27,5 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
     install,
-    ClForm, ClInput, ClRadio, ClCheckBox, ClInputNumber, ClMenu
+    ClForm, ClTable, ClInput, ClRadio, ClCheckBox, ClInputNumber, ClMenu
 };

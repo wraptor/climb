@@ -1,10 +1,10 @@
 module.exports = [
     {
-        title: '表单组件',
+        title: '其他组件',
         collapsable: false,
         sidebarDepth: 2,
         children: [
-            '', 'radio','check-box','input-number','menu','select'
+            '', 'radio','check-box','input-number','menu'
         ]
     }
 ]
