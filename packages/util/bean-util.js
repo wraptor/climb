@@ -58,6 +58,8 @@ const beanUtil = {
             }
         }
         return obj;
+    },isEmpty(obj){
+        return obj==null
     }
 }
 
