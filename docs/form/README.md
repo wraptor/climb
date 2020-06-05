@@ -27,11 +27,11 @@ npm i climb-ui -S
 | validate-on-rule-change  | 是否在 `rules` 属性改变后立即触发一次验证 | boolean | — | true |
 | size  | 用于控制该表单内组件的尺寸 | string | medium / small / mini | — |
 | disabled | 是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效 | boolean | — | false |
-| Items | 表单数据           | array  | 详见[Items Attributes](#items) | — |
+| items | 表单数据           | array  | 详见[Items Attributes](#items) | — |
 
 
 ## Items Variables<span id="items"></span>
-除了下方三个参数，items可根据类型填入额外参数，如type为`text`时，可查看`<cl-input>`可填参数
+除了下方参数外，items还可根据类型填入额外参数，如type为`text`时，可查看`<cl-input>`组件可填参数
 
 | 参数             | 说明           | 类型  |    可选值                                     |    默认值|
 | -------------   |:-------------:| -------:| ------------------------------------------- |:--------:|
@@ -45,7 +45,6 @@ npm i climb-ui -S
 | showMessage  | 是否显示校验错误信息 | boolean | — | true |
 | inlineMessage  | 以行内形式展示校验信息 | boolean | — | false |
 | size  | 用于控制该表单域下组件的尺寸 | string | medium / small / mini | - |
-
 
 ## Type Variables<span id="type"></span>
 

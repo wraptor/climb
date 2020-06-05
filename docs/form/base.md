@@ -16,6 +16,7 @@
             form:{username:'admin',password:'123456',age:25,sex:'man'},
             loading:false,
             option:{
+                disabled:false,
                 items:[
                     {
                         prop:'username',
@@ -45,8 +46,10 @@
                         dicData:[{label:'打篮球',value:'basketball'},{label:'踢足球',value:'football'},{label:'游泳',value:'swimming'}]
                     }
                 ]
-            }           
+            }
       }
+    },created () {
+        setInterval(_=>console.log('form:',JSON.stringify(this.form)),2000)
     },
     methods: {
       onSubmit(form,done) {
