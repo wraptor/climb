@@ -69,6 +69,7 @@
                 this.$emit('focus', event);
             }, handleChange(value) {
                 this.$emit('change', value);
+                this.$emit('input', value);
             }, focus() {
                 this.$refs.inputNumberRef.focus();
             }, select() {

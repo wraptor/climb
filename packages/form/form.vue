@@ -13,7 +13,8 @@
              :disabled="defaultOption.disabled||defaultLoading"
              :model="form">
         <el-form-item v-for="(item,index) in defaultOption.items"
-                      :label="item.label?item.label+'：':''" :prop="item.prop"
+                      :label="item.label?item.label+'：':''"
+                      :prop="item.prop"
                       :label-width="item.labelWidth"
                       :required="item.required"
                       :rules="item.rules"
@@ -23,27 +24,29 @@
                       :size="item.size"
                       v-bind:key="index">
             <template v-if="inputTypeArray.indexOf(item.type)>=0">
-                <cl-input v-model="form[item.prop]" :option="item"></cl-input>
+                <cl-input v-model="value[item.prop]" :option="item"></cl-input>
             </template>
             <template v-if="inputNumberTypeArray.indexOf(item.type)>=0">
-                <cl-input-number v-model="form[item.prop]" :option="item"></cl-input-number>
+                <cl-input-number v-model="value[item.prop]" :option="item"></cl-input-number>
             </template>
             <template v-else-if="radioTypeArray.indexOf(item.type)>=0">
-                <cl-radio v-model="form[item.prop]" :option="item"></cl-radio>
+                <cl-radio v-model="value[item.prop]" :option="item"></cl-radio>
             </template>
             <template v-else-if="checkboxTypeArray.indexOf(item.type)>=0">
-                <cl-check-box v-model="form[item.prop]" :option="item"></cl-check-box>
+                <cl-check-box v-model="value[item.prop]" :option="item"></cl-check-box>
             </template>
         </el-form-item>
-        <el-form-item class="center">
+        <el-form-item class="center" v-if="defaultOption.btn === true">
             <div :style="'margin-left:-' + defaultOption.labelWidth">
                 <el-button type="primary" :icon="defaultLoading?'el-icon-loading':defaultOption.submitBtn.icon"
                            @click="onSubmit"
-                           v-if="defaultOption.submitBtn.display">{{defaultOption.submitBtn.text}}
+                           v-if="defaultOption.submitBtn!==false && defaultOption.submitBtn.display===true">
+                    {{defaultOption.submitBtn.text}}
                 </el-button>
                 <el-button type="primary" :icon="defaultLoading?'el-icon-loading':defaultOption.resetBtn.icon"
                            @click="onReset"
-                           v-if="defaultOption.resetBtn.display">{{defaultOption.resetBtn.text}}
+                           v-if="defaultOption.resetBtn!==false && defaultOption.resetBtn.display===true">
+                    {{defaultOption.resetBtn.text}}
                 </el-button>
                 <slot name="btn"/>
             </div>
@@ -67,8 +70,8 @@
             value: {
                 deep: true,
                 handler(val) {
-                    this.form = val
-                    this.formBack = JSON.parse(JSON.stringify(this.form))
+                    beanUtil.copyPropertiesNotEmpty(val, this.form)
+                    beanUtil.copyPropertiesNotEmpty(val, this.formBack)
                 }
             },
             option: {
@@ -76,20 +79,21 @@
                 handler(val) {
                     this.setOption(val)
                 }
-            }, loading: {
-                handler(val) {
-                    this.defaultLoading = val
-                }
+            }, loading(val) {
+                this.defaultLoading = val
             }
         }, created() {
             if (this.option) {
                 this.setOption(this.option)
             }
-            this.formBack = JSON.parse(JSON.stringify(this.value))
+            if (this.value) {
+                beanUtil.copyPropertiesNotEmpty(this.value, this.form)
+                beanUtil.copyPropertiesNotEmpty(this.value, this.formBack)
+            }
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
-                form: this.value,
+                form: {},
                 formBack: {},
                 defaultLoading: false,
                 inputTypeArray: inputTypeArray,
@@ -103,7 +107,6 @@
                 if (this.defaultOption.readonly === true && this.defaultOption.items && this.defaultOption.items.constructor === Array) {
                     this.defaultOption.items.forEach(item => item.readonly = true)
                 }
-                console.log(this.defaultOption)
             },
             //对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
             validate(callback) {

@@ -15,6 +15,7 @@ export default {
     //ext
     repeat: true,                      //true/false,是否防重提交
     readonly: false,
+    btn:true,
 
     submitBtn: {
         text: '提交',
