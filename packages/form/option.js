@@ -13,7 +13,8 @@ export default {
     disabled: false,                  //true/false,是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效
 
     //ext
-    repeat:true,                      //true/false,是否防重提交
+    repeat: true,                      //true/false,是否防重提交
+    readonly: false,
 
     submitBtn: {
         text: '提交',

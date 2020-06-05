@@ -12,8 +12,15 @@
              :size="defaultOption.size"
              :disabled="defaultOption.disabled||defaultLoading"
              :model="form">
-        <el-form-item :label="item.label?item.label+'：':''" :prop="item.prop"
-                      v-for="(item,index) in defaultOption.items"
+        <el-form-item v-for="(item,index) in defaultOption.items"
+                      :label="item.label?item.label+'：':''" :prop="item.prop"
+                      :label-width="item.labelWidth"
+                      :required="item.required"
+                      :rules="item.rules"
+                      :error="item.error"
+                      :show-message="item.showMessage"
+                      :inline-message="item.inlineMessage"
+                      :size="item.size"
                       v-bind:key="index">
             <template v-if="inputTypeArray.indexOf(item.type)>=0">
                 <cl-input v-model="form[item.prop]" :option="item"></cl-input>
@@ -57,10 +64,17 @@
             option: {type: Object, default: undefined},
             loading: {type: Boolean, default: false}
         }, watch: {
+            value: {
+                deep: true,
+                handler(val) {
+                    this.form = val
+                    this.formBack = JSON.parse(JSON.stringify(this.form))
+                }
+            },
             option: {
                 deep: true,
                 handler(val) {
-                    this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
+                    this.setOption(val)
                 }
             }, loading: {
                 handler(val) {
@@ -69,11 +83,9 @@
             }
         }, created() {
             if (this.option) {
-                this.defaultOption = beanUtil.copyPropertiesNotEmpty(this.option, this.defaultOption)
+                this.setOption(this.option)
             }
             this.formBack = JSON.parse(JSON.stringify(this.value))
-        }, mounted() {
-            console.log(this.defaultOption)
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
@@ -86,6 +98,13 @@
                 inputNumberTypeArray: inputNumberTypeArray
             }
         }, methods: {
+            setOption(val) {
+                this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
+                if (this.defaultOption.readonly === true && this.defaultOption.items && this.defaultOption.items.constructor === Array) {
+                    this.defaultOption.items.forEach(item => item.readonly = true)
+                }
+                console.log(this.defaultOption)
+            },
             //对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
             validate(callback) {
                 this.$refs.clForm.validate(callback)
