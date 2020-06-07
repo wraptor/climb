@@ -70,6 +70,7 @@ new Vue({
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | type            | 类型,详见[Type Attributes](#type)           | string | text,textarea,password,select...             | text      |
 | prop    | 表单域 model 字段，在使用 validate、resetFields 方法的情况下，该属性是必填的 | string    | 传入 Form 组件的 `model` 中的字段 | — |
+| display  | 表格是否可见 | boolean | true/false | true |
 | addDisabled  | 新增表单是否禁用 | boolean | true/false | false |
 | addDisplay  | 新增表单是否可见 | boolean | true/false | true |
 | editDisabled  | 编辑表单是否禁用 | boolean | true/false | false |
@@ -136,4 +137,3 @@ new Vue({
 | before-open |  增删改查对话框打开|  type,row,done,index|
 | before-close |  增删改查对话框打开| type,row,done,index|
 | before-open |  对话框打开|  type,row,done,index|
-| del-cancel |  取消删除回调|  row,index|

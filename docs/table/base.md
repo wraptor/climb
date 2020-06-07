@@ -1,4 +1,4 @@
-# 典型表单
+# 普通表格
 
 :::demo
 ```html
@@ -13,7 +13,7 @@
   export default {
     data() {
       return {
-            data:[{id:1,name:'zhangsan',age:25,sex:'0',phone:'18888888888'},
+            data:[{id:1,name:'zhangsan',age:22,sex:'0',phone:'18888888888'},
                   {id:2,name:'lisi',age:25,sex:'1',phone:'17777777777'}],
             option:{
                 columns:[
@@ -50,8 +50,13 @@
             setTimeout(_=>done(),2000)
         },
         handleEdit (row,done,index) {
-            this.$message.success(JSON.stringify(row))
-            setTimeout(_=>done(),2000)
+            setTimeout(_=>{
+                this.$message.success(JSON.stringify(row))
+                let arr = [...this.data]
+                arr[index] = row
+                this.data = arr
+                done()
+            },2000)
         },
         handleDel (row,done) {
             this.$message.success(JSON.stringify(row))
@@ -62,4 +67,13 @@
 </script>
 ```
 :::
+
+
+### 注意
+`element-ui`的`el-table`可能会因为电脑显示缩放非100%而引起表头错位，可在index.html或App.vue文件(必须是入口文件，才能全局起作用)的style标签中添加如下样式
+```css
+body .el-table th.gutter {
+    display: table-cell !important;
+}
+```
 
