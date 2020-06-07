@@ -40,34 +40,32 @@ export default {
     menuWidth: 200,                     //菜单宽度
     addBtn: {
         type: 'primary',
-        text: '新增',
+        text: '新 增',
         icon: 'el-icon-plus',
         display: true,//true/false
         size: 'small'     //medium / small / mini
     }, viewBtn: {
         type: 'text',
-        text: '详情',
+        text: '详 情',
         icon: 'el-icon-view',
         display: true,//true/false
         size: 'small'     //medium / small / mini
     }, editBtn: {
         type: 'text',
-        text: '编辑',
+        text: '编 辑',
         icon: 'el-icon-edit',
         display: true,//true/false
         size: 'small'     //medium / small / mini
     }, delBtn: {
         type: 'text',
-        text: '删除',
+        text: '删 除',
         icon: 'el-icon-delete',
         display: true,//true/false
         size: 'small',     //medium / small / mini
+        confirm: true,
         message: `请确认是否删除?`,
         title: '提示',
-        options: {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-        }
+        confirmBtnText: '确 定',
+        cancelBtnText: '取 消',
     }
 }

@@ -44,37 +44,39 @@
                     :load="defaultOption.load"
                     :tree-props="defaultOption.treeProps"
                     :data="data">
-                <el-table-column
-                        v-for="(item,index) in defaultOption.columns"
-                        v-bind:key="index"
-                        :prop="item.prop"
-                        :label="item.label"
-                        :width="item.width"
-                        :min-width="item.minWidth"
-                        :fixed="item.fixed"
-                        :render-header="item.renderHeader"
-                        :sortable="item.sortable"
-                        :sort-method="item.sortMethod"
-                        :sort-by="item.sortBy"
-                        :sort-orders="item.sortOrders"
-                        :resizable="item.resizable"
-                        :formatter="item.formatter"
-                        :show-overflow-tooltip="item.showOverflowTooltip!==false"
-                        :align="item.align"
-                        :headerAlign="item.headerAlign"
-                        :class-name="item.className"
-                        :label-class-name="item.labelClassName"
-                        :selectable="item.selectable"
-                        :reserve-selection="item.reserveSelection"
-                        :filters="item.filters"
-                        :filter-placement="item.filterPlacement"
-                        :filter-multiple="item.filterMultiple"
-                        :filter-method="item.filterMethod"
-                        :filtered-value="item.filteredValue"
-                >
-                </el-table-column>
+                <template v-for="(item,index) in defaultOption.columns">
+                    <el-table-column
+                            v-if="item.display!==false"
+                            v-bind:key="index"
+                            :prop="item.prop"
+                            :label="item.label"
+                            :width="item.width"
+                            :min-width="item.minWidth"
+                            :fixed="item.fixed"
+                            :render-header="item.renderHeader"
+                            :sortable="item.sortable"
+                            :sort-method="item.sortMethod"
+                            :sort-by="item.sortBy"
+                            :sort-orders="item.sortOrders"
+                            :resizable="item.resizable"
+                            :formatter="item.formatter"
+                            :show-overflow-tooltip="item.showOverflowTooltip!==false"
+                            :align="item.align"
+                            :headerAlign="item.headerAlign"
+                            :class-name="item.className"
+                            :label-class-name="item.labelClassName"
+                            :selectable="item.selectable"
+                            :reserve-selection="item.reserveSelection"
+                            :filters="item.filters"
+                            :filter-placement="item.filterPlacement"
+                            :filter-multiple="item.filterMultiple"
+                            :filter-method="item.filterMethod"
+                            :filtered-value="item.filteredValue"
+                    >
+                    </el-table-column>
+                </template>
 
-                <el-table-column fixed="right" label="操作" v-if="defaultOption.menu!==false"
+                <el-table-column label="操作" v-if="defaultOption.menu!==false"
                                  :width="defaultOption.menuWidth">
                     <template slot-scope="scope">
                         <el-button
@@ -102,8 +104,23 @@
                 </el-table-column>
             </el-table>
         </el-row>
-        <el-dialog :visible.sync="dialogVisible" :before-close="closeDialog">
+        <el-dialog :visible.sync="dialogVisible" :before-close="closeDialog" :destroy-on-close="true">
             <cl-form :option="defaultFormOption" v-model="form" @submit="handleSubmit"/>
+        </el-dialog>
+        <el-dialog :visible.sync="delDialogVisible" :title="this.defaultOption.delBtn.title"
+                   width="400px">
+            <div class="el-message-box__container">
+                <div class="el-message-box__status el-icon-warning"></div>
+                <div class="el-message-box__message">{{this.defaultOption.delBtn.message}}</div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="delDialogVisible = false" :disabled="delLoading"
+                           :icon="delLoading?'el-icon-loading':'el-icon-close'"
+                           size="small">{{this.defaultOption.delBtn.cancelBtnText}}</el-button>
+                <el-button type="primary" @click="delSuccess" :disabled="delLoading"
+                           :icon="delLoading?'el-icon-loading':'el-icon-check'"
+                           size="small">{{this.defaultOption.delBtn.confirmBtnText}}</el-button>
+            </span>
         </el-dialog>
     </div>
 </template>
@@ -147,6 +164,8 @@
                 form: {},
                 defaultLoading: false,
                 dialogVisible: false,
+                delDialogVisible: false,
+                delLoading: false,
                 crudObj: {}
             }
         }, methods: {
@@ -170,8 +189,13 @@
                 if (this.defaultOption.columns) {
                     this.defaultFormOption.items = []
                     this.defaultOption.columns.forEach(item => {
-                        if (item[type + ''])
-                            this.defaultFormOption.items.push(item)
+                        if (item[type + 'Display'] !== false) {
+                            let theItem = beanUtil.deepClone(item)
+                            if (item[type + 'Disabled'] === true) {
+                                theItem.disabled = true
+                            }
+                            this.defaultFormOption.items.push(theItem)
+                        }
                     })
                 }
                 this.crudObj = {type: type, index: index, row: row}
@@ -188,6 +212,7 @@
                 } else {
                     beanUtil.copyPropertiesNotEmpty({disabled: false, btn: true}, this.defaultFormOption)
                 }
+
                 this.defaultFormOption = beanUtil.deepClone(this.defaultFormOption)
                 if (type !== 'del') {
                     if (this.$listeners['before-open']) {
@@ -202,10 +227,10 @@
                 } else {
                     if (this.$listeners['before-open']) {
                         this.$emit('before-open', type, row, () => {
-                            this.execDel(index, row)
+                            this.execDel()
                         }, index)
                     } else {
-                        this.execDel(index, row)
+                        this.execDel()
                     }
                 }
             }, closeDialog(done) {
@@ -222,31 +247,26 @@
                 } else {
                     done()
                 }
-            }, execDel(index, row) {
-                if (!this.defaultOption.delBtn.options.beforeClose) {
-                    this.defaultOption.delBtn.options.beforeClose = (action, instance, done) => {
-                        if (action === 'confirm') {
-                            this.delSuccess(row, index, done)
-                        } else if (action === 'cancel') {
-                            this.$emit('delCancel', index, row)
-                            done()
-                        }
-                    }
+            }, execDel() {
+                if (this.defaultOption.delBtn.confirm === true) {
+                    this.delDialogVisible = true
+                } else {
+                    this.delSuccess()
                 }
-                this.$confirm(this.defaultOption.delBtn.message,
-                    this.defaultOption.delBtn.title,
-                    this.defaultOption.delBtn.options).then(() => {
-                }).catch(() => {
-                    this.$emit('delCancel', index, row)
-                });
-            }, delSuccess(row, index, done) {
-                this.$emit('del', row, () => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    done()
-                }, index)
+            }, delSuccess() {
+                if (this.crudObj.type === 'del') {
+                    this.delLoading = true
+                    this.$emit('del', this.crudObj.row, () => {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.delDialogVisible = false
+                        this.delLoading = false
+                    }, this.crudObj.index)
+                } else {
+                    this.$message.warning('非删除操作')
+                }
             }, handleSubmit(form, done) {
                 this.$emit(this.crudObj.type, form, () => {
                     this.dialogVisible = false
@@ -258,12 +278,30 @@
 </script>
 
 <style scoped>
-    /deep/ .el-table th {
+    ::v-deep .el-table th {
         word-break: break-word;
         color: rgba(0, 0, 0, .85);
     }
 
-    /deep/ .el-table__header, /deep/ .el-table__body {
+    ::v-deep .el-table__header, ::v-deep .el-table__body {
         margin: 0 0;
+    }
+
+    ::v-deep .el-dialog {
+        display: flex;
+        flex-direction: column;
+        margin: 0 !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /*height:600px;*/
+        max-height: calc(100% - 30px);
+        max-width: calc(100% - 30px);
+    }
+
+    ::v-deep .el-dialog ::v-deep .el-dialog__body {
+        flex: 1;
+        overflow: auto;
     }
 </style>
