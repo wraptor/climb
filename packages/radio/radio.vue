@@ -35,7 +35,6 @@
             value: {},
             option: {type: Object, default: undefined},
             dicData: {type: Array, default: undefined},
-            type: {type: String, default: undefined},
             disabled: {type: Boolean, default: false}
         }, watch: {
             option: {
@@ -48,18 +47,11 @@
                 handler(val) {
                     this.setDicData(val)
                 }
-            }, type: {
-                handler(val) {
-                    this.defaultOption = val
-                }
             }
         }, created() {
             this.initData('clRadioInit', this.option)
             if (this.dicData) {
                 this.setDicData(this.dicData)
-            }
-            if (this.type) {
-                this.defaultOption = this.type
             }
         }, data() {
             return {

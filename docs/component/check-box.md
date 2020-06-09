@@ -156,13 +156,12 @@ export default {
 export default {
   data() {
     return {
-      value: ['value:1'],
-      value2: ['value:1'],
-      value3: ['attribute:1'],
+      value: 'value:1',
+      value2: 'attribute:1',
       option:{
         textColor:'#FF4D40',
         fill:'#ffffff',
-        dicUrl:'https://down.ws59.cn/dzf9aw7/2/ml/2ml7dzf9aw7?cdn_sign=1590568879-9-0-b91bbbf880cf4915b10111c68a2933c9&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data.json'
             /*{
               "code": 200,
               "msg": "ok",
@@ -180,7 +179,7 @@ export default {
         dicProps:{
             data:''
         },
-        dicUrl:'https://down.ws59.cn/cd6y259/2/ml/2ml8cd6y259?cdn_sign=1590568916-77-0-d51f6dd490745cbad60c25a69ad7bc9c&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data-custom-prop.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data-custom-prop.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop.json'
             /*[{
                 "label": "label:选择1",
                 "value": "value:1"
@@ -196,7 +195,7 @@ export default {
             label:'key',
             value:'attribute'
         },
-        dicUrl:'https://down.ws59.cn/cdgxkkn/2/ml/2ml8cdgxkkn?cdn_sign=1590568940-27-0-6f3b8406019f838fc36f135d3097c6cf&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data-custom-prop2.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data-custom-prop2.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop2.json'
             /*{"code": 200,
               "msg": "ok",
               "res": [{
@@ -254,7 +253,7 @@ export default {
 |---------- |-------- |---------- |-------------  |-------- |
 | label     | CheckBox 的 label   | string / number / boolean    |       —        |      label   |
 | value  | CheckBox 的 value    | string / number / boolean   |       —        |      value   |
-| res | 原生 name 属性 | string    |      —         |     data    |
+| data | 字典数据prop，如`{code:1,data:[{label:'1',value:'1'}]}`,当为false时，表示接口直接返回字典数据 | string    |      string/false         |     data    |
 
 ## Events
 | 事件名称 | 说明 | 回调参数 |
