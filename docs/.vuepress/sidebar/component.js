@@ -4,7 +4,7 @@ module.exports = [
         collapsable: false,
         sidebarDepth: 2,
         children: [
-            '', 'radio','check-box','input-number','menu'
+            '', 'input-number', 'radio', 'check-box', 'select', 'menu'
         ]
     }
 ]

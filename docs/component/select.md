@@ -21,7 +21,7 @@ new Vue({
 :::demo
 ```html
 <template>
-    <cl-radio v-model="value" :dicData="dicData" @change="handleChange"></cl-radio>
+    <cl-select v-model="value" :dicData="dicData" @change="handleChange"></cl-select>
 </template>
 <script>
 export default {
@@ -44,9 +44,9 @@ export default {
 ```html
 <template>
     <div>
-        <cl-radio v-model="value" disabled :dicData="dicData"></cl-radio><br/>
-        <cl-radio v-model="value2" :option="option" :dicData="dicData2"></cl-radio><br/>
-        <cl-radio v-model="value3" :dicData="dicData3"></cl-radio><br/>   
+        <cl-select v-model="value" disabled :dicData="dicData"></cl-select><br/>
+        <cl-select v-model="value2" :option="option" :dicData="dicData2"></cl-select><br/>
+        <cl-select v-model="value3" :dicData="dicData3"></cl-select><br/>   
     </div>
 </template>
 <script>
@@ -66,13 +66,12 @@ export default {
 </script>
 ```
 :::
-##  按钮样式
+##  多选
 :::demo
 ```html
 <template>
     <div>
-        <cl-radio v-model="value"  :option="option" @change="handleChange"></cl-radio><br/><br/>
-        <cl-radio v-model="value"  :option="option2" @change="handleChange"></cl-radio>
+        <cl-select v-model="value"  :option="option" @change="handleChange"></cl-select>
     </div>
 </template>
 <script>
@@ -81,18 +80,14 @@ export default {
     return {
       value: '1',
       option:{
-        button:true,
-        dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
-      },
-      option2:{
-        button:true,
-        fill:'#67C23A',
+        multiple:true,
+        clearable:true,
         dicData:[{label:'备选项1',value:'1'},{label:'备选项2',value:'2'},{label:'备选项3',value:'3'}]
       }
     }
   },methods:{
     handleChange(val){
-      this.$message.success(val)
+      this.$message.success(JSON.stringify(val))
     }
   }
 }
@@ -103,7 +98,7 @@ export default {
 :::demo
 ```html
 <template>
-    <cl-radio v-model="value"  :option="option" @change="handleChange"></cl-radio>
+    <cl-select v-model="value"  :option="option" @change="handleChange"></cl-select>
 </template>
 <script>
 export default {
@@ -132,13 +127,13 @@ export default {
 <template>
     <el-row>
         <el-col :span="24" style="margin: 10px;">
-            <cl-radio v-model="value"  :option="option" @change="handleChange"></cl-radio>
+            <cl-select v-model="value"  :option="option" @change="handleChange"></cl-select>
         </el-col>
         <el-col :span="24" style="margin: 10px;">
-            <cl-radio v-model="value"  :option="option2" @change="handleChange"></cl-radio>
+            <cl-select v-model="value"  :option="option2" @change="handleChange"></cl-select>
         </el-col>
         <el-col :span="24" style="margin: 10px;">
-            <cl-radio v-model="value2"  :option="option3" @change="handleChange"></cl-radio>
+            <cl-select v-model="value2"  :option="option3" @change="handleChange"></cl-select>
         </el-col>
     </el-row>
 </template>
@@ -151,7 +146,7 @@ export default {
       option:{
         textColor:'#FF4D40',
         fill:'#ffffff',
-        dicUrl:'https://down.ws59.cn/dzf9aw7/2/ml/2ml7dzf9aw7?cdn_sign=1590568879-9-0-b91bbbf880cf4915b10111c68a2933c9&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data.json'
             /*{
               "code": 200,
               "msg": "ok",
@@ -169,7 +164,7 @@ export default {
         dicProps:{
             data:''
         },
-        dicUrl:'https://down.ws59.cn/cd6y259/2/ml/2ml8cd6y259?cdn_sign=1590568916-77-0-d51f6dd490745cbad60c25a69ad7bc9c&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data-custom-prop.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data-custom-prop.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop.json'
             /*[{
                 "label": "label:选择1",
                 "value": "value:1"
@@ -185,7 +180,7 @@ export default {
             label:'key',
             value:'attribute'
         },
-        dicUrl:'https://down.ws59.cn/cdgxkkn/2/ml/2ml8cdgxkkn?cdn_sign=1590568940-27-0-6f3b8406019f838fc36f135d3097c6cf&response-content-disposition=attachment%3B%20filename%3D%22radio-dic-data-custom-prop2.json%22%3B%20filename%2A%3Dutf-8%27%27radio-dic-data-custom-prop2.json'
+        dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data-custom-prop2.json'
             /*{"code": 200,
               "msg": "ok",
               "res": [{
@@ -211,7 +206,7 @@ export default {
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | value / v-model | 绑定值           | string / number  | — | — |
-| disabled  | 是否禁用    | boolean   | — | false   |
+| disabled | 是否禁用 | boolean | — | false |
 | option | 配置选项值           | object  | 详见[Option Attributes](#option) | — |
 | dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
 
@@ -222,7 +217,6 @@ export default {
 | dicData | 字典数据           | array  | 详见[DicData Attributes](#dicData) | — |
 | multiple | 是否多选 | boolean | — | false |
 | disabled | 是否禁用 | boolean | — | false |
-| valueKey | 作为 value 唯一标识的键名，绑定值为对象类型时必填 | string | — | value |
 | size | 输入框尺寸 | string | medium/small/mini | — |
 | clearable | 是否可以清空选项 | boolean | — | false |
 | collapseTags | 多选时是否将选中值按文字的形式展示 | boolean | — | false |
@@ -260,7 +254,7 @@ export default {
 |---------- |-------- |---------- |-------------  |-------- |
 | label     | Radio 的 label   | string / number / boolean    |       —        |      label   |
 | value  | Radio 的 value    | string / number / boolean   |       —        |      value   |
-| res | 原生 name 属性 | string    |      —         |     data    |
+| data | 字典数据prop，如`{code:1,data:[{label:'1',value:'1'}]}`,当为false时，表示接口直接返回字典数据 | string    |      string/false         |     data    |
 
 ## Slots
 |   name  | 说明     |

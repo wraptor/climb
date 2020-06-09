@@ -1,65 +1,69 @@
 <template>
-    <el-radio-group v-model="value"
-                    :size="defaultOption.size"
-                    :disabled="disabled===true || defaultOption.disabled===true"
-                    :text-color="defaultOption.textColor"
-                    :fill="defaultOption.fill">
-        <template v-if="defaultOption.button">
-            <cl-radio-button @change="handleChange(item)" v-for="(item,index) in myDicData" v-bind:key="index"
-                             :disabled="item.disabled===true"
-                             :label="item[defaultOption.dicProps.value]?item[defaultOption.dicProps.value]:item[defaultOption.dicProps.label]">
-                {{item[defaultOption.dicProps.label]}}
-            </cl-radio-button>
-        </template>
-        <template v-else>
-            <el-radio @change="handleChange(item)" v-for="(item,index) in myDicData" v-bind:key="index"
-                      :disabled="item.disabled===true"
-                      :label="item[defaultOption.dicProps.value]?item[defaultOption.dicProps.value]:item[defaultOption.dicProps.label]"
-                      :border="defaultOption.border">
-                {{item[defaultOption.dicProps.label]}}
-            </el-radio>
-        </template>
-    </el-radio-group>
+    <el-select v-model="value"
+               :multiple="defaultOption.multiple"
+               :disabled="defaultOption.disabled || disabled"
+               :size="defaultOption.size"
+               :clearable="defaultOption.clearable"
+               :collapse-tags="defaultOption.collapseTags"
+               :multiple-limit="defaultOption.multipleLimit"
+               :name="defaultOption.name"
+               :autocomplete="defaultOption.autocomplete"
+               :auto-complete="defaultOption.autoComplete"
+               :placeholder="defaultOption.placeholder"
+               :filterable="defaultOption.filterable"
+               :allow-create="defaultOption.allowCreate"
+               :filter-method="defaultOption.filterMethod"
+               :remote="defaultOption.remote"
+               :remote-method="defaultOption.remoteMethod"
+               :loading="defaultOption.loading"
+               :loading-text="defaultOption.loadingText"
+               :no-match-text="defaultOption.noMatchText"
+               :no-data-text="defaultOption.noDataText"
+               :popper-class="defaultOption.popperClass"
+               :reserve-keyword="defaultOption.reserveKeyword"
+               :default-first-option="defaultOption.defaultFirstOption"
+               :popper-append-to-body="defaultOption.popperAppendToBody"
+               :automatic-dropdown="defaultOption.automaticDropdown"
+               @change="handleChange"
+    >
+        <el-option
+                v-for="item in myDicData"
+                :disabled="item.disabled"
+                :key="item.value"
+                :label="item[defaultOption.dicProps.label]?item[defaultOption.dicProps.label]:item[defaultOption.dicProps.value]"
+                :value="item[defaultOption.dicProps.value]?item[defaultOption.dicProps.value]:item[defaultOption.dicProps.label]">
+        </el-option>
+    </el-select>
 </template>
 
 <script>
     import beanUtil from "../util/bean-util";
-    import ClRadioButton from '../radio-button/radioButton'
     import deOp from "./option";
     import Axios from 'axios';
 
     export default {
-        name: "ClRadio",
-        components: {ClRadioButton},
+        name: "ClSelect",
         props: {
             value: {},
             option: {type: Object, default: undefined},
             dicData: {type: Array, default: undefined},
-            type: {type: String, default: undefined},
             disabled: {type: Boolean, default: false}
         }, watch: {
             option: {
                 deep: true,
                 handler(val) {
-                    this.initData('clRadioInit', val)
+                    this.initData('clSelectInit', val)
                 }
             }, dicData: {
                 deep: true,
                 handler(val) {
                     this.setDicData(val)
                 }
-            }, type: {
-                handler(val) {
-                    this.defaultOption = val
-                }
             }
         }, created() {
-            this.initData('clRadioInit', this.option)
+            this.initData('clSelectInit', this.option)
             if (this.dicData) {
                 this.setDicData(this.dicData)
-            }
-            if (this.type) {
-                this.defaultOption = this.type
             }
         }, data() {
             return {
@@ -68,7 +72,7 @@
             }
         }, methods: {
             initData(key, val) {
-                if (key && key === 'clRadioInit' && val) {
+                if (key && key === 'clSelectInit' && val) {
                     //赋值option
                     this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                     //初始化字典数据
@@ -103,14 +107,9 @@
                 }
             },
             handleChange(value) {
-                let theValue = undefined
-                if (value[this.defaultOption.dicProps.value]) {
-                    theValue = value[this.defaultOption.dicProps.value]
-                } else {
-                    theValue = value[this.defaultOption.dicProps.label]
-                }
-                this.$emit('input', theValue)
-                this.$emit('change', theValue);
+                console.log(value)
+                this.$emit('input', value)
+                this.$emit('change', value);
             }
         }
     }
