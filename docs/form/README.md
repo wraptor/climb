@@ -27,6 +27,7 @@ npm i climb-ui -S
 | validate-on-rule-change  | 是否在 `rules` 属性改变后立即触发一次验证 | boolean | — | true |
 | size  | 用于控制该表单内组件的尺寸 | string | medium / small / mini | — |
 | disabled | 是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效 | boolean | — | false |
+| gutter | 栅格间隔 | number | — | 20 |
 | items | 表单数据           | array  | 详见[Items Attributes](#items) | — |
 
 
@@ -45,6 +46,7 @@ npm i climb-ui -S
 | showMessage  | 是否显示校验错误信息 | boolean | — | true |
 | inlineMessage  | 以行内形式展示校验信息 | boolean | — | false |
 | size  | 用于控制该表单域下组件的尺寸 | string | medium / small / mini | - |
+| span | 栅格占据的列数 | number | — | 12 |
 
 ## Type Variables<span id="type"></span>
 

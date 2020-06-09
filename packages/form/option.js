@@ -15,15 +15,16 @@ export default {
     //ext
     repeat: true,                      //true/false,是否防重提交
     readonly: false,
-    btn:true,
+    btn: true,
+    gutter: 20,
 
     submitBtn: {
-        text: '提交',
+        text: '提 交',
         icon: 'el-icon-check',
         display: true,//true/false
         size: ''     //medium / small / mini
     }, resetBtn: {
-        text: '重置',
+        text: '重 置',
         icon: 'el-icon-delete',
         display: true,//true/false
         size: ''     //medium / small / mini

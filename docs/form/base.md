@@ -44,13 +44,19 @@
                         type:'checkbox',
                         button:true,
                         dicData:[{label:'打篮球',value:'basketball'},{label:'踢足球',value:'football'},{label:'游泳',value:'swimming'}]
+                    },{
+                        prop:'profession',
+                        label:'职业',
+                        type:'select',
+                        dicData:[{label:'学生',value:'student'},{label:'老师',value:'teacher'},{label:'其他',value:'other'}]
                     }
                 ]
             }
       }
-    },created () {
-        setInterval(_=>console.log('form:',JSON.stringify(this.form)),2000)
     },
+    /*created () {
+        setInterval(_=>console.log('form:',JSON.stringify(this.form)),2000)
+    },*/
     methods: {
       onSubmit(form,done) {
         this.$message.success(JSON.stringify(form))
