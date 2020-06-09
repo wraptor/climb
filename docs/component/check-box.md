@@ -41,8 +41,7 @@ export default {
     }
   },methods:{
     handleChange(val){
-        console.log(val)
-        this.$message.success(val.toString())
+        this.$message.success(JSON.stringify(val))
     }
   }
 }
@@ -102,7 +101,7 @@ export default {
     }
   },methods:{
     handleChange(val){
-      this.$message.success(val)
+      this.$message.success(JSON.stringify(val))
     }
   }
 }
@@ -128,7 +127,7 @@ export default {
     }
   },methods:{
     handleChange(val){
-      this.$message.success(val)
+      this.$message.success(JSON.stringify(val))
     }
   }
 }
@@ -156,9 +155,9 @@ export default {
 export default {
   data() {
     return {
-      value: 'value:1',
-      value2: 'value:1',
-      value3: 'attribute:1',
+      value: ['value:1'],
+      value2: ['value:1'],
+      value3: ['attribute:1'],
       option:{
         textColor:'#FF4D40',
         fill:'#ffffff',
@@ -211,7 +210,7 @@ export default {
     }
   },methods:{
     handleChange(val){
-        this.$message.success(val)
+        this.$message.success(JSON.stringify(val))
     }
   }
 }
