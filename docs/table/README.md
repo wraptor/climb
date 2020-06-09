@@ -58,6 +58,13 @@ new Vue({
 | lazy        | 是否懒加载子节点数据 | Boolean | — | — |
 | load        | 加载子节点数据的函数，lazy 为 true 时生效，函数第二个参数包含了节点的层级信息 | Function(row, treeNode, resolve) | — | — |
 | tree-props  | 渲染嵌套数据的配置选项 | Object | — | { hasChildren: 'hasChildren', children: 'children' } |
+| index        | 是否显示该行的索引 | Boolean | — | false |
+| indexLabel        | 索引列名 | String | — | '序号' |
+| indexWidth        | 索引列宽度 | string/number | — | 50 |
+| indexFixed        | 索引列是否固定在左侧或者右侧，true 表示固定在左侧 | Boolean | — | — |
+| selection        | 是否显示多选列 | Boolean | — | false |
+| selectable        | 类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选 | Function(row, index) | — | — |
+| selectionWidth        | 多选列宽度 | string/number | — | 50 |
 | columns | 表格列数据           | array  | 详见[Items Attributes](#columns) | — |
 
 
@@ -134,6 +141,21 @@ new Vue({
 | view |  查看回调| row,done,index|
 | edit |  编辑回调| row,done,index|
 | del |  删除回调|  row,done,index|
+| selection-change|当选择项发生变化时会触发该事件|selection
 | before-open |  增删改查对话框打开|  type,row,done,index|
 | before-close |  增删改查对话框打开| type,row,done,index|
 | before-open |  对话框打开|  type,row,done,index|
+
+
+### Table Methods
+| 方法名 | 说明 | 参数 |
+| ---- | ---- | ---- |
+| clearSelection | 用于多选表格，清空用户的选择 | — |
+| toggleRowSelection | 用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中） | row, selected |
+| toggleAllSelection | 用于多选表格，切换所有行的选中状态 | - |
+| toggleRowExpansion | 用于可展开表格与树形表格，切换某一行的展开状态，如果使用了第二个参数，则是设置这一行展开与否（expanded 为 true 则展开） | row, expanded |
+| setCurrentRow | 用于单选表格，设定某一行为选中行，如果调用时不加参数，则会取消目前高亮行的选中状态。 | row |
+| clearSort | 用于清空排序条件，数据会恢复成未排序的状态 | — |
+| clearFilter | 不传入参数时用于清空所有过滤条件，数据会恢复成未过滤的状态，也可传入由columnKey组成的数组以清除指定列的过滤条件 | columnKey |
+| doLayout | 对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法 | — |
+| sort | 手动对 Table 进行排序。参数`prop`属性指定排序列，`order`指定排序顺序。 | prop: string, order: string |

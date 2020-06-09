@@ -1,4 +1,4 @@
-module.exports =  [
+module.exports = [
     {
         title: '表格',
         collapsable: false,
@@ -6,7 +6,9 @@ module.exports =  [
         children: [
             '',
             'base',
-            'display'
+            'indexes',
+            'display',
+            'selection'
         ]
     }
 ]

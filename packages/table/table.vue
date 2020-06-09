@@ -43,7 +43,15 @@
                     :lazy="defaultOption.lazy"
                     :load="defaultOption.load"
                     :tree-props="defaultOption.treeProps"
-                    :data="data">
+                    :data="data"
+            @selection-change="handleSelectionChange">
+
+                <el-table-column type="selection" v-if="defaultOption.selection===true"
+                                 :width="defaultOption.selectionWidth"
+                                 :selectable="defaultOption.selectable"></el-table-column>
+                <el-table-column type="index" v-if="defaultOption.index===true"
+                                 :width="defaultOption.indexWidth"
+                                 :label="defaultOption.indexLabel"></el-table-column>
                 <template v-for="(item,index) in defaultOption.columns">
                     <el-table-column
                             v-if="item.display!==false"
@@ -71,11 +79,22 @@
                             :filter-placement="item.filterPlacement"
                             :filter-multiple="item.filterMultiple"
                             :filter-method="item.filterMethod"
-                            :filtered-value="item.filteredValue"
-                    >
+                            :filtered-value="item.filteredValue">
+                        <template slot-scope="scope">
+                            <slot :data="scope" v-if="item.slot===true"></slot>
+                            <template v-if="item.slot!==true">
+                                <template v-if="radioTypeArray.indexOf(item.type)>=0
+                                ||checkboxTypeArray.indexOf(item.type)>=0
+                                ||selectTypeArray.indexOf(item.type)>=0">
+                                    {{ scope.row[item.prop] | getDicLabel(item)}}
+                                </template>
+                                <template v-else>
+                                    {{scope.row[item.prop]}}
+                                </template>
+                            </template>
+                        </template>
                     </el-table-column>
                 </template>
-
                 <el-table-column label="操作" v-if="defaultOption.menu!==false"
                                  :width="defaultOption.menuWidth">
                     <template slot-scope="scope">
@@ -126,6 +145,7 @@
 </template>
 
 <script>
+    import {radioTypeArray, checkboxTypeArray, selectTypeArray} from '../util/type'
     import deOp from './option'
     import beanUtil from '../util/bean-util'
 
@@ -166,7 +186,30 @@
                 dialogVisible: false,
                 delDialogVisible: false,
                 delLoading: false,
-                crudObj: {}
+                crudObj: {},
+                radioTypeArray: radioTypeArray,
+                checkboxTypeArray: checkboxTypeArray,
+                selectTypeArray: selectTypeArray,
+                dicProps: {                             //字典的prop修改
+                    label: 'label',
+                    value: 'value',
+                    children: 'children',
+                    data: 'data'
+                }
+            }
+        }, filters: {
+            getDicLabel: function (value, item) {
+                let valueProps = 'value'
+                let labelProps = 'label'
+                if (item.dicProps) {
+                    valueProps = item.dicProps.value ? item.dicProps.value : 'value'
+                    labelProps = item.dicProps.label ? item.dicProps.label : 'label'
+                }
+                const find = item.dicData.find(dic => dic[valueProps] === value)
+                if (find) {
+                    return find[labelProps]
+                }
+                return ""
             }
         }, methods: {
             initOption(val) {
@@ -272,6 +315,9 @@
                     this.dialogVisible = false
                     done()
                 }, this.crudObj.index)
+            }, handleSelectionChange(selection){
+                console.log(selection)
+                this.$emit('selection-change',selection)
             }
         }
     }

@@ -38,6 +38,13 @@ export default {
     repeat: true,                      //true/false,是否防重提交
     menu: true,                         //菜单开关
     menuWidth: 200,                     //菜单宽度
+    index:false,
+    indexLabel:'序号',
+    indexWidth: 50,
+    selection:false,
+    selectable:undefined,
+    selectionWidth:undefined,
+
     addBtn: {
         type: 'primary',
         text: '新 增',

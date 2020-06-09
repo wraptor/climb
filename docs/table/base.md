@@ -11,63 +11,67 @@
 </template>
 <script>
   export default {
-    data() {
-      return {
-            data:[{id:1,name:'zhangsan',age:22,sex:'0',phone:'18888888888'},
-                  {id:2,name:'lisi',age:25,sex:'1',phone:'17777777777'}],
-            option:{
-                columns:[
-                    {
-                        prop:'id',
-                        label:'主键',
-                        type:'number'
-                    },{
-                        prop:'name',
-                        label:'姓名',
-                        type:'text'
-                    },{
-                        prop:'age',
-                        label:'年龄',
-                        type:'number'
-                    },{
-                        prop:'sex',
-                        label:'性别',
-                        type:'radio',
-                        dicData:[{label:'男',value:'0'},{label:'女',value:'1'}]
-                    },{
-                        prop:'phone',
-                        label:'电话',
-                        type:'text'
-                    }
-                ]
-            }           
-      }
-    },created(){
-    },
-    methods: {
-        handleAdd(row,done,index){
-            this.$message.success(JSON.stringify(row))
-            setTimeout(_=>done(),2000)
-        },
-        handleEdit (row,done,index) {
-            setTimeout(_=>{
-                this.$message.success(JSON.stringify(row))
-                let arr = [...this.data]
-                arr[index] = row
-                this.data = arr
-                done()
-            },2000)
-        },
-        handleDel (row,done) {
-            this.$message.success(JSON.stringify(row))
-            setTimeout(_=>done(),2000)
+      data() {
+        return {
+              data:[{id:100,name:'zhangsan',age:22,sex:'0',phone:'18888888888',profession:'student'},
+                    {id:200,name:'lisi',age:25,sex:'1',phone:'17777777777',profession:'teacher'}],
+              option:{
+                  columns:[
+                      {
+                          prop:'id',
+                          label:'主键',
+                          type:'number'
+                      },{
+                          prop:'name',
+                          label:'姓名',
+                          type:'text'
+                      },{
+                          prop:'age',
+                          label:'年龄',
+                          type:'number'
+                      },{
+                          prop:'sex',
+                          label:'性别',
+                          type:'radio',
+                          dicData:[{label:'男',value:'0'},{label:'女',value:'1'}]
+                      },{
+                          prop:'phone',
+                          label:'电话',
+                          type:'text'
+                      },{
+                          prop:'profession',
+                          label:'职业',
+                          type:'select',
+                          dicData:[{label:'学生',value:'student'},{label:'老师',value:'teacher'},{label:'其他',value:'other'}]
+                      }
+                  ]
+              }           
         }
+      },created(){
+      },
+      methods: {
+          handleAdd(row,done,index){
+              this.$message.success(JSON.stringify(row))
+              setTimeout(_=>done(),2000)
+          },
+          handleEdit (row,done,index) {
+              setTimeout(_=>{
+                  this.$message.success(JSON.stringify(row))
+                  let arr = [...this.data]
+                  arr[index] = row
+                  this.data = arr
+                  done()
+              },2000)
+          },
+          handleDel (row,done) {
+              this.$message.success(JSON.stringify(row))
+              setTimeout(_=>done(),2000)
+          }
+      }
     }
-  }
 </script>
 ```
 :::
-
 
 ### 注意
 `element-ui`的`el-table`可能会因为电脑显示缩放非100%而引起表头错位，可在index.html或App.vue文件(必须是入口文件，才能全局起作用)的style标签中添加如下样式
@@ -76,4 +80,3 @@ body .el-table th.gutter {
     display: table-cell !important;
 }
 ```
-
