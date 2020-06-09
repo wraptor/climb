@@ -157,7 +157,8 @@ export default {
   data() {
     return {
       value: 'value:1',
-      value2: 'attribute:1',
+      value2: 'value:1',
+      value3: 'attribute:1',
       option:{
         textColor:'#FF4D40',
         fill:'#ffffff',
