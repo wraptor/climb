@@ -11,6 +11,7 @@
         </el-row>
         <el-row style="margin-top: 10px;">
             <el-table
+                    ref="clTableRef"
                     :height="defaultOption.height"
                     :max-height="defaultOption.maxHeight"
                     :stripe="defaultOption.stripe"
@@ -44,7 +45,7 @@
                     :load="defaultOption.load"
                     :tree-props="defaultOption.treeProps"
                     :data="data"
-            @selection-change="handleSelectionChange">
+                    @selection-change="handleSelectionChange">
 
                 <el-table-column type="selection" v-if="defaultOption.selection===true"
                                  :width="defaultOption.selectionWidth"
@@ -315,9 +316,25 @@
                     this.dialogVisible = false
                     done()
                 }, this.crudObj.index)
-            }, handleSelectionChange(selection){
+            }, handleSelectionChange(selection) {
                 console.log(selection)
-                this.$emit('selection-change',selection)
+                this.$emit('selection-change', selection)
+            }, clearSelection() {
+                this.$refs.clTableRef.clearSelection()
+            }, toggleRowSelection(row, selected) {
+                this.$refs.clTableRef.toggleRowSelection(row, selected)
+            }, toggleAllSelection() {
+                this.$refs.clTableRef.toggleAllSelection()
+            }, setCurrentRow() {
+                this.$refs.clTableRef.setCurrentRow()
+            }, clearSort() {
+                this.$refs.clTableRef.clearSort()
+            }, clearFilter(columnKey) {
+                this.$refs.clTableRef.clearFilter(columnKey)
+            }, doLayout() {
+                this.$refs.clTableRef.doLayout()
+            }, sort(prop, order) {
+                this.$refs.clTableRef.sort(prop, order)
             }
         }
     }

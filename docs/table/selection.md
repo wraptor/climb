@@ -64,3 +64,11 @@ export default {
 | 事件名 | 说明 | 参数 |
 | ---- | ---- | ---- |
 | selection-change|当选择项发生变化时会触发该事件|selection
+
+
+### Table Methods
+| 方法名 | 说明 | 参数 |
+| ---- | ---- | ---- |
+| clearSelection | 用于多选表格，清空用户的选择 | — |
+| toggleRowSelection | 用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中） | row, selected |
+| toggleAllSelection | 用于多选表格，切换所有行的选中状态 | - |
