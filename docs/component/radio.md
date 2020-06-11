@@ -1,20 +1,4 @@
 # Radio 单选框
-推荐使用npm的方式安装，它能更好地和 [webpack](https://webpack.js.org/) 打包工具配合使用。
-```
-import Vue from 'vue';
-import { ClRadio } from 'climb-ui';
-import App from './App.vue';
-
-Vue.component(ClRadio.name, ClRadio);
-/* 或写为
- * Vue.use(ClRadio)
- */
-
-new Vue({
-  el: '#app',
-  render: h => h(App)
-});
-```
 
 ##  基础用法
 `change`事件会返回选中项的value值，若没有指定value，则会返回label值。

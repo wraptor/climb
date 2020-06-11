@@ -1,20 +1,4 @@
 # InputNumber 计数器
-推荐使用npm的方式安装，它能更好地和 [webpack](https://webpack.js.org/) 打包工具配合使用。
-```
-import Vue from 'vue';
-import { ClInputNumber } from 'climb-ui';
-import App from './App.vue';
-
-Vue.component(ClInputNumber.name, ClInputNumber);
-/* 或写为
- * Vue.use(ClInputNumber)
- */
-
-new Vue({
-  el: '#app',
-  render: h => h(App)
-});
-```
 
 ##  基础用法
 `change`事件会返回选中项的value值。

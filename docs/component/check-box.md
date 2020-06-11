@@ -1,20 +1,4 @@
 # CheckBox 多选框
-推荐使用npm的方式安装，它能更好地和 [webpack](https://webpack.js.org/) 打包工具配合使用。
-```
-import Vue from 'vue';
-import { ClCheckBox } from 'climb-ui';
-import App from './App.vue';
-
-Vue.component(ClCheckBox.name, ClCheckBox);
-/* 或写为
- * Vue.use(ClCheckBox)
- */
-
-new Vue({
-  el: '#app',
-  render: h => h(App)
-});
-```
 
 ##  基础用法
 `change`事件会返回选中项的value值，若没有指定value，则会返回label值数组。

@@ -1,8 +1,5 @@
 # 介绍 & 表单
-推荐使用npm的方式安装，它能更好地和 [webpack](https://webpack.js.org/) 打包工具配合使用。
-```
-npm i climb-ui -S
-```
+
 # 文档
 ## Variables
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
