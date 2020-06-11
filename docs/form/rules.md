@@ -1,4 +1,4 @@
-# 基础表单
+# 表单校验
 
 :::demo
 ```html
@@ -12,8 +12,24 @@
 <script>
   export default {
     data() {
+      const checkAge = (rule, value, callback) => {
+              if (!value) {
+                return callback(new Error('年龄不能为空'));
+              }
+              setTimeout(() => {
+                if (!Number.isInteger(value)) {
+                  callback(new Error('请输入数字值'));
+                } else {
+                  if (value < 18) {
+                    callback(new Error('必须年满18岁'));
+                  } else {
+                    callback();
+                  }
+                }
+              }, 1000);
+       };
       return {
-            form:{username:'admin',password:'123456',age:25,sex:'man',birthday:'1995-11-19'},
+            form:{username:'admin',password:'123456',age:25},
             loading:false,
             option:{
                 disabled:false,
@@ -21,39 +37,20 @@
                     {
                         prop:'username',
                         label:'用户名',
-                        type:'text'
+                        type:'text',
+                        rules:[{required: true, message: '请输入用户名', trigger: 'blur'},
+                               {min: 3, max: 5, message: '用户名长度在 3 到 5 个字符', trigger: 'blur'}]
                     },{
                         prop:'password',
                         label:'密码',
-                        type:'password'
+                        type:'password',
+                        rules:[{required: true, message: '请输入密码', trigger: 'blur'}]
                     },{
                         prop:'age',
                         label:'年龄',
                         type:'number',
-                        min:0,
-                        max:500
-                    },{
-                        prop:'sex',
-                        label:'性别',
-                        type:'radio',
-                        border:true,
-                        dicData:[{label:'男',value:'man'},{label:'女',value:'woman'}]
-                    },{
-                        prop:'hobby',
-                        label:'爱好',
-                        type:'checkbox',
-                        button:true,
-                        dicData:[{label:'打篮球',value:'basketball'},{label:'踢足球',value:'football'},{label:'游泳',value:'swimming'}]
-                    },{
-                        prop:'profession',
-                        label:'职业',
-                        type:'select',
-                        dicData:[{label:'学生',value:'student'},{label:'老师',value:'teacher'},{label:'其他',value:'other'}]
-                    },{
-                        prop:'birthday',
-                        label:'生日',
-                        type:'date',
-                        valueFormat:'yyyy-MM-dd'
+                        controlsPosition:'right',
+                        rules:[{required: true, validator: checkAge, trigger: 'blur' }]
                     }
                 ]
             }

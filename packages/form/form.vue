@@ -153,12 +153,16 @@
             onSubmit() {
                 if (this.defaultOption.repeat) {
                     this.defaultLoading = true
-                    this.$emit('submit', beanUtil.deepClone(this.form), () => {
-                        this.defaultLoading = false
-                    })
-                } else {
-                    this.$emit('submit', beanUtil.deepClone(this.form))
                 }
+                this.$refs.clForm.validate((isValidate) => {
+                    if (isValidate) {
+                        this.$emit('submit', this.form, () => {
+                            this.defaultLoading = false
+                        })
+                    }else{
+                        this.defaultLoading = false
+                    }
+                })
             }, onReset() {
                 this.$emit('input', JSON.parse(JSON.stringify(this.formBack)))
 
