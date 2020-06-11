@@ -20,7 +20,6 @@ const beanUtil = {
             if (!target) {
                 target = {}
             }
-            console.log('source',source)
             for (let key in source) {
                 // eslint-disable-next-line no-prototype-builtins
                 if (source.hasOwnProperty(key)) {
@@ -29,7 +28,6 @@ const beanUtil = {
             }
         } else {
             target = source;
-            console.log('source',source)
         }
         return target;
     },
