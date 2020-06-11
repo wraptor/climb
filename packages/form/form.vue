@@ -86,7 +86,6 @@
                     this.form = JSON.parse(JSON.stringify(val))
                     if (!this.formBack) {
                         this.formBack = JSON.parse(JSON.stringify(val))
-                        console.log('formBack:' + JSON.stringify(this.formBack))
                     }
                 }
             },

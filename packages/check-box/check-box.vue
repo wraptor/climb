@@ -88,7 +88,6 @@
                     callback()
                 }
             }, setDicData(dicData) {
-                console.log(dicData)
                 if (dicData && dicData.constructor === Array) {
                     this.myDicData = dicData
                 } else {

@@ -317,7 +317,6 @@
                     done()
                 }, this.crudObj.index)
             }, handleSelectionChange(selection) {
-                console.log(selection)
                 this.$emit('selection-change', selection)
             }, clearSelection() {
                 this.$refs.clTableRef.clearSelection()

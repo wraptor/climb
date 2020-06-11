@@ -107,7 +107,6 @@
                 }
             },
             handleChange(value) {
-                console.log(value)
                 this.$emit('input', value)
                 this.$emit('change', value);
             }
