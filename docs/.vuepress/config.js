@@ -1,7 +1,7 @@
 module.exports = ctx => ({
     base: '/climb/',
     lang: 'zh-CN',
-    title: 'climb',
+    title: 'Climb',
     description: 'climb-ui',
     themeConfig: {
         smoothScroll: true,//页面滚动
