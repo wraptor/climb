@@ -1,9 +1,16 @@
-# 文档
+# 文档 & 表格
+
+## 注意
+由于`cl-table`使用`element-ui`的`el-table`可能会因为电脑显示缩放非100%而引起表头错位，可在index.html或App.vue文件(必须是入口文件，才能全局起作用)的style标签中添加如下样式
+```css
+body .el-table th.gutter {
+    display: table-cell !important;
+}
+```
 
 ## Variables
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
-| value / v-model | 绑定值           | string / number  | — | — |
 | data  | 表格数据    | array   | — | -   |
 | option | 配置选项值           | object  | 详见[Option Attributes](#option) | — |
 
@@ -61,6 +68,8 @@
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | type            | 类型,详见[Type Attributes](#type)           | string | text,textarea,password,select...             | text      |
 | prop    | 表单域 model 字段，在使用 validate、resetFields 方法的情况下，该属性是必填的 | string    | 传入 Form 组件的 `model` 中的字段 | — |
+| label | 标签文本 | string | — | — |
+| value | 新建表单中的默认值 | - | — | — |
 | display  | 表格是否可见 | boolean | true/false | true |
 | addDisabled  | 新增表单是否禁用 | boolean | true/false | false |
 | addDisplay  | 新增表单是否可见 | boolean | true/false | true |
@@ -89,18 +98,17 @@
 | filterMultiple | 数据过滤的选项是否多选 | Boolean | — | true |
 | filterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | — | — |
 | filteredValue | 选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性。 | Array | — | — |
-
-
+| slot | 是否开启插槽 | Boolean | true/false | false |
 
 
 ## Type Variables<span id="type"></span>
 
-| 参数             | 说明               | 使用组件              |
+| 参数             | 说明               | 使用组件        |
 | -------------   |:------------------:|:-------------:|
-| text            | 输入框              |```<cl-input/>```        |
-| textarea        | 文本框              |```<cl-input/>   ```     |
-| password        | 密码框              |```<cl-input/>   ```       |
-| number          | 计数器              |```<cl-input-number/> ```  |
+| text            | 输入框              |```<cl-input/>```|
+| textarea        | 文本框              |```<cl-input/>```|
+| password        | 密码框              |```<cl-input/>```|
+| number          | 计数器              |```<cl-input-number/> ```|
 | radio           | 单选框              |```<cl-radio/>```|
 | checkbox        | 多选框              |```<cl-checkbox/>```|
 | select          | 下拉框              |```<cl-select/>```|
@@ -143,3 +151,13 @@
 | clearFilter | 不传入参数时用于清空所有过滤条件，数据会恢复成未过滤的状态，也可传入由columnKey组成的数组以清除指定列的过滤条件 | columnKey |
 | doLayout | 对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法 | — |
 | sort | 手动对 Table 进行排序。参数`prop`属性指定排序列，`order`指定排序顺序。 | prop: string, order: string |
+
+
+### Table Slot
+| name | 说明 |
+|------|--------|
+| ${prop} | prop的列插槽 |
+| ${prop}Form | prop的新增、编辑表单插槽 |
+| menu | 插入至表格中菜单最后 |
+| menuLeft | 插入至表格上方菜单左侧 |
+| menuRight | 插入至表格上方菜单右侧 |

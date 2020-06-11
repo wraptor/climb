@@ -1,13 +1,22 @@
 <template>
     <div v-loading="defaultLoading">
-        <el-row>
-            <el-button
-                    :type="defaultOption.addBtn.type"
-                    :icon="defaultOption.addBtn.icon"
-                    v-if="defaultOption.addBtn!==false || defaultOption.addBtn.display!==false"
-                    :size="defaultOption.addBtn.size"
-                    @click="handleAdd">{{defaultOption.addBtn.text}}
-            </el-button>
+        <el-row type="flex" justify="space-between">
+            <el-col span="12">
+                <el-button
+                        :type="defaultOption.addBtn.type"
+                        :icon="defaultOption.addBtn.icon"
+                        v-if="defaultOption.addBtn!==false || defaultOption.addBtn.display!==false"
+                        :size="defaultOption.addBtn.size"
+                        @click="handleAdd">{{defaultOption.addBtn.text}}
+                </el-button>
+                <slot name="menuLeft"></slot>
+            </el-col>
+            <el-col span="12" style="text-align: right">
+                <el-tooltip content="刷新" placement="top">
+                    <el-button icon="el-icon-refresh" size="small" circle @click="handleLoad"></el-button>
+                </el-tooltip>
+                <slot name="menuRight"></slot>
+            </el-col>
         </el-row>
         <el-row style="margin-top: 10px;">
             <el-table
@@ -82,7 +91,8 @@
                             :filter-method="item.filterMethod"
                             :filtered-value="item.filteredValue">
                         <template slot-scope="scope">
-                            <slot :data="scope" v-if="item.slot===true"></slot>
+                            <slot :index="scope.$index" :row="scope.row" :name="item.prop"
+                                  v-if="item.slot===true"></slot>
                             <template v-if="item.slot!==true">
                                 <template v-if="radioTypeArray.indexOf(item.type)>=0
                                 ||checkboxTypeArray.indexOf(item.type)>=0
@@ -120,12 +130,20 @@
                                 :size="defaultOption.delBtn.size"
                                 @click="handleDel(scope.$index, scope.row)">{{defaultOption.delBtn.text}}
                         </el-button>
+                        <slot name="menu" :index="scope.$index" :row="scope.row"></slot>
                     </template>
                 </el-table-column>
             </el-table>
         </el-row>
         <el-dialog :visible.sync="dialogVisible" :before-close="closeDialog" :destroy-on-close="true">
-            <cl-form :option="defaultFormOption" v-model="form" @submit="handleSubmit"/>
+            <cl-form :option="defaultFormOption" v-model="form" @submit="handleSubmit">
+                <template v-for="(item) in defaultFormOption.items">
+                    <template :slot="item.prop+'Form'"
+                              v-if="item.slotForm===true">
+                        <slot :name="item.prop+'Form'"></slot>
+                    </template>
+                </template>
+            </cl-form>
         </el-dialog>
         <el-dialog :visible.sync="delDialogVisible" :title="this.defaultOption.delBtn.title"
                    width="400px">
@@ -161,6 +179,16 @@
                 default: () => {
                     return []
                 }
+            },
+            page: {
+                type: Object,
+                default: () => {
+                    return {
+                        total: 0,
+                        size: 10,
+                        current: 1,
+                    }
+                }
             }
         }, watch: {
             option: {
@@ -177,11 +205,11 @@
             if (this.option) {
                 this.initOption(this.option)
             }
-        }, mounted() {
+            this.handleLoad()
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
-                defaultFormOption: {},
+                defaultFormOption: {items: []},
                 form: {},
                 defaultLoading: false,
                 dialogVisible: false,
@@ -196,7 +224,8 @@
                     value: 'value',
                     children: 'children',
                     data: 'data'
-                }
+                },
+                prop: 'sex'
             }
         }, filters: {
             getDicLabel: function (value, item) {
@@ -216,7 +245,6 @@
             initOption(val) {
                 this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                 this.defaultFormOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultFormOption)
-
             },
             handleAdd() {
                 this.openDialog('add')
@@ -230,9 +258,12 @@
             handleDel(index, row) {
                 this.openDialog('del', index, row)
             }, openDialog(type, index, row) {
+                this.dialogVisible = false
+                let form = {}
                 if (this.defaultOption.columns) {
                     this.defaultFormOption.items = []
                     this.defaultOption.columns.forEach(item => {
+                        form[item.prop] = item.value
                         if (item[type + 'Display'] !== false) {
                             let theItem = beanUtil.deepClone(item)
                             if (item[type + 'Disabled'] === true) {
@@ -241,13 +272,14 @@
                             this.defaultFormOption.items.push(theItem)
                         }
                     })
+                    console.log(this.defaultFormOption.items, this.defaultFormOption.items.length)
                 }
                 this.crudObj = {type: type, index: index, row: row}
                 if (this.defaultLoading.repeat) {
                     this.defaultLoading = true
                 }
                 if (type === 'add') {
-                    this.form = {}
+                    this.form = form
                 } else {
                     this.form = JSON.parse(JSON.stringify(row))
                 }
@@ -334,6 +366,15 @@
                 this.$refs.clTableRef.doLayout()
             }, sort(prop, order) {
                 this.$refs.clTableRef.sort(prop, order)
+            }, handleLoad() {
+                this.$nextTick(() => {
+                    if (this.$listeners['load']) {
+                        this.defaultLoading = true
+                        this.$emit('load', this.page, () => {
+                            this.defaultLoading = false
+                        })
+                    }
+                })
             }
         }
     }

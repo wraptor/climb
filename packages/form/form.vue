@@ -28,7 +28,10 @@
                     <!--                    <template v-if="inputTypeArray.indexOf(item.type)>=0">-->
                     <!--                        <cl-input v-model="value[item.prop]" :option="item"></cl-input>-->
                     <!--                    </template>-->
-                    <template v-if="inputNumberTypeArray.indexOf(item.type)>=0">
+                    <template v-if="item.slotForm===true">
+                        <slot :name="item.prop+'Form'"></slot>
+                    </template>
+                    <template v-else-if="inputNumberTypeArray.indexOf(item.type)>=0">
                         <cl-input-number v-model="value[item.prop]" :option="item"></cl-input-number>
                     </template>
                     <template v-else-if="radioTypeArray.indexOf(item.type)>=0">
@@ -159,7 +162,7 @@
                         this.$emit('submit', this.form, () => {
                             this.defaultLoading = false
                         })
-                    }else{
+                    } else {
                         this.defaultLoading = false
                     }
                 })

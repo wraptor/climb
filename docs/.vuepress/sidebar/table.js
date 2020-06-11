@@ -8,7 +8,10 @@ module.exports = [
             'base',
             'indexes',
             'display',
-            'selection'
+            'selection',
+            'menu',
+            'custom',
+            'custom-form'
         ]
     }
 ]

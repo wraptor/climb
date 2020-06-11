@@ -5,6 +5,7 @@
 <template>
     <cl-table   :option="option" 
                 :data="data"
+                @load="handleLoad"
                 @add="handleAdd"
                 @edit="handleEdit"
                 @del="handleDel"/>
@@ -13,8 +14,7 @@
   export default {
       data() {
         return {
-              data:[{id:100,name:'zhangsan',age:22,sex:'0',phone:'18888888888',profession:'student'},
-                    {id:200,name:'lisi',age:25,sex:'1',phone:'17777777777',profession:'teacher'}],
+              data:[],
               option:{
                   columns:[
                       {
@@ -33,6 +33,7 @@
                           prop:'sex',
                           label:'性别',
                           type:'radio',
+                          value:'0',
                           dicData:[{label:'男',value:'0'},{label:'女',value:'1'}]
                       },{
                           prop:'phone',
@@ -50,6 +51,14 @@
       },created(){
       },
       methods: {
+          handleLoad(page,done){
+                this.$message.success(JSON.stringify(page))
+                setTimeout(()=>{
+                    this.data=[{id:100,name:'zhangsan',age:22,sex:'0',phone:'18888888888',profession:'student'},
+                               {id:200,name:'lisi',age:25,sex:'1',phone:'17777777777',profession:'teacher'}]
+                    done()
+                },2000)
+          },
           handleAdd(row,done,index){
               this.$message.success(JSON.stringify(row))
               setTimeout(_=>done(),2000)
@@ -73,10 +82,31 @@
 ```
 :::
 
-### 注意
-`element-ui`的`el-table`可能会因为电脑显示缩放非100%而引起表头错位，可在index.html或App.vue文件(必须是入口文件，才能全局起作用)的style标签中添加如下样式
-```css
-body .el-table th.gutter {
-    display: table-cell !important;
-}
-```
+## Variables
+| 参数          | 说明            | 类型            | 可选值                 | 默认值   |
+|-------------  |---------------- |---------------- |---------------------- |-------- |
+| data  | 表格数据    | array   | — | -   |
+| option | 配置选项值           | object  | 详见[Option Attributes](#option) | — |
+
+## Columns Attributes<span id="columns"></span>
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| type            | 类型,详见[Type Attributes](#type)           | string | text,textarea,password,select...             | text      |
+| prop    | 表单域 model 字段，在使用 validate、resetFields 方法的情况下，该属性是必填的 | string    | 传入 Form 组件的 `model` 中的字段 | — |
+| label | 标签文本 | string | — | — |
+
+## Type Variables<span id="type"></span>
+| 参数             | 说明               | 使用组件              |
+| -------------   |:------------------:|:-------------:|
+| text            | 输入框              |```<cl-input/>```        |
+| number          | 计数器              |```<cl-input-number/> ```  |
+| radio           | 单选框              |```<cl-radio/>```|
+| select          | 下拉框              |```<cl-select/>```|
+
+## Table Events
+| 事件名 | 说明 | 参数 |
+| ---- | ---- | ---- |
+| add |  新增回调| row,done,index |
+| view |  查看回调| row,done,index|
+| edit |  编辑回调| row,done,index|
+| del |  删除回调|  row,done,index|
