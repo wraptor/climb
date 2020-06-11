@@ -13,7 +13,7 @@
   export default {
     data() {
       return {
-            form:{username:'admin',password:'123456',age:25,sex:'man'},
+            form:{username:'admin',password:'123456',age:25,sex:'man',birthday:'1995-11-19'},
             loading:false,
             option:{
                 disabled:false,
@@ -49,6 +49,11 @@
                         label:'职业',
                         type:'select',
                         dicData:[{label:'学生',value:'student'},{label:'老师',value:'teacher'},{label:'其他',value:'other'}]
+                    },{
+                        prop:'birthday',
+                        label:'生日',
+                        type:'date',
+                        valueFormat:'yyyy-MM-dd'
                     }
                 ]
             }

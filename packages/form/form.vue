@@ -37,6 +37,12 @@
                     <template v-else-if="checkboxTypeArray.indexOf(item.type)>=0">
                         <cl-check-box v-model="value[item.prop]" :option="item"></cl-check-box>
                     </template>
+                    <template v-else-if="timePickerTypeArray.indexOf(item.type)>=0">
+                        <cl-time-picker v-model="value[item.prop]" :option="item"></cl-time-picker>
+                    </template>
+                    <template v-else-if="datePickerTypeArray.indexOf(item.type)>=0">
+                        <cl-date-picker v-model="value[item.prop]" :option="item"></cl-date-picker>
+                    </template>
                     <template v-else-if="selectTypeArray.indexOf(item.type)>=0">
                         <cl-select v-model="value[item.prop]" :option="item"></cl-select>
                     </template>
@@ -69,7 +75,15 @@
 <script>
     import deOp from './option'
     import beanUtil from '../util/bean-util'
-    import {inputTypeArray, inputNumberTypeArray, radioTypeArray, checkboxTypeArray, selectTypeArray} from '../util/type'
+    import {
+        inputTypeArray,
+        inputNumberTypeArray,
+        radioTypeArray,
+        checkboxTypeArray,
+        selectTypeArray,
+        timePickerTypeArray,
+        datePickerTypeArray
+    } from '../util/type'
 
     export default {
         name: "ClForm",
@@ -109,7 +123,9 @@
                 radioTypeArray: radioTypeArray,
                 checkboxTypeArray: checkboxTypeArray,
                 selectTypeArray: selectTypeArray,
-                inputNumberTypeArray: inputNumberTypeArray
+                inputNumberTypeArray: inputNumberTypeArray,
+                datePickerTypeArray: datePickerTypeArray,
+                timePickerTypeArray: timePickerTypeArray,
             }
         }, methods: {
             setOption(val) {
