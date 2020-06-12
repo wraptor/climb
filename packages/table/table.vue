@@ -1,23 +1,23 @@
 <template>
     <div v-loading="defaultLoading">
         <el-row type="flex" justify="space-between" v-if="defaultSearchFormOption.items.length>0">
-            <el-col span="24">
+            <el-col :span="24">
                 <cl-form :option="defaultSearchFormOption" v-model="searchForm" :loading="defaultLoading"
                          @submit="handleLoad"/>
             </el-col>
         </el-row>
         <el-row type="flex" justify="space-between">
-            <el-col span="12">
+            <el-col :span="12">
                 <el-button
                         :type="defaultOption.addBtn.type"
                         :icon="defaultOption.addBtn.icon"
-                        v-if="defaultOption.addBtn!==false || defaultOption.addBtn.display!==false"
+                        v-if="defaultOption.addBtn===false || defaultOption.addBtn.display===false"
                         :size="defaultOption.addBtn.size"
                         @click="handleAdd">{{defaultOption.addBtn.text}}
                 </el-button>
                 <slot name="menuLeft"></slot>
             </el-col>
-            <el-col span="12" style="text-align: right">
+            <el-col :span="12" style="text-align: right">
                 <el-tooltip content="刷新" placement="top">
                     <el-button icon="el-icon-refresh" size="small" circle @click="handleLoad"></el-button>
                 </el-tooltip>
@@ -118,21 +118,21 @@
                         <el-button
                                 :type="defaultOption.viewBtn.type"
                                 :icon="defaultOption.viewBtn.icon"
-                                v-if="defaultOption.viewBtn!==false || defaultOption.viewBtn.display!==false"
+                                v-if="defaultOption.viewBtn===false || defaultOption.viewBtn.display===false"
                                 :size="defaultOption.viewBtn.size"
                                 @click="handleView(scope.$index, scope.row)">{{defaultOption.viewBtn.text}}
                         </el-button>
                         <el-button
                                 :type="defaultOption.editBtn.type"
                                 :icon="defaultOption.editBtn.icon"
-                                v-if="defaultOption.editBtn!==false || defaultOption.editBtn.display!==false"
+                                v-if="defaultOption.editBtn===false || defaultOption.editBtn.display===false"
                                 :size="defaultOption.editBtn.size"
                                 @click="handleEdit(scope.$index, scope.row)">{{defaultOption.editBtn.text}}
                         </el-button>
                         <el-button
                                 :type="defaultOption.delBtn.type"
                                 :icon="defaultOption.delBtn.icon"
-                                v-if="defaultOption.delBtn!==false || defaultOption.delBtn.display!==false"
+                                v-if="defaultOption.delBtn===false || defaultOption.delBtn.display===false"
                                 :size="defaultOption.delBtn.size"
                                 @click="handleDel(scope.$index, scope.row)">{{defaultOption.delBtn.text}}
                         </el-button>
@@ -142,7 +142,7 @@
             </el-table>
         </el-row>
         <el-row>
-            <el-col span="24" style="text-align: right;margin-top: 20px">
+            <el-col :span="24" style="text-align: right;margin-top: 20px">
                 <el-pagination
                         @current-change="handleCurrentChange"
                         @size-change="handleSizeChange"
