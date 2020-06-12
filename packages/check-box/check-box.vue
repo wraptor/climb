@@ -36,7 +36,7 @@
     export default {
         name: "ClCheckBox",
         props: {
-            value: {default:[]},
+            value: {default: []},
             option: {type: Object, default: undefined},
             dicData: {type: Array, default: undefined},
             disabled: {type: Boolean, default: false}
@@ -60,7 +60,8 @@
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
-                myDicData: []
+                myDicData: [],
+                myAxios: this.$axios ? this.$axios : Axios
             }
         }, methods: {
             initData(key, val) {
@@ -74,16 +75,20 @@
                 }
             }, setDicUrl(dicUrl, callback) {
                 if (dicUrl) {
-                    Axios.get(dicUrl).then((response) => {
-                        if (this.defaultOption.dicProps.data) {
-                            this.setDicData(response.data[this.defaultOption.dicProps.data])
-                        } else {
-                            this.setDicData(response.data)
-                        }
-                    }).catch((error) => {
-                        console.error(error);
-                        callback()
-                    })
+                    if (this.myAxios) {
+                        this.myAxios.get(dicUrl).then((response) => {
+                            if (this.defaultOption.dicProps.data) {
+                                this.setDicData(response.data[this.defaultOption.dicProps.data])
+                            } else {
+                                this.setDicData(response.data)
+                            }
+                        }).catch((error) => {
+                            console.error(error);
+                            callback()
+                        })
+                    } else {
+                        console.error('axios is null,please install axios and install in this.$axios')
+                    }
                 } else {
                     callback()
                 }

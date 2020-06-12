@@ -68,7 +68,8 @@
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
-                myDicData: []
+                myDicData: [],
+                myAxios: this.$axios ? this.$axios : Axios
             }
         }, methods: {
             initData(key, val) {
@@ -82,8 +83,8 @@
                 }
             }, setDicUrl(dicUrl, callback) {
                 if (dicUrl) {
-                    if (Axios) {
-                        Axios.get(dicUrl).then((response) => {
+                    if (this.myAxios) {
+                        this.myAxios.get(dicUrl).then((response) => {
                             if (this.defaultOption.dicProps.data) {
                                 this.setDicData(response.data[this.defaultOption.dicProps.data])
                             } else {
@@ -94,7 +95,7 @@
                             callback()
                         })
                     } else {
-                        console.error('axios is null,please install axios')
+                        console.error('axios is null,please install axios and install in this.$axios')
                     }
                 } else {
                     callback()
