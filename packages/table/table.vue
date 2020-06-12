@@ -1,5 +1,11 @@
 <template>
     <div v-loading="defaultLoading">
+        <el-row type="flex" justify="space-between" v-if="defaultSearchFormOption.items.length>0">
+            <el-col span="24">
+                <cl-form :option="defaultSearchFormOption" v-model="searchForm" :loading="defaultLoading"
+                         @submit="handleLoad"/>
+            </el-col>
+        </el-row>
         <el-row type="flex" justify="space-between">
             <el-col span="12">
                 <el-button
@@ -135,10 +141,23 @@
                 </el-table-column>
             </el-table>
         </el-row>
-        <el-dialog :visible.sync="dialogVisible" :before-close="closeDialog" :destroy-on-close="true">
+        <el-row>
+            <el-col span="24" style="text-align: right;margin-top: 20px">
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        @size-change="handleSizeChange"
+                        :current-page="page.current"
+                        :page-size="page.size"
+                        :total="page.total"
+                        layout="total, sizes, prev, pager, next, jumper"
+                >
+                </el-pagination>
+            </el-col>
+        </el-row>
+        <el-dialog :visible.sync="dialogVisible" :title="crudObj.type==='add'?'新增':'编辑'" :before-close="closeDialog" :destroy-on-close="true">
             <cl-form :option="defaultFormOption" v-model="form" @submit="handleSubmit">
                 <template v-for="(item) in defaultFormOption.items">
-                    <template :slot="item.prop+'Form'"
+                    <template :slot="item.prop"
                               v-if="item.slotForm===true">
                         <slot :name="item.prop+'Form'"></slot>
                     </template>
@@ -211,6 +230,7 @@
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 defaultFormOption: {items: []},
                 form: {},
+                searchForm: undefined,
                 defaultLoading: false,
                 dialogVisible: false,
                 delDialogVisible: false,
@@ -226,6 +246,29 @@
                     data: 'data'
                 },
                 prop: 'sex'
+            }
+        }, computed: {
+            defaultSearchFormOption: function () {
+                let option = {
+                    submitBtn: this.defaultOption.searchBtn,
+                    resetBtn: this.defaultOption.searchResetBtn,
+                    items: []
+                }
+                if (this.defaultOption.columns) {
+                    let form = {}
+                    option.items = []
+                    this.defaultOption.columns.forEach(item => {
+                        if (item.search === true) {
+                            let theItem = beanUtil.deepClone(item)
+                            form[item.prop] = item.searchValue
+                            theItem.rules = item.searchRules
+                            option.items.push(theItem)
+                        }
+                    })
+                    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                    this.searchForm = form
+                }
+                return option
             }
         }, filters: {
             getDicLabel: function (value, item) {
@@ -245,6 +288,7 @@
             initOption(val) {
                 this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                 this.defaultFormOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultFormOption)
+
             },
             handleAdd() {
                 this.openDialog('add')
@@ -372,9 +416,17 @@
                         this.defaultLoading = true
                         this.$emit('load', this.page, () => {
                             this.defaultLoading = false
-                        })
+                        }, this.searchForm)
+                    }else{
+                        this.defaultLoading = false
                     }
                 })
+            }, handleCurrentChange(current) {
+                this.page.current = current
+                this.handleLoad()
+            }, handleSizeChange(size) {
+                this.page.size = size
+                this.handleLoad()
             }
         }
     }

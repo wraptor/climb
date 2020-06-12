@@ -9,9 +9,11 @@ module.exports = [
             'indexes',
             'display',
             'selection',
+            'page',
             'menu',
             'custom',
-            'custom-form'
+            'custom-form',
+            'search'
         ]
     }
 ]

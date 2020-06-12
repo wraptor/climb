@@ -1,20 +1,19 @@
-# 基础表格
+# 分页
 
 :::demo
 ```html
 <template>
     <cl-table   :option="option" 
                 :data="data"
-                @load="handleLoad"
-                @add="handleAdd"
-                @edit="handleEdit"
-                @del="handleDel"/>
+                :page="page"
+                @load="handleLoad"/>
 </template>
 <script>
   export default {
       data() {
         return {
               data:[],
+              page:{size:20,current:1},
               option:{
                   columns:[
                       {
@@ -35,51 +34,44 @@
                           type:'radio',
                           value:'0',
                           dicData:[{label:'男',value:'0'},{label:'女',value:'1'}]
-                      },{
-                          prop:'phone',
-                          label:'电话',
-                          type:'text'
-                      },{
-                          prop:'profession',
-                          label:'职业',
-                          type:'select',
-                          dicData:[{label:'学生',value:'student'},{label:'老师',value:'teacher'},{label:'其他',value:'other'}]
-                      },{
-                          prop:'birthday',
-                          label:'生日',
-                          type:'date',
-                          valueFormat:'yyyy-MM-dd'
                       }
                   ]
               }           
         }
       },created(){
+          
+      }, computed:{
+        //模拟数据库数据
+        allData:()=>{
+            let theData = []
+            const str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            const maxLength = str.length
+            for (let i=0;i<48;i++){
+                const randomNum =Math.floor(Math.random()*(maxLength-10))
+                theData.push({id:i+1,name:str.substring(randomNum,randomNum+10),age:randomNum,sex: randomNum%2===0?'0':'1'})
+            }
+            return theData
+        }
       },
       methods: {
           handleLoad(page,done){
                 this.$message.success(JSON.stringify(page))
-                setTimeout(()=>{
-                    this.data=[{id:100,name:'zhangsan',age:22,sex:'0',phone:'18888888888',profession:'student'},
-                               {id:200,name:'lisi',age:25,sex:'1',phone:'17777777777',profession:'teacher'}]
+                this.pageApi(page).then(res=>{
+                    console.log(res)
+                    this.data = res.records
+                    this.page.total = res.total
                     done()
-                },2000)
+                })
           },
-          handleAdd(row,done,index){
-              this.$message.success(JSON.stringify(row))
-              setTimeout(_=>done(),2000)
-          },
-          handleEdit (row,done,index) {
-              setTimeout(_=>{
-                  this.$message.success(JSON.stringify(row))
-                  let arr = [...this.data]
-                  arr[index] = row
-                  this.data = arr
-                  done()
-              },2000)
-          },
-          handleDel (row,done) {
-              this.$message.success(JSON.stringify(row))
-              setTimeout(_=>done(),2000)
+          //模拟后端接口
+          pageApi(page){
+            return new Promise((RES,REJ)=>{
+                let records = []
+                for(let i=(page.current-1)*page.size;i<this.allData.length && i<page.current*page.size;i++){
+                    records.push(this.allData[i])
+                }
+                setTimeout(()=>RES({records:records,total:this.allData.length}),500)
+            })
           }
       }
     }

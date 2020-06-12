@@ -45,6 +45,18 @@ export default {
     selectable:undefined,
     selectionWidth:undefined,
 
+
+    searchBtn: {
+        text: '搜 索',
+        icon: 'el-icon-search',
+        display: true,//true/false
+        size: 'small'     //medium / small / mini
+    }, searchResetBtn: {
+        text: '重 置',
+        icon: 'el-icon-delete',
+        display: true,//true/false
+        size: 'small'     //medium / small / mini
+    },
     addBtn: {
         type: 'primary',
         text: '新 增',

@@ -71,9 +71,9 @@
 ### Columns Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| slot | 是否开启插槽 | Boolean | true/false | false |
+| slotForm | 是否开启表单插槽 | Boolean | true/false | false |
 
 ### Table Slot
 | name | 说明 |
 |------|--------|
-| ${prop} | prop的列插槽 |
+| ${prop}Form | prop的列插槽 |
