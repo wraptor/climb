@@ -28,8 +28,8 @@
                     <!--                    <template v-if="inputTypeArray.indexOf(item.type)>=0">-->
                     <!--                        <cl-input v-model="value[item.prop]" :option="item"></cl-input>-->
                     <!--                    </template>-->
-                    <template v-if="item.slotForm===true">
-                        <slot :name="item.prop+'Form'"></slot>
+                    <template v-if="item.slotForm===true || item.slot === true">
+                        <slot :name="item.prop"></slot>
                     </template>
                     <template v-else-if="inputNumberTypeArray.indexOf(item.type)>=0">
                         <cl-input-number v-model="value[item.prop]" :option="item"></cl-input-number>
@@ -60,11 +60,13 @@
                 <div :style="'margin-left:-' + defaultOption.labelWidth">
                     <el-button type="primary" :icon="defaultLoading?'el-icon-loading':defaultOption.submitBtn.icon"
                                @click="onSubmit"
+                               :size="defaultOption.submitBtn.size"
                                v-if="defaultOption.submitBtn!==false && defaultOption.submitBtn.display===true">
                         {{defaultOption.submitBtn.text}}
                     </el-button>
                     <el-button type="primary" plain :icon="defaultLoading?'el-icon-loading':defaultOption.resetBtn.icon"
                                @click="onReset"
+                               :size="defaultOption.resetBtn.size"
                                v-if="defaultOption.resetBtn!==false && defaultOption.resetBtn.display===true">
                         {{defaultOption.resetBtn.text}}
                     </el-button>
@@ -100,9 +102,13 @@
                 deep: true,
                 immediate: true,
                 handler(val) {
-                    this.form = JSON.parse(JSON.stringify(val))
-                    if (!this.formBack) {
-                        this.formBack = JSON.parse(JSON.stringify(val))
+                    if (val) {
+                        this.form = JSON.parse(JSON.stringify(val))
+                        if (!this.formBack) {
+                            this.formBack = JSON.parse(JSON.stringify(val))
+                        }
+                    } else {
+                        this.form = {}
                     }
                 }
             },

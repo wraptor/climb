@@ -22,12 +22,12 @@ export default {
         text: '提 交',
         icon: 'el-icon-check',
         display: true,//true/false
-        size: ''     //medium / small / mini
+        size: 'small'     //medium / small / mini
     }, resetBtn: {
         text: '重 置',
         icon: 'el-icon-delete',
         display: true,//true/false
-        size: ''     //medium / small / mini
+        size: 'small'     //medium / small / mini
     },
     btnSize: '',    //medium / small / mini
     items: [],
