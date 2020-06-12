@@ -11,7 +11,7 @@
                 <el-button
                         :type="defaultOption.addBtn.type"
                         :icon="defaultOption.addBtn.icon"
-                        v-if="defaultOption.addBtn===false || defaultOption.addBtn.display===false"
+                        v-if="defaultOption.addBtn!==false && defaultOption.addBtn.display===true"
                         :size="defaultOption.addBtn.size"
                         @click="handleAdd">{{defaultOption.addBtn.text}}
                 </el-button>
@@ -118,21 +118,21 @@
                         <el-button
                                 :type="defaultOption.viewBtn.type"
                                 :icon="defaultOption.viewBtn.icon"
-                                v-if="defaultOption.viewBtn===false || defaultOption.viewBtn.display===false"
+                                v-if="defaultOption.viewBtn!==false && defaultOption.viewBtn.display===true"
                                 :size="defaultOption.viewBtn.size"
                                 @click="handleView(scope.$index, scope.row)">{{defaultOption.viewBtn.text}}
                         </el-button>
                         <el-button
                                 :type="defaultOption.editBtn.type"
                                 :icon="defaultOption.editBtn.icon"
-                                v-if="defaultOption.editBtn===false || defaultOption.editBtn.display===false"
+                                v-if="defaultOption.editBtn!==false && defaultOption.editBtn.display===true"
                                 :size="defaultOption.editBtn.size"
                                 @click="handleEdit(scope.$index, scope.row)">{{defaultOption.editBtn.text}}
                         </el-button>
                         <el-button
                                 :type="defaultOption.delBtn.type"
                                 :icon="defaultOption.delBtn.icon"
-                                v-if="defaultOption.delBtn===false || defaultOption.delBtn.display===false"
+                                v-if="defaultOption.delBtn!==false && defaultOption.delBtn.display===true"
                                 :size="defaultOption.delBtn.size"
                                 @click="handleDel(scope.$index, scope.row)">{{defaultOption.delBtn.text}}
                         </el-button>
