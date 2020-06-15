@@ -103,7 +103,8 @@
                                 <template v-if="radioTypeArray.indexOf(item.type)>=0
                                 ||checkboxTypeArray.indexOf(item.type)>=0
                                 ||selectTypeArray.indexOf(item.type)>=0">
-                                    <dic-label :value="scope.row[item.prop]" :item="item"/>
+                                    {{scope.row[item.prop] | getDicLabel(item)}}
+                                    <!--                                    <dic-label :value="scope.row[item.prop]" :item="item"/>-->
                                 </template>
                                 <template v-else>
                                     {{scope.row[item.prop]}}
@@ -188,6 +189,8 @@
     import dicLabel from '../dic-label/dic-label'
     import deOp from './option'
     import beanUtil from '../util/bean-util'
+    import dicUtil from "../util/dic-util";
+    import Axios from "axios";
 
     export default {
         name: "ClTable",
@@ -247,7 +250,8 @@
                     value: 'value',
                     children: 'children',
                     data: 'data'
-                }
+                },
+                myAxios: this.axios ? this.axios : Axios
             }
         }, computed: {
             defaultSearchFormOption: function () {
@@ -273,38 +277,53 @@
                 return option
             }
         },
-        // filters: {
-        //     getDicLabel: function (value, item) {
-        //         return new Promise((RES) => {
-        //             let valueProps = 'value'
-        //             let labelProps = 'label'
-        //             if (item) {
-        //                 if (item.dicProps) {
-        //                     valueProps = item.dicProps.value ? item.dicProps.value : 'value'
-        //                     labelProps = item.dicProps.label ? item.dicProps.label : 'label'
-        //                 }
-        //                 if (item.dicUrl) {
-        //                     //初始化字典数据
-        //                     dicUtil.getData(this.myAxios, item.dicUrl, (data) => {
-        //                         this.setDicData(data ? data : this.defaultOption.dicData)
-        //                     })
-        //                 } else if (item.dicData) {
-        //                     const find = item.dicData.find(dic => dic[valueProps] === value)
-        //                     if (find) {
-        //                         return find[labelProps]
-        //                     }
-        //                 }
-        //             } else {
-        //                 RES(value)
-        //             }
-        //         })
-        //     }
-        // },
+        filters: {
+            getDicLabel: function (value, item) {
+                let valueProps = 'value'
+                let labelProps = 'label'
+                if (item) {
+                    if (item.dicProps) {
+                        valueProps = item.dicProps.value ? item.dicProps.value : 'value'
+                        labelProps = item.dicProps.label ? item.dicProps.label : 'label'
+                    }
+                    if (item.dicData) {
+                        const find = item.dicData.find(dic => dic[valueProps] === value)
+                        if (find) {
+                            return find[labelProps]
+                        }
+                    }
+                }
+                return value
+            }
+        },
         methods: {
             initOption(val) {
+                if (val.columns) {
+                    let total = 0
+                    let count = 0
+                    val.columns.forEach(item => {
+                        if (item.dicUrl) {
+                            total++
+                            let dicProps = JSON.parse(JSON.stringify(this.dicProps))
+                            beanUtil.copyPropertiesNotEmpty(item.dicProps, dicProps)
+                            dicUtil.getData(this.myAxios, item.dicUrl, dicProps, (data) => {
+                                item.dicData = data ? data : item.dicData
+                                count++
+                                if (count === total) {
+                                    this.setOption(val)
+                                }
+                            })
+                        }
+                    })
+                    if (total === 0) {
+                        this.setOption(val)
+                    }
+                } else {
+                    this.setOption(val)
+                }
+            }, setOption(val) {
                 this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                 this.defaultFormOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultFormOption)
-
             },
             handleAdd() {
                 this.openDialog('add')

@@ -4,8 +4,8 @@ const dicUtil = {
         if (http) {
             if (url) {
                 http.get(url).then((response) => {
-                    if (this.defaultOption.dicProps.data) {
-                        callback(response.data[this.defaultOption.dicProps.data])
+                    if (dicProps.data) {
+                        callback(response.data[dicProps.data])
                     } else {
                         callback(response.data)
                     }

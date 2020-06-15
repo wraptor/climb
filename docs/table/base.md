@@ -49,6 +49,11 @@
                           label:'生日',
                           type:'date',
                           valueFormat:'yyyy-MM-dd'
+                      },{
+                          prop:'test',
+                          label:'网络字典',
+                          type:'select',
+                          dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data.json'
                       }
                   ]
               }           
@@ -59,8 +64,8 @@
           handleLoad(page,done){
                 this.$message.success(JSON.stringify(page))
                 setTimeout(()=>{
-                    this.data=[{id:100,name:'zhangsan',age:22,sex:'0',phone:'18888888888',profession:'student'},
-                               {id:200,name:'lisi',age:25,sex:'1',phone:'17777777777',profession:'teacher'}]
+                    this.data=[{id:100,name:'zhangsan',age:22,sex:'0',phone:'18888888888',profession:'student',birthday:'1995-11-11',test:'value:1'},
+                               {id:200,name:'lisi',age:25,sex:'1',phone:'17777777777',profession:'teacher',birthday:'1996-12-12',test:'value:2'}]
                     done()
                 },2000)
           },
