@@ -18,7 +18,10 @@ const install = function (Vue) {
         Vue.component(component.name, component);
     });
 };
-
+/* istanbul ignore if */
+if (typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+}
 export default {
     install,
     ClForm, ClTable, ClInput, ClRadio, ClCheckBox, ClSelect, ClInputNumber, ClMenu, ClTimePicker, ClDatePicker

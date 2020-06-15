@@ -27,6 +27,7 @@
     import ClRadioButton from '../radio-button/radioButton'
     import deOp from "./option";
     import Axios from 'axios';
+    import dicUtil from "../util/dic-util";
 
     export default {
         name: "ClRadio",
@@ -65,28 +66,9 @@
                     //赋值option
                     this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                     //初始化字典数据
-                    this.setDicUrl(this.defaultOption.dicUrl, () => {
-                        this.setDicData(this.defaultOption.dicData)
+                    dicUtil.getData(this.myAxios, this.defaultOption.dicUrl, this.defaultOption.dicProps, (data) => {
+                        this.setDicData(data ? data : this.defaultOption.dicData)
                     })
-                }
-            }, setDicUrl(dicUrl, callback) {
-                if (dicUrl) {
-                    if (this.myAxios) {
-                        this.myAxios.get(dicUrl).then((response) => {
-                            if (this.defaultOption.dicProps.data) {
-                                this.setDicData(response.data[this.defaultOption.dicProps.data])
-                            } else {
-                                this.setDicData(response.data)
-                            }
-                        }).catch((error) => {
-                            console.error(error);
-                            callback()
-                        })
-                    } else {
-                        console.error('axios is null,please install axios and install in this.$axios')
-                    }
-                } else {
-                    callback()
                 }
             }, setDicData(dicData) {
                 if (dicData && dicData.constructor === Array) {
@@ -102,7 +84,6 @@
                 } else {
                     theValue = value[this.defaultOption.dicProps.label]
                 }
-                this.$emit('input', theValue)
                 this.$emit('change', theValue);
             }
         }

@@ -32,6 +32,7 @@
     import beanUtil from "../util/bean-util";
     import deOp from "./option";
     import Axios from 'axios';
+    import dicUtil from "../util/dic-util";
 
     export default {
         name: "ClCheckBox",
@@ -69,28 +70,9 @@
                     //赋值option
                     beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                     //初始化字典数据
-                    this.setDicUrl(this.defaultOption.dicUrl, () => {
-                        this.setDicData(this.defaultOption.dicData)
+                    dicUtil.getData(this.myAxios, this.defaultOption.dicUrl, this.defaultOption.dicProps, (data) => {
+                        this.setDicData(data ? data : this.defaultOption.dicData)
                     })
-                }
-            }, setDicUrl(dicUrl, callback) {
-                if (dicUrl) {
-                    if (this.myAxios) {
-                        this.myAxios.get(dicUrl).then((response) => {
-                            if (this.defaultOption.dicProps.data) {
-                                this.setDicData(response.data[this.defaultOption.dicProps.data])
-                            } else {
-                                this.setDicData(response.data)
-                            }
-                        }).catch((error) => {
-                            console.error(error);
-                            callback()
-                        })
-                    } else {
-                        console.error('axios is null,please install axios and install in this.$axios')
-                    }
-                } else {
-                    callback()
                 }
             }, setDicData(dicData) {
                 if (dicData && dicData.constructor === Array) {
@@ -100,13 +82,6 @@
                 }
             },
             handleChange(value) {
-                /*let theValue = undefined
-                if (value[this.defaultOption.dicProps.value]) {
-                    theValue = value[this.defaultOption.dicProps.value]
-                } else {
-                    theValue = value[this.defaultOption.dicProps.label]
-                }*/
-                this.$emit('input', value)
                 this.$emit('change', value);
             }
         }
