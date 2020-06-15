@@ -174,7 +174,6 @@
                 })
             }, onReset() {
                 this.$emit('input', JSON.parse(JSON.stringify(this.formBack)))
-
                 //this.$refs.clForm.resetFields()
             }
         }

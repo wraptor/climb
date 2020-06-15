@@ -1,7 +1,7 @@
 <template>
     <el-input-number
             ref="inputNumberRef"
-            v-model="value"
+            v-model="myValue"
             :min="defaultOption.min"
             :max="defaultOption.max"
             :step="defaultOption.step"
@@ -47,20 +47,25 @@
                 handler(val) {
                     this.defaultOption.max = val
                 }
+            }, myValue: {
+                handler(val) {
+                    this.$emit('input', val)
+                }
             }
         }, created() {
             if (this.option) {
                 beanUtil.copyPropertiesNotEmpty(this.option, this.defaultOption)
             }
-            if(this.min){
-                this.defaultOption.min=this.min
+            if (this.min) {
+                this.defaultOption.min = this.min
             }
-            if(this.max){
-                this.defaultOption.max=this.max
+            if (this.max) {
+                this.defaultOption.max = this.max
             }
         }, data() {
             return {
-                defaultOption: JSON.parse(JSON.stringify(deOp))
+                defaultOption: JSON.parse(JSON.stringify(deOp)),
+                myValue: this.value
             }
         }, methods: {
             handleBlur(event) {
@@ -69,7 +74,6 @@
                 this.$emit('focus', event);
             }, handleChange(value) {
                 this.$emit('change', value);
-                this.$emit('input', value);
             }, focus() {
                 this.$refs.inputNumberRef.focus();
             }, select() {

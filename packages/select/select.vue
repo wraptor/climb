@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="value"
+    <el-select v-model="myValue"
                :multiple="defaultOption.multiple"
                :disabled="defaultOption.disabled || disabled"
                :size="defaultOption.size"
@@ -60,6 +60,10 @@
                 handler(val) {
                     this.setDicData(val)
                 }
+            }, myValue: {
+                handler(val) {
+                    this.$emit('input', val)
+                }
             }
         }, created() {
             this.initData('clSelectInit', this.option)
@@ -70,6 +74,7 @@
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 myDicData: [],
+                myValue: this.value,
                 myAxios: this.axios ? this.axios : Axios
             }
         }, methods: {

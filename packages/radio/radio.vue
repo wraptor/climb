@@ -1,5 +1,5 @@
 <template>
-    <el-radio-group v-model="value"
+    <el-radio-group v-model="myValue"
                     :size="defaultOption.size"
                     :disabled="disabled===true || defaultOption.disabled===true"
                     :text-color="defaultOption.textColor"
@@ -48,6 +48,10 @@
                 handler(val) {
                     this.setDicData(val)
                 }
+            }, myValue: {
+                handler(val) {
+                    this.$emit('input', val)
+                }
             }
         }, created() {
             this.initData('clRadioInit', this.option)
@@ -58,6 +62,7 @@
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 myDicData: [],
+                myValue: this.value,
                 myAxios: this.axios ? this.axios : Axios
             }
         }, methods: {

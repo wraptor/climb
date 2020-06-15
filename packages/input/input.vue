@@ -1,7 +1,7 @@
 <template>
     <el-input
             ref="inputRef"
-            v-model="value"
+            v-model="myValue"
             :maxlength="defaultOption.maxlength"
             :minlength="defaultOption.minlength"
             :show-word-limit="defaultOption.showWordLimit"
@@ -28,7 +28,6 @@
             :tabindex="defaultOption.tabindex"
             :validateEvent="defaultOption.validateEvent"
             :type="defaultOption.type"
-            @input="handleInput"
             @focus="handleFocus"
             @blur="handleBlur"
             @change="handleChange"
@@ -58,6 +57,10 @@
                 handler(val) {
                     beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                 }
+            }, myValue: {
+                handler(val) {
+                    this.$emit('input', val)
+                }
             }
         }, created() {
             if (this.option) {
@@ -65,6 +68,7 @@
             }
         }, data() {
             return {
+                myValue: this.value,
                 defaultOption: JSON.parse(JSON.stringify(deOp))
             }
         }, methods: {
@@ -73,11 +77,7 @@
             }, handleFocus(event) {
                 this.$emit('focus', event);
             }, handleChange(value) {
-                this.$emit('input', value)
                 this.$emit('change', value);
-            }, handleInput(value) {
-                //this.$emit('input', value)
-                this.$emit('input', value);
             }, handleClear() {
                 this.$emit('clear');
             }, focus() {

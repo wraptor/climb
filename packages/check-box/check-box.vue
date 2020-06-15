@@ -1,5 +1,5 @@
 <template>
-    <el-checkbox-group v-model="value"
+    <el-checkbox-group v-model="myValue"
                        :size="defaultOption.size"
                        :disabled="disabled || defaultOption.disabled"
                        :text-color="defaultOption.textColor"
@@ -52,6 +52,10 @@
                 handler(val) {
                     this.setDicData(val)
                 }
+            }, myValue: {
+                handler(val) {
+                    this.$emit('input', val)
+                }
             }
         }, created() {
             this.initData('clCheckBoxInit', this.option)
@@ -62,6 +66,7 @@
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 myDicData: [],
+                myValue: this.value,
                 myAxios: this.axios ? this.axios : Axios
             }
         }, methods: {
