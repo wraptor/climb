@@ -25,6 +25,7 @@
                           label:'姓名',
                           type:'text',
                           search:true,
+                          searchSpan:8,
                           searchValue:'fg'
                       },{
                           prop:'age',
@@ -35,8 +36,16 @@
                           label:'性别',
                           type:'radio',
                           search:true,
+                          searchSpan:8,
                           value:'0',
                           dicData:[{label:'男',value:'0'},{label:'女',value:'1'}]
+                      },{
+                          prop:'test',
+                          label:'网络字典',
+                          type:'select',
+                          search:true,
+                          searchSpan:8,
+                          dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data.json'
                       }
                   ]
               }           
@@ -51,7 +60,7 @@
             const maxLength = str.length
             for (let i=0;i<48;i++){
                 const randomNum =Math.floor(Math.random()*(maxLength-20))
-                theData.push({id:i+1,name:str.substring(randomNum,randomNum+20),age:randomNum,sex: randomNum%2===0?'0':'1'})
+                theData.push({id:i+1,name:str.substring(randomNum,randomNum+20),age:randomNum,sex: randomNum%2===0?'0':'1',test:'value:1'})
             }
             return theData
         }
@@ -93,6 +102,7 @@
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | search            | 是否开启搜索         | boolean | true/false     | false      |
+| searchSpan    | 搜索表单栏栅格 | number | - | — |
 | searchRules    | 搜索表单规则 | array | - | — |
 | searchValue | 搜索表单默认值 | string | — | — |
 

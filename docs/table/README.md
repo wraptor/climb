@@ -99,6 +99,10 @@ body .el-table th.gutter {
 | filterMethod | 数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 | Function(value, row, column) | — | — |
 | filteredValue | 选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性。 | Array | — | — |
 | slot | 是否开启插槽 | Boolean | true/false | false |
+| search            | 是否开启搜索         | boolean | true/false     | false      |
+| searchSpan    | 搜索表单栏栅格 | number | - | — |
+| searchRules    | 搜索表单规则 | array | - | — |
+| searchValue | 搜索表单默认值 | string | — | — |
 
 
 ## Type Variables<span id="type"></span>

@@ -186,7 +186,6 @@
 
 <script>
     import {radioTypeArray, checkboxTypeArray, selectTypeArray} from '../util/type'
-    import dicLabel from '../dic-label/dic-label'
     import deOp from './option'
     import beanUtil from '../util/bean-util'
     import dicUtil from "../util/dic-util";
@@ -195,7 +194,6 @@
     export default {
         name: "ClTable",
         componentName: 'ClTable',
-        components: {dicLabel},
         props: {
             option: {type: Object, default: undefined},
             loading: {type: Boolean, default: false},
@@ -235,6 +233,7 @@
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 defaultFormOption: {items: []},
+                defaultSearchFormOption: {items: []},
                 form: {},
                 searchForm: undefined,
                 defaultLoading: false,
@@ -253,30 +252,7 @@
                 },
                 myAxios: this.axios ? this.axios : Axios
             }
-        }, computed: {
-            defaultSearchFormOption: function () {
-                let option = {
-                    submitBtn: this.defaultOption.searchBtn,
-                    resetBtn: this.defaultOption.searchResetBtn,
-                    items: []
-                }
-                if (this.defaultOption.columns) {
-                    let form = {}
-                    option.items = []
-                    this.defaultOption.columns.forEach(item => {
-                        if (item.search === true) {
-                            let theItem = beanUtil.deepClone(item)
-                            form[item.prop] = item.searchValue
-                            theItem.rules = item.searchRules
-                            option.items.push(theItem)
-                        }
-                    })
-                    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                    this.searchForm = form
-                }
-                return option
-            }
-        },
+        }, computed: {},
         filters: {
             getDicLabel: function (value, item) {
                 let valueProps = 'value'
@@ -324,6 +300,23 @@
             }, setOption(val) {
                 this.defaultOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                 this.defaultFormOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultFormOption)
+                if (this.defaultOption.columns) {
+                    let form = {}
+                    this.defaultSearchFormOption.items = []
+                    this.defaultSearchFormOption.submitBtn = this.defaultOption.searchBtn
+                    this.defaultSearchFormOption.resetBtn = this.defaultOption.searchResetBtn
+                    this.defaultOption.columns.forEach(item => {
+                        if (item.search === true) {
+                            let theItem = beanUtil.deepClone(item)
+                            form[item.prop] = item.searchValue
+                            theItem.rules = item.searchRules
+                            theItem.span = item.searchSpan ? item.searchSpan : 6
+                            this.defaultSearchFormOption.items.push(theItem)
+                        }
+                    })
+                    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                    this.searchForm = form
+                }
             },
             handleAdd() {
                 this.openDialog('add')
