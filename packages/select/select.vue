@@ -69,7 +69,7 @@
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
                 myDicData: [],
-                myAxios: this.$axios ? this.$axios : Axios
+                myAxios: this.axios ? this.axios : Axios
             }
         }, methods: {
             initData(key, val) {
