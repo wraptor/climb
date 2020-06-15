@@ -1,7 +1,7 @@
 /**
  * 扩展 VuePress 应用
  */
-import Cleme from '../../packages'
+import ClimbUi from '../../packages'
 
 
 export default ({
@@ -10,5 +10,5 @@ export default ({
                     router // the router instance for the app
                 }) => {
     // ...apply enhancements to the app
-    Vue.use(Cleme)
+    Vue.use(ClimbUi)
 }
