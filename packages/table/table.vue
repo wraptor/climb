@@ -154,7 +154,8 @@
                 </el-pagination>
             </el-col>
         </el-row>
-        <el-dialog :visible.sync="dialogVisible" :title="crudObj.type==='add'?'新增':'编辑'" :before-close="closeDialog" :destroy-on-close="true">
+        <el-dialog :visible.sync="dialogVisible" :title="crudObj.type==='add'?'新增':'编辑'" :before-close="closeDialog"
+                   :destroy-on-close="true">
             <cl-form :option="defaultFormOption" v-model="form" @submit="handleSubmit">
                 <template v-for="(item) in defaultFormOption.items">
                     <template :slot="item.prop"
@@ -274,15 +275,19 @@
             getDicLabel: function (value, item) {
                 let valueProps = 'value'
                 let labelProps = 'label'
-                if (item.dicProps) {
-                    valueProps = item.dicProps.value ? item.dicProps.value : 'value'
-                    labelProps = item.dicProps.label ? item.dicProps.label : 'label'
+                if (item) {
+                    if (item.dicProps) {
+                        valueProps = item.dicProps.value ? item.dicProps.value : 'value'
+                        labelProps = item.dicProps.label ? item.dicProps.label : 'label'
+                    }
+                    if (item.dicData) {
+                        const find = item.dicData.find(dic => dic[valueProps] === value)
+                        if (find) {
+                            return find[labelProps]
+                        }
+                    }
                 }
-                const find = item.dicData.find(dic => dic[valueProps] === value)
-                if (find) {
-                    return find[labelProps]
-                }
-                return ""
+                return value
             }
         }, methods: {
             initOption(val) {
@@ -417,7 +422,7 @@
                         this.$emit('load', this.page, () => {
                             this.defaultLoading = false
                         }, this.searchForm)
-                    }else{
+                    } else {
                         this.defaultLoading = false
                     }
                 })
