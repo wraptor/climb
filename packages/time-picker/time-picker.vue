@@ -1,7 +1,7 @@
 <template>
     <el-time-picker
             ref="clTimePickerRef"
-            v-model="value"
+            v-model="myValue"
             :readonly="defaultOption.readonly"
             :disabled="defaultOption.disabled || disabled"
             :editable="defaultOption.editable"
@@ -44,11 +44,15 @@
                 immediate: true,
                 handler(val) {
                     beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
-                    console.log(this.defaultOption)
                 }
+            }, value(val) {
+                this.myValue = val
+            }, myValue(val) {
+                this.$emit('input', val)
             }
         }, data() {
             return {
+                myValue: this.value,
                 defaultOption: JSON.parse(JSON.stringify(deOp))
             }
         }, methods: {

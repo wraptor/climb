@@ -25,32 +25,29 @@
                         :show-message="item.showMessage"
                         :inline-message="item.inlineMessage"
                         :size="item.size">
-                    <!--                    <template v-if="inputTypeArray.indexOf(item.type)>=0">-->
-                    <!--                        <cl-input v-model="value[item.prop]" :option="item"></cl-input>-->
-                    <!--                    </template>-->
                     <template v-if="item.slotForm===true || item.slot === true">
                         <slot :name="item.prop"></slot>
                     </template>
                     <template v-else-if="inputNumberTypeArray.indexOf(item.type)>=0">
-                        <cl-input-number v-model="value[item.prop]" :option="item"></cl-input-number>
+                        <cl-input-number v-model="form[item.prop]" :option="item"></cl-input-number>
                     </template>
                     <template v-else-if="radioTypeArray.indexOf(item.type)>=0">
-                        <cl-radio v-model="value[item.prop]" :option="item"></cl-radio>
+                        <cl-radio v-model="form[item.prop]" :option="item"></cl-radio>
                     </template>
                     <template v-else-if="checkboxTypeArray.indexOf(item.type)>=0">
-                        <cl-check-box v-model="value[item.prop]" :option="item"></cl-check-box>
+                        <cl-check-box v-model="form[item.prop]" :option="item"></cl-check-box>
                     </template>
                     <template v-else-if="timePickerTypeArray.indexOf(item.type)>=0">
-                        <cl-time-picker v-model="value[item.prop]" :option="item"></cl-time-picker>
+                        <cl-time-picker v-model="form[item.prop]" :option="item"></cl-time-picker>
                     </template>
                     <template v-else-if="datePickerTypeArray.indexOf(item.type)>=0">
-                        <cl-date-picker v-model="value[item.prop]" :option="item"></cl-date-picker>
+                        <cl-date-picker v-model="form[item.prop]" :option="item"></cl-date-picker>
                     </template>
                     <template v-else-if="selectTypeArray.indexOf(item.type)>=0">
-                        <cl-select v-model="value[item.prop]" :option="item"></cl-select>
+                        <cl-select v-model="form[item.prop]" :option="item"></cl-select>
                     </template>
                     <template v-else>
-                        <cl-input v-model="value[item.prop]" :option="item"></cl-input>
+                        <cl-input v-model="form[item.prop]" :option="item"></cl-input>
                     </template>
                 </el-form-item>
             </el-col>
@@ -100,16 +97,15 @@
         }, watch: {
             value: {
                 deep: true,
-                immediate: true,
                 handler(val) {
-                    if (val) {
-                        this.form = JSON.parse(JSON.stringify(val))
-                        if (!this.formBack) {
-                            this.formBack = JSON.parse(JSON.stringify(val))
-                        }
-                    } else {
-                        this.form = {}
-                    }
+                    this.form = val
+                }
+            },
+            form: {
+                deep: true,
+                handler(val) {
+                    console.log('xiangform', val)
+                    this.$emit('input', val)
                 }
             },
             option: {
@@ -125,8 +121,8 @@
         }, data() {
             return {
                 defaultOption: JSON.parse(JSON.stringify(deOp)),
-                form: {},
-                formBack: undefined,
+                form: JSON.parse(JSON.stringify(this.value)),
+                formBack: JSON.parse(JSON.stringify(this.value)),
                 defaultLoading: false,
                 inputTypeArray: inputTypeArray,
                 radioTypeArray: radioTypeArray,
@@ -174,7 +170,6 @@
                 })
             }, onReset() {
                 this.$emit('input', JSON.parse(JSON.stringify(this.formBack)))
-                //this.$refs.clForm.resetFields()
             }
         }
     }

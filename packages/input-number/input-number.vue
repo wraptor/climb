@@ -47,10 +47,10 @@
                 handler(val) {
                     this.defaultOption.max = val
                 }
-            }, myValue: {
-                handler(val) {
-                    this.$emit('input', val)
-                }
+            }, value(val) {
+                this.myValue = val
+            }, myValue(val) {
+                this.$emit('input', val)
             }
         }, created() {
             if (this.option) {

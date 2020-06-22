@@ -1,7 +1,7 @@
 <template>
     <el-date-picker
             ref="clDatePickerRef"
-            v-model="value"
+            v-model="myValue"
             :type="defaultOption.type"
             :readonly="defaultOption.readonly"
             :disabled="defaultOption.disabled || disabled"
@@ -47,9 +47,14 @@
                     beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
                     console.log(this.defaultOption)
                 }
+            }, value(val) {
+                this.myValue = val
+            }, myValue(val) {
+                this.$emit('input', val)
             }
         }, data() {
             return {
+                myValue: this.value,
                 defaultOption: JSON.parse(JSON.stringify(deOp))
             }
         }, methods: {

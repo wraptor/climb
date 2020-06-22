@@ -52,10 +52,10 @@
                 handler(val) {
                     this.setDicData(val)
                 }
-            }, myValue: {
-                handler(val) {
-                    this.$emit('input', val)
-                }
+            }, value(val) {
+                this.myValue = val
+            }, myValue(val) {
+                this.$emit('input', val)
             }
         }, created() {
             this.initData('clCheckBoxInit', this.option)
