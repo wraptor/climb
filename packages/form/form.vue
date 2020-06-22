@@ -29,7 +29,8 @@
                         <slot :name="item.prop"></slot>
                     </template>
                     <template v-else-if="inputNumberTypeArray.indexOf(item.type)>=0">
-                        <cl-input-number v-model="form[item.prop]" :option="item"></cl-input-number>
+                        <cl-input-number @keyup.enter.native="onSubmit" v-model="form[item.prop]"
+                                         :option="item"></cl-input-number>
                     </template>
                     <template v-else-if="radioTypeArray.indexOf(item.type)>=0">
                         <cl-radio v-model="form[item.prop]" :option="item"></cl-radio>
@@ -47,7 +48,8 @@
                         <cl-select v-model="form[item.prop]" :option="item"></cl-select>
                     </template>
                     <template v-else>
-                        <cl-input v-model="form[item.prop]" :option="item"></cl-input>
+                        <cl-input @keyup.enter.native="onSubmit" v-model="form[item.prop]"
+                                  :option="item"></cl-input>
                     </template>
                 </el-form-item>
             </el-col>
