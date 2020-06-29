@@ -109,4 +109,4 @@
 ## Table Events
 | 事件名 | 说明 | 参数 |
 | ---- | ---- | ---- |
-| handleLoad |  搜索回调| page,done,params |
+| load |  搜索回调| page,done,params |

@@ -38,7 +38,8 @@
                       },{
                           prop:'phone',
                           label:'电话',
-                          type:'text'
+                          type:'text',
+                          sortable:true
                       },{
                           prop:'profession',
                           label:'职业',
@@ -104,6 +105,7 @@
 | type            | 类型,详见[Type Attributes](#type)           | string | text,textarea,password,select...             | text      |
 | prop    | 表单域 model 字段，在使用 validate、resetFields 方法的情况下，该属性是必填的 | string    | 传入 Form 组件的 `model` 中的字段 | — |
 | label | 标签文本 | string | — | — |
+| sortable | 是否开启排序 | boolean | — | — |
 
 ## Type Variables<span id="type"></span>
 | 参数             | 说明               | 使用组件              |
