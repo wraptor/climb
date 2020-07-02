@@ -13,7 +13,8 @@ module.exports = [
             'menu',
             'custom',
             'custom-form',
-            'search'
+            'search',
+            'summary'
         ]
     }
 ]
