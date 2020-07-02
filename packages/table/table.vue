@@ -18,8 +18,8 @@
                 <slot name="menuLeft"></slot>
             </el-col>
             <el-col :span="12" style="text-align: right">
-                <el-tooltip content="刷新" placement="top">
-                    <el-button icon="el-icon-refresh" size="small" circle @click="handleLoad"></el-button>
+                <el-tooltip :content="defaultOption.refreshBtn.text" placement="top" v-if="defaultOption.refreshBtn!==false">
+                    <el-button :icon="defaultOption.refreshBtn.icon" :size="defaultOption.refreshBtn.size" circle @click="handleLoad"></el-button>
                 </el-tooltip>
                 <slot name="menuRight"></slot>
             </el-col>
@@ -486,5 +486,8 @@
     ::v-deep .el-dialog ::v-deep .el-dialog__body {
         flex: 1;
         overflow: auto;
+    }
+    ::v-deep .el-table__footer{
+        margin: 0;
     }
 </style>

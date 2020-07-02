@@ -45,7 +45,12 @@ export default {
     selectable:undefined,
     selectionWidth:undefined,
 
-
+    refreshBtn:{
+        text:'刷新',
+        icon: 'el-icon-refresh',
+        display: true,//true/false
+        size: 'small'     //medium / small / mini
+    },
     searchBtn: {
         text: '搜 索',
         icon: 'el-icon-search',
