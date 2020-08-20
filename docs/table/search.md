@@ -25,7 +25,7 @@
                           label:'姓名',
                           type:'text',
                           search:true,
-                          searchSpan:8,
+                          searchSpan:12,
                           searchValue:'fg'
                       },{
                           prop:'age',
@@ -36,15 +36,16 @@
                           label:'性别',
                           type:'radio',
                           search:true,
-                          searchSpan:8,
+                          searchSpan:12,
                           value:'0',
                           dicData:[{label:'男',value:'0'},{label:'女',value:'1'}]
                       },{
                           prop:'test',
-                          label:'网络字典',
+                          label:'网络字典1111111111',
                           type:'select',
                           search:true,
-                          searchSpan:8,
+                          searchSpan:24,
+                          searchLabelWidth:140,
                           dicUrl:'https://raw.githubusercontent.com/seepine/climb/master/docs/api/radio-dic-data.json'
                       }
                   ]
@@ -105,6 +106,7 @@
 | searchSpan    | 搜索表单栏栅格 | number | - | — |
 | searchRules    | 搜索表单规则 | array | - | — |
 | searchValue | 搜索表单默认值 | string | — | — |
+| searchLabelWidth | 搜索表单label宽度 | number | — | — |
 
 ## Table Events
 | 事件名 | 说明 | 参数 |

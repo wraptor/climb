@@ -302,6 +302,9 @@
                 this.defaultFormOption = beanUtil.copyPropertiesNotEmpty(val, this.defaultFormOption)
                 if (this.defaultOption.columns) {
                     let form = {}
+                    if(val.searchOption){
+                        this.defaultFormOption = beanUtil.copyPropertiesNotEmpty(val.searchOption, this.defaultFormOption)
+                    }
                     this.defaultSearchFormOption.items = []
                     this.defaultSearchFormOption.submitBtn = this.defaultOption.searchBtn
                     this.defaultSearchFormOption.resetBtn = this.defaultOption.searchResetBtn
@@ -311,6 +314,7 @@
                             form[item.prop] = item.searchValue
                             theItem.rules = item.searchRules
                             theItem.span = item.searchSpan ? item.searchSpan : 6
+                            theItem.labelWidth = item.searchLabelWidth ? item.searchLabelWidth : undefined
                             this.defaultSearchFormOption.items.push(theItem)
                         }
                     })
