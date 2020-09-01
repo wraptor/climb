@@ -142,7 +142,7 @@
                 </el-table-column>
             </el-table>
         </el-row>
-        <el-row>
+        <el-row v-if="defaultOption.page !== false">
             <el-col :span="24" style="text-align: right;margin-top: 20px">
                 <el-pagination
                         @current-change="handleCurrentChange"
