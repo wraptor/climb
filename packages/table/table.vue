@@ -345,6 +345,7 @@
                             if (item[type + 'Disabled'] === true) {
                                 theItem.disabled = true
                             }
+                            theItem.slot = item.formSlot ? item.formSlot : false
                             this.defaultFormOption.items.push(theItem)
                         }
                     })
