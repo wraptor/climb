@@ -8,7 +8,7 @@
       <el-col :span="24">
         <cl-form
           :option="defaultSearchFormOption"
-          v-model="searchForm"
+          v-model:value="searchForm"
           :loading="defaultLoading"
           @submit="handleLoad"
         />
@@ -208,7 +208,7 @@
     </el-row>
     <el-dialog
       append-to-body
-      v-model:visible="dialogVisible"
+      v-model:value:visible="dialogVisible"
       :title="crudObj.type === 'add' ? '新增' : '编辑'"
       :before-close="closeDialog"
       :destroy-on-close="true"
@@ -216,7 +216,7 @@
       <cl-form
         ref="formRef"
         :option="defaultFormOption"
-        v-model="form"
+        v-model:value="form"
         @submit="handleSubmit"
       >
         <template v-for="item in defaultFormOption.items">
@@ -228,7 +228,7 @@
     </el-dialog>
     <el-dialog
       append-to-body
-      v-model:visible="delDialogVisible"
+      v-model:value:visible="delDialogVisible"
       :title="this.defaultOption.delBtn.title"
       width="400px"
     >

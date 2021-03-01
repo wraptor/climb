@@ -17,7 +17,7 @@
 <!--                class="el-radio-button__orig-radio"-->
 <!--                :value="label"-->
 <!--                type="radio"-->
-<!--                v-model="value"-->
+<!--                v-model:value="value"-->
 <!--                :name="name"-->
 <!--                @change="handleChange"-->
 <!--                :disabled="isDisabled"-->

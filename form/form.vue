@@ -37,46 +37,46 @@
           <template v-else-if="inputNumberTypeArray.indexOf(item.type) >= 0">
             <cl-input-number
               @keyup.enter.native="onSubmit"
-              v-model="form[item.prop]"
+              v-model:value="form[item.prop]"
               :option="item"
             ></cl-input-number>
           </template>
           <template v-else-if="radioTypeArray.indexOf(item.type) >= 0">
-            <cl-radio v-model="form[item.prop]" :option="item"></cl-radio>
+            <cl-radio v-model:value="form[item.prop]" :option="item"></cl-radio>
           </template>
-          <template v-else-if="checkboxTypeArray.indexOf(item.type) >= 0">
-            <cl-check-box
-              v-model="form[item.prop]"
-              :option="item"
-            ></cl-check-box>
-          </template>
+<!--          <template v-else-if="checkboxTypeArray.indexOf(item.type) >= 0">-->
+<!--            <cl-check-box-->
+<!--              v-model:value="form[item.prop]"-->
+<!--              :option="item"-->
+<!--            ></cl-check-box>-->
+<!--          </template>-->
           <template v-else-if="timePickerTypeArray.indexOf(item.type) >= 0">
             <cl-time-picker
-              v-model="form[item.prop]"
+              v-model:value="form[item.prop]"
               :option="item"
             ></cl-time-picker>
           </template>
           <template v-else-if="datePickerTypeArray.indexOf(item.type) >= 0">
             <cl-date-picker
-              v-model="form[item.prop]"
+              v-model:value="form[item.prop]"
               :option="item"
             ></cl-date-picker>
           </template>
           <template v-else-if="selectTypeArray.indexOf(item.type) >= 0">
-            <cl-select v-model="form[item.prop]" :option="item"></cl-select>
+            <cl-select v-model:value="form[item.prop]" :option="item"></cl-select>
           </template>
           <template v-else>
             <cl-input
               @keyup.enter.native="onSubmit"
-              v-model="form[item.prop]"
+              v-model:value="form[item.prop]"
               :option="item"
             ></cl-input>
           </template>
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row>
-      <el-form-item class="center" v-if="defaultOption.btn === true">
+    <el-row justify="center" type="flex">
+      <el-form-item  v-if="defaultOption.btn === true">
         <div :style="'margin-left:-' + defaultOption.labelWidth">
           <el-button
             type="primary"
@@ -226,14 +226,11 @@ export default {
       });
     },
     onReset() {
-      this.$emit("input", JSON.parse(JSON.stringify(this.formBack)));
+      this.$emit("input", beanUtil.deepClone(this.formBack));
     }
   }
 };
 </script>
 
 <style scoped>
-.center {
-  text-align: center;
-}
 </style>

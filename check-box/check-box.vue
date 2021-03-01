@@ -1,6 +1,6 @@
 <template>
   <el-checkbox-group
-    v-model="myValue"
+    v-model:value="myValue"
     :size="defaultOption.size"
     :disabled="disabled || defaultOption.disabled"
     :text-color="defaultOption.textColor"
@@ -10,19 +10,16 @@
     @change="handleChange"
   >
     <template v-if="defaultOption.button">
-      <el-checkbox-button
-        v-for="(item, index) in myDicData"
-        v-bind:key="index"
-        :disabled="item.disabled"
-        :name="item.name"
-        :label="
-          item[defaultOption.dicProps.value]
-            ? item[defaultOption.dicProps.value]
-            : item[defaultOption.dicProps.label]
-        "
-      >
-        {{ item[defaultOption.dicProps.label] }}
-      </el-checkbox-button>
+      <el-checkbox-button label="dasdsas">fas</el-checkbox-button>
+<!--      <el-checkbox-button-->
+<!--        v-for="(item, index) in myDicData"-->
+<!--        :key="index"-->
+<!--        :disabled="item.disabled"-->
+<!--        :name="item.name"-->
+<!--        :label="item[defaultOption.dicProps.value]? item[defaultOption.dicProps.value]: item[defaultOption.dicProps.label]"-->
+<!--      >-->
+<!--        {{ item[defaultOption.dicProps.label] }}-->
+<!--      </el-checkbox-button>-->
     </template>
     <template v-else>
       <el-checkbox
@@ -80,9 +77,6 @@ export default {
   },
   created() {
     this.initData("clCheckBoxInit", this.option);
-    if (this.dicData) {
-      this.setDicData(this.dicData);
-    }
   },
   data() {
     return {
@@ -94,23 +88,28 @@ export default {
   },
   methods: {
     initData(key, val) {
+      console.log("这边初始化", val);
       if (key && key === "clCheckBoxInit" && val) {
         //赋值option
         beanUtil.copyPropertiesNotEmpty(val, this.defaultOption);
         //初始化字典数据
-        dicUtil.getData(
-          this.myAxios,
-          this.defaultOption.dicUrl,
-          this.defaultOption.dicProps,
-          data => {
-            this.setDicData(data ? data : this.defaultOption.dicData);
-          }
-        );
+        if (this.defaultOption.dicUrl) {
+          dicUtil.getData(
+            this.myAxios,
+            this.defaultOption.dicUrl,
+            this.defaultOption.dicProps,
+            data => {
+              this.setDicData(data ? data : this.defaultOption.dicData);
+            }
+          );
+        } else {
+          this.setDicData(this.defaultOption.dicData);
+        }
       }
     },
     setDicData(dicData) {
       if (dicData && dicData.constructor === Array) {
-        this.myDicData = dicData;
+        // this.myDicData = beanUtil.deepClone(dicData);
       } else {
         console.error(dicData, "dicData must be Array");
       }

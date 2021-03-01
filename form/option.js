@@ -9,7 +9,7 @@ export default {
   inlineMessage: false, //true/false,是否以行内形式展示校验信息
   statusIcon: false, //true/false,是否在输入框中显示校验结果反馈图标
   validateOnRuleChange: true, //true/false,是否在 rules 属性改变后立即触发一次验证
-  size: "small", //large/medium/small/mini,用于控制该表单内组件的尺寸
+  size: undefined, //large/medium/small/mini,用于控制该表单内组件的尺寸
   disabled: false, //true/false,是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效
 
   //ext
