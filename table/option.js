@@ -50,7 +50,8 @@ export default {
     message: `请确认是否删除?`,
     title: "提示",
     confirmBtnText: "确 定",
-    cancelBtnText: "取 消"
+    cancelBtnText: "取 消",
+    successMessage: "删除成功"
   }
 
   // //element form attributes

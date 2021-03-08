@@ -61,13 +61,17 @@
     :page-size.sync="page.size"
     :total="page.total">
   </el-pagination>
+
+  <el-dialog :visible.sync="visible">
+
+  </el-dialog>
 </template>
 
 <script>
 import { ref, reactive, watch, onMounted } from "vue";
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import { ElMessageBox } from "element-plus";
+import { ElMessageBox, ElMessage } from "element-plus";
 
 export default {
   name: "ClTable",
@@ -127,6 +131,7 @@ export default {
     const delCallback = (row) => {
       ctx.emit("del", row, () => {
         loadData();
+        ElMessage.success(myOption.delBtn.successMessage);
       });
     };
 
