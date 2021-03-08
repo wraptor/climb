@@ -25,7 +25,7 @@
           "
           :size="defaultOption.addBtn.size"
           @click="handleAdd"
-          >{{ defaultOption.addBtn.text }}
+        >{{ defaultOption.addBtn.text }}
         </el-button>
         <slot name="menuLeft"></slot>
       </el-col>
@@ -164,7 +164,7 @@
               "
               :size="defaultOption.viewBtn.size"
               @click="handleView(scope.$index, scope.row)"
-              >{{ defaultOption.viewBtn.text }}
+            >{{ defaultOption.viewBtn.text }}
             </el-button>
             <el-button
               :type="defaultOption.editBtn.type"
@@ -175,7 +175,7 @@
               "
               :size="defaultOption.editBtn.size"
               @click="handleEdit(scope.$index, scope.row)"
-              >{{ defaultOption.editBtn.text }}
+            >{{ defaultOption.editBtn.text }}
             </el-button>
             <el-button
               :type="defaultOption.delBtn.type"
@@ -186,7 +186,7 @@
               "
               :size="defaultOption.delBtn.size"
               @click="handleDel(scope.$index, scope.row)"
-              >{{ defaultOption.delBtn.text }}
+            >{{ defaultOption.delBtn.text }}
             </el-button>
             <slot name="menu" :index="scope.$index" :row="scope.row"></slot>
           </template>
@@ -206,56 +206,56 @@
         </el-pagination>
       </el-col>
     </el-row>
-    <el-dialog
-      append-to-body
-      v-model:value:visible="dialogVisible"
-      :title="crudObj.type === 'add' ? '新增' : '编辑'"
-      :before-close="closeDialog"
-      :destroy-on-close="true"
-    >
-      <cl-form
-        ref="formRef"
-        :option="defaultFormOption"
-        v-model:value="form"
-        @submit="handleSubmit"
-      >
-        <template v-for="item in defaultFormOption.items">
-          <template :slot="item.prop" v-if="item.slotForm === true">
-            <slot :name="item.prop + 'Form'"></slot>
-          </template>
-        </template>
-      </cl-form>
-    </el-dialog>
-    <el-dialog
-      append-to-body
-      v-model:value:visible="delDialogVisible"
-      :title="this.defaultOption.delBtn.title"
-      width="400px"
-    >
-      <div class="el-message-box__container">
-        <div class="el-message-box__status el-icon-warning"></div>
-        <div class="el-message-box__message">
-          {{ this.defaultOption.delBtn.message }}
-        </div>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button
-          @click="delDialogVisible = false"
-          :disabled="delLoading"
-          :icon="delLoading ? 'el-icon-loading' : 'el-icon-close'"
-          size="small"
-          >{{ this.defaultOption.delBtn.cancelBtnText }}</el-button
-        >
-        <el-button
-          type="primary"
-          @click="delSuccess"
-          :disabled="delLoading"
-          :icon="delLoading ? 'el-icon-loading' : 'el-icon-check'"
-          size="small"
-          >{{ this.defaultOption.delBtn.confirmBtnText }}</el-button
-        >
-      </span>
-    </el-dialog>
+<!--    <el-dialog-->
+<!--      append-to-body-->
+<!--      v-model:value:visible="dialogVisible"-->
+<!--      :title="crudObj.type === 'add' ? '新增' : '编辑'"-->
+<!--      :before-close="closeDialog"-->
+<!--      :destroy-on-close="true"-->
+<!--    >-->
+<!--      <cl-form-->
+<!--        ref="formRef"-->
+<!--        :option="defaultFormOption"-->
+<!--        v-model:value="form"-->
+<!--        @submit="handleSubmit"-->
+<!--      >-->
+<!--        <template v-for="item in defaultFormOption.items">-->
+<!--          <template :slot="item.prop" v-if="item.slotForm === true">-->
+<!--            <slot :name="item.prop + 'Form'"></slot>-->
+<!--          </template>-->
+<!--        </template>-->
+<!--      </cl-form>-->
+<!--    </el-dialog>-->
+<!--    <el-dialog-->
+<!--      append-to-body-->
+<!--      :visible.sync="delDialogVisible"-->
+<!--      :title="defaultOption.delBtn.title"-->
+<!--      width="400px"-->
+<!--    >-->
+<!--      <div class="el-message-box__container">-->
+<!--        <div class="el-message-box__status el-icon-warning"></div>-->
+<!--        <div class="el-message-box__message">-->
+<!--          {{ defaultOption.delBtn.message }}-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button-->
+<!--          @click="delDialogVisible = false"-->
+<!--          :disabled="delLoading"-->
+<!--          :icon="delLoading ? 'el-icon-loading' : 'el-icon-close'"-->
+<!--          size="small"-->
+<!--        >{{ defaultOption.delBtn.cancelBtnText }}</el-button-->
+<!--        >-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          @click="delSuccess"-->
+<!--          :disabled="delLoading"-->
+<!--          :icon="delLoading ? 'el-icon-loading' : 'el-icon-check'"-->
+<!--          size="small"-->
+<!--        >{{ defaultOption.delBtn.confirmBtnText }}</el-button-->
+<!--        >-->
+<!--      </span>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 
@@ -484,7 +484,7 @@ export default {
 
       this.defaultFormOption = beanUtil.deepClone(this.defaultFormOption);
       if (type !== "del") {
-        if (this.$listeners["before-open"]) {
+        if (this.$attrs["before-open"]) {
           this.$emit(
             "before-open",
             type,
@@ -500,7 +500,7 @@ export default {
           this.defaultLoading = false;
         }
       } else {
-        if (this.$listeners["before-open"]) {
+        if (this.$attrs["before-open"]) {
           this.$emit(
             "before-open",
             type,
@@ -516,7 +516,7 @@ export default {
       }
     },
     closeDialog(done) {
-      if (this.$listeners["before-close"]) {
+      if (this.$attrs["before-close"]) {
         if (this.crudObj.type === "add") {
           this.$emit(
             "before-close",
@@ -609,7 +609,7 @@ export default {
     },
     handleLoad() {
       this.$nextTick(() => {
-        if (this.$listeners["load"]) {
+        if (this.$attrs["load"]) {
           this.defaultLoading = true;
           this.$emit(
             "load",

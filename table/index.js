@@ -1,4 +1,4 @@
-import ClTable from "./table";
+import ClTable from "./index.vue";
 
 ClTable.install = function(Vue) {
   Vue.component(ClTable.name, ClTable);

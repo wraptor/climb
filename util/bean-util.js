@@ -7,7 +7,7 @@ const beanUtil = {
    */
   copyPropertiesNotEmpty(source, target) {
     if (!source) {
-      return source;
+      return this.deepClone(source);
     }
     const isObject = source.constructor === Object;
     const isArray = source.constructor === Array;
