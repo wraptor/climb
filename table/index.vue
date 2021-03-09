@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;display: flex;flex-direction: row;justify-content: space-between">
     <div>
-      <el-button v-if="permission.delBtn && myOption.addBtn!==false && myOption.addBtn.display"
+      <el-button v-if="myPermissions.addBtn && myOption.addBtn!==false && myOption.addBtn.display"
                  :icon="myOption.addBtn.icon" :type="myOption.addBtn.type">
         {{ myOption.addBtn.text }}
       </el-button>
@@ -34,12 +34,12 @@
       :label="myOption.menuLabel">
       <template #default="scope">
         <el-button @click="handleEdit(scope.row)"
-                   v-if="permission.editBtn && myOption.editBtn.display && myOption.editBtn!==false"
+                   v-if="myPermissions.editBtn && myOption.editBtn.display && myOption.editBtn!==false"
                    :icon="myOption.editBtn.icon"
                    :type="myOption.editBtn.type">{{ myOption.editBtn.text }}
         </el-button>
         <el-button @click="handleDel(scope.row)"
-                   v-if="permission.delBtn && myOption.delBtn.display && myOption.delBtn!==false"
+                   v-if="myPermissions.delBtn && myOption.delBtn.display && myOption.delBtn!==false"
                    :icon="myOption.delBtn.icon"
                    :type="myOption.delBtn.type">
           {{ myOption.delBtn.text }}
@@ -62,8 +62,8 @@
     :total="page.total">
   </el-pagination>
 
-  <el-dialog :visible.sync="visible">
-
+  <el-dialog v-model="visible">
+    <!--    <cl-form v-model="form"></cl-form>-->
   </el-dialog>
 </template>
 
@@ -81,31 +81,32 @@ export default {
       default: () => {
       }
     },
-    permission: {
+    permissions: {
       type: Object,
       default: () => {
-        return {
-          addBtn: true,
-          editBtn: true,
-          delBtn: true,
-          viewBtn: true
-        };
+        return {};
       }
     }
   },
   emits: ["load", "add", "edit", "del"],
   setup(props, ctx) {
+    let visible = ref(false);
     let loading = ref(true);
-
+    let myPermissions = reactive(beanUtil.deepClone({
+      addBtn: true,
+      editBtn: true,
+      delBtn: true,
+      viewBtn: true
+    }));
     let myOption = reactive(beanUtil.deepClone(option));
     watch(() => props.option,
-      () => {
-        beanUtil.copyPropertiesNotEmpty(props.option, myOption);
-        console.log(myOption);
-
-      },
+      () => beanUtil.copyPropertiesNotEmpty(props.option, myOption),
       { immediate: true }
     );
+    watch(() => props.permissions,
+      () =>
+        beanUtil.copyPropertiesNotEmpty(props.permissions, myPermissions),
+      { immediate: true });
     let tableData = reactive([]);
     let page = reactive({
       size: 10,
@@ -113,7 +114,12 @@ export default {
       current: 1,
       pages: 0
     });
-
+    if (window && window.localStorage) {
+      const cachePageSize = window.localStorage.getItem("cl-table-page-size");
+      if (cachePageSize) {
+        page.size = parseInt(cachePageSize);
+      }
+    }
     const loadData = () => {
       loading.value = true;
       ctx.emit("load", page, (res) => {
@@ -137,10 +143,14 @@ export default {
 
     onMounted(loadData);
     return {
+      visible,
       loadData,
       //分页相关
       handlePageSizeChange(size) {
         page.size = size;
+        if (window && window.localStorage) {
+          window.localStorage.setItem("cl-table-page-size", size);
+        }
         loadData();
       },
       handlePageCurrentChange(current) {
@@ -150,6 +160,7 @@ export default {
 
       loading,
       page,
+      myPermissions,
       myOption,
       tableData,
       filterValue(item, val) {
@@ -174,9 +185,8 @@ export default {
         }
       },
       handleEdit(row) {
-
+        visible.value = true;
       }
-
     };
   }
 };
