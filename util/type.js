@@ -1,5 +1,4 @@
-export const inputTypeArray = ["text", "textarea", "password"];
-export const inputNumberTypeArray = ["number"];
+export const inputTypeArray = ["input", "text", "number", "textarea", "password"];
 export const radioTypeArray = ["radio"];
 export const checkboxTypeArray = ["checkbox"];
 export const selectTypeArray = ["select"];

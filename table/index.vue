@@ -15,19 +15,29 @@
   <el-table
     :index="myOption.index"
     :data="tableData"
+    :border="myOption.border"
+    :empty-text="myOption.emptyText"
+    :tooltip-effect="myOption.tooltipEffect"
+    :highlight-current-row="myOption.highlightCurrentRow"
     :stripe="myOption.stripe"
     style="width: 100%;margin-top: 10px">
+    <!--    =============序号=============    -->
     <el-table-column v-if="myOption.index" :label="myOption.index" type="index" />
+    <!--    =============每一列=============    -->
     <el-table-column
       v-for="item in myOption.columns"
       :key="item.prop"
       :prop="item.prop"
+      :sortable="item.sortable"
+      :show-overflow-tooltip="item.showOverflowTooltip?
+      item.showOverflowTooltip:myOption.showOverflowTooltip"
       :width="item.width?item.width:'auto'"
       :label="item.label">
       <template v-if="item.type==='radio' || item.type==='select'" #default="scope">
         {{ filterValue(item, scope.row[item.prop]) }}
       </template>
     </el-table-column>
+    <!--    =============操作菜单=============    -->
     <el-table-column
       :width="myOption.menuWidth"
       v-if="myOption.menu"
@@ -63,7 +73,7 @@
   </el-pagination>
 
   <el-dialog v-model="visible">
-    <cl-form :option="myOption"></cl-form>
+    <cl-form :option="myOption" v-model="form"></cl-form>
   </el-dialog>
 </template>
 
@@ -105,97 +115,97 @@ export default {
     }
   },
   emits: ["load", "add", "edit", "del"],
-  setup(props, ctx) {
-    let visible = ref(false);
-    let loading = ref(true);
-    let myOption = reactive(JSON.parse(JSON.stringify(option)));
-
-    let tableData = reactive([]);
-    let page = reactive({
+  data() {
+    let page = {
       size: 10,
       total: 0,
       current: 1,
       pages: 0
-    });
+    };
     if (window && window.localStorage) {
       const cachePageSize = window.localStorage.getItem("cl-table-page-size");
       if (cachePageSize) {
         page.size = parseInt(cachePageSize);
       }
     }
-    const loadData = () => {
-      loading.value = true;
-      ctx.emit("load", page, (res) => {
-        tableData.splice(0, tableData.length);
-        tableData.push(...res.records);
-        page.size = res.size;
-        page.current = res.current;
-        page.pages = res.pages;
-        page.total = res.total;
-        loading.value = false;
-      });
-    };
 
-
-    const delCallback = (row) => {
-      ctx.emit("del", row, () => {
-        loadData();
-        ElMessage.success(myOption.delBtn.successMessage);
-      });
-    };
-
-    onMounted(loadData);
     return {
-      //分页相关
-      page,
-      handlePageSizeChange(size) {
-        page.size = size;
-        if (window && window.localStorage) {
-          window.localStorage.setItem("cl-table-page-size", size);
-        }
-        loadData();
-      },
-      handlePageCurrentChange(current) {
-        page.current = current;
-        loadData();
-      },
-
-      visible,
-      loadData,
-      loading,
-      myPermissions: reactive({
+      myOption: JSON.parse(JSON.stringify(option)),
+      myPermissions: {
         addBtn: true,
         editBtn: true,
         delBtn: true,
         viewBtn: true
-      }),
-      myOption,
-      tableData,
-      filterValue(item, val) {
-        const find = item.dicData.find(item => item.value === val);
-        if (find) {
-          return find.label;
-        }
-        return "";
       },
-      handleDel(row) {
-        if (myOption.delBtn.confirm) {
-          ElMessageBox.confirm(myOption.delBtn.message, myOption.delBtn.title, {
-            confirmButtonText: myOption.delBtn.confirmBtnText,
-            cancelButtonText: myOption.delBtn.cancelBtnText,
-            type: "warning"
-          }).then(() => {
-            delCallback(row);
-          }).catch(() => {
-          });
-        } else {
-          delCallback(row);
-        }
-      },
-      handleEdit(row) {
-        visible.value = true;
-      }
+      loading: false,
+      visible: false,
+      form: {},
+
+      //表格
+      tableData: [],
+      page: page
     };
+  },
+  created() {
+    this.loadData();
+  },
+  methods: {
+    loadData() {
+      this.loading = true;
+      this.$emit("load", this.page, (res) => {
+        this.tableData = res.records;
+        this.page = {
+          size: res.size,
+          current: res.current,
+          pages: res.pages,
+          total: res.total
+        };
+        this.loading = false;
+      });
+    },
+    delCallback(row) {
+      this.$emit("del", row, () => {
+        this.loadData();
+        ElMessage.success(this.myOption.delBtn.successMessage);
+      });
+    },
+    handlePageSizeChange(size) {
+      this.page.size = size;
+      if (window && window.localStorage) {
+        window.localStorage.setItem("cl-table-page-size", size);
+      }
+      this.loadData();
+    },
+    handlePageCurrentChange(current) {
+      this.page.current = current;
+      this.loadData();
+    },
+    filterValue(item, val) {
+      const find = item.dicData.find(item => item.value === val);
+      if (find) {
+        return find.label;
+      }
+      return "";
+    },
+    handleDel(row) {
+      if (this.myOption.delBtn.confirm) {
+        ElMessageBox.confirm(this.myOption.delBtn.message, this.myOption.delBtn.title, {
+          confirmButtonText: this.myOption.delBtn.confirmBtnText,
+          cancelButtonText: this.myOption.delBtn.cancelBtnText,
+          type: "warning"
+        }).then(() => {
+          this.delCallback(row);
+        }).catch(() => {
+        });
+      } else {
+        this.delCallback(row);
+      }
+    },
+    handleEdit(row) {
+      this.form = row;
+      console.log(this.form);
+      this.visible = true;
+    }
   }
 };
 </script>

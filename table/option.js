@@ -3,6 +3,9 @@ export default {
   index: "序号",
   columns: [],
 
+  showOverflowTooltip:true,
+  resizable:true,//是否可调整宽度
+
   //ext
   menu: true,
   menuWidth: 150,

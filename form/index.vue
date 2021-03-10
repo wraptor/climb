@@ -20,10 +20,7 @@
           :inline-message="item.inlineMessage"
           :size="item.size"
         >
-          <cl-input v-if="!item.type
-          || item.type==='text'
-           || item.type==='password'
-           || item.type==='number'"
+          <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
                     v-model="form[item.prop]"
                     :option="item"
           ></cl-input>
@@ -120,7 +117,7 @@ import { ref, reactive, watch, onMounted, readonly } from "vue";
 import option from "./option";
 import beanUtil from "../util/bean-util";
 import { ElMessageBox, ElMessage } from "element-plus";
-import { datePickerTypeArray, timePickerTypeArray } from "../util/type";
+import { inputTypeArray, datePickerTypeArray, timePickerTypeArray } from "../util/type";
 
 export default {
   name: "ClForm",
@@ -136,7 +133,7 @@ export default {
   watch: {
     modelValue: {
       handler(val) {
-        console.log(val);
+        console.log("拿到的form v-model", val);
         this.form = JSON.parse(JSON.stringify(val));
       },
       immediate: true,
@@ -153,6 +150,7 @@ export default {
   },
   data() {
     return {
+      inputTypeArray: inputTypeArray,
       datePickerTypeArray: datePickerTypeArray,
       timePickerTypeArray: timePickerTypeArray,
       loading: false,
