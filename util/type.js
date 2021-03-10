@@ -1,4 +1,4 @@
-export const inputTypeArray = ["input", "text", "number", "textarea", "password"];
+export const inputTypeArray = [undefined, "input", "text", "number", "textarea", "password"];
 export const radioTypeArray = ["radio"];
 export const checkboxTypeArray = ["checkbox"];
 export const selectTypeArray = ["select"];
@@ -12,9 +12,7 @@ export const datePickerTypeArray = [
   "dates",
   "week",
   "daterange",
-  "monthrange"
-];
-export const dateTimePickerTypeArray = [
+  "monthrange",
   "datetime",
   "datetimerange"
 ];

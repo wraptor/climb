@@ -2,10 +2,10 @@ export default {
   //element form attributes
   type: "date",
   placeholder: "请选择",
-  format: "yyyy-MM-dd",
+  format: "YYYY-MM-DD",
 
   //ext
-  valueFormat: "yyyy-MM-dd",
+  valueFormat: "yyyy-MM-dd"
 
   // pickerOptions: {
   //   shortcuts: [

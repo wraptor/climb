@@ -1,8 +1,8 @@
 <template>
   <el-date-picker v-model="value"
                   :type="myOption.type"
-                  placeholder="选择日期"
-                  :format="myOption.format.toUpperCase()"
+                  :placeholder="myOption.placeholder"
+                  :format="myOption.format"
                   @change="handleChange">
 
   </el-date-picker>
@@ -25,7 +25,7 @@ export default {
   }, watch: {
     modelValue: {
       handler(val) {
-        if(val){
+        if (val) {
           this.value = val;
         }
       },
@@ -34,7 +34,12 @@ export default {
     },
     option: {
       handler(val) {
+        if ((val.type === "datetime" || val.type === "datetimerange") && !val.format) {
+          val.format = "YYYY-MM-DD hh:mm:ss";
+        }
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+        this.myOption.format = this.myOption.format.replaceAll("yyyy", "YYYY")
+          .replaceAll("dd", "DD");
       },
       immediate: true,
       deep: true

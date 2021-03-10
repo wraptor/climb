@@ -31,6 +31,7 @@
                           v-model="form[item.prop]"></cl-date-picker>
           <cl-time-picker v-else-if="timePickerTypeArray.findIndex(i=>i===item.type)>=0" :option="item"
                           v-model="form[item.prop]"></cl-time-picker>
+
           <template v-else>
             {{ item.type }}
           </template>
@@ -117,7 +118,7 @@ import { ref, reactive, watch, onMounted, readonly } from "vue";
 import option from "./option";
 import beanUtil from "../util/bean-util";
 import { ElMessageBox, ElMessage } from "element-plus";
-import { inputTypeArray, datePickerTypeArray, timePickerTypeArray } from "../util/type";
+import { inputTypeArray, datePickerTypeArray, timePickerTypeArray, dateTimePickerTypeArray } from "../util/type";
 
 export default {
   name: "ClForm",
@@ -150,9 +151,10 @@ export default {
   },
   data() {
     return {
-      inputTypeArray: inputTypeArray,
-      datePickerTypeArray: datePickerTypeArray,
-      timePickerTypeArray: timePickerTypeArray,
+      inputTypeArray,
+      datePickerTypeArray,
+      timePickerTypeArray,
+      dateTimePickerTypeArray,
       loading: false,
       form: JSON.parse(JSON.stringify(this.modelValue)),
       myOption: JSON.parse(JSON.stringify(option)),
