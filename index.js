@@ -1,25 +1,23 @@
-// import ClForm from "./form";
+import ClForm from "./form";
 import ClTable from "./table";
-// import ClInput from "./input";
-// import ClRadio from "./radio";
-// import ClCheckBox from "./check-box";
-// import ClSelect from "./select";
-// import ClInputNumber from "./input-number";
-// import ClTimePicker from "./time-picker";
-// import ClDatePicker from "./date-picker";
-// import ClMenu from "./menu";
+import ClInput from "./input";
+import ClRadio from "./radio";
+import ClCheckBox from "./check-box";
+import ClSelect from "./select";
+import ClTimePicker from "./time-picker";
+import ClDatePicker from "./date-picker";
+import ClMenu from "./menu";
 
 const components = [
-  // ClForm,
+  ClForm,
   ClTable,
-  // ClInput,
-  // ClRadio,
-  // ClCheckBox,
-  // ClSelect,
-  // ClInputNumber,
-  // ClMenu,
-  // ClTimePicker,
-  // ClDatePicker
+  ClInput,
+  ClRadio,
+  ClCheckBox,
+  ClSelect,
+  ClMenu,
+  ClTimePicker,
+  ClDatePicker
 ];
 
 const install = function(Vue) {
@@ -39,7 +37,6 @@ export default {
   // ClRadio,
   // ClCheckBox,
   // ClSelect,
-  // ClInputNumber,
   // ClMenu,
   // ClTimePicker,
   // ClDatePicker

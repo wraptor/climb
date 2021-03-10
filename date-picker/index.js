@@ -1,4 +1,4 @@
-import ClDatePicker from "./date-picker";
+import ClDatePicker from "./index.vue";
 
 ClDatePicker.install = function(Vue) {
   Vue.component(ClDatePicker.name, ClDatePicker);

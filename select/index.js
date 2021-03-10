@@ -1,4 +1,4 @@
-import ClSelect from "./select";
+import ClSelect from "./index.vue";
 
 ClSelect.install = function(Vue) {
   Vue.component(ClSelect.name, ClSelect);

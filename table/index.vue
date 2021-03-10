@@ -63,7 +63,7 @@
   </el-pagination>
 
   <el-dialog v-model="visible">
-    <!--    <cl-form v-model="form"></cl-form>-->
+    <cl-form :option="myOption"></cl-form>
   </el-dialog>
 </template>
 
@@ -88,25 +88,28 @@ export default {
       }
     }
   },
+  watch: {
+    option: {
+      handler(val) {
+        beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+      },
+      immediate: true,
+      deep: true
+    },
+    permissions: {
+      handler(val) {
+        beanUtil.copyPropertiesNotEmpty(val, this.myPermissions);
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   emits: ["load", "add", "edit", "del"],
   setup(props, ctx) {
     let visible = ref(false);
     let loading = ref(true);
-    let myPermissions = reactive(beanUtil.deepClone({
-      addBtn: true,
-      editBtn: true,
-      delBtn: true,
-      viewBtn: true
-    }));
-    let myOption = reactive(beanUtil.deepClone(option));
-    watch(() => props.option,
-      () => beanUtil.copyPropertiesNotEmpty(props.option, myOption),
-      { immediate: true }
-    );
-    watch(() => props.permissions,
-      () =>
-        beanUtil.copyPropertiesNotEmpty(props.permissions, myPermissions),
-      { immediate: true });
+    let myOption = reactive(JSON.parse(JSON.stringify(option)));
+
     let tableData = reactive([]);
     let page = reactive({
       size: 10,
@@ -143,9 +146,8 @@ export default {
 
     onMounted(loadData);
     return {
-      visible,
-      loadData,
       //分页相关
+      page,
       handlePageSizeChange(size) {
         page.size = size;
         if (window && window.localStorage) {
@@ -158,9 +160,15 @@ export default {
         loadData();
       },
 
+      visible,
+      loadData,
       loading,
-      page,
-      myPermissions,
+      myPermissions: reactive({
+        addBtn: true,
+        editBtn: true,
+        delBtn: true,
+        viewBtn: true
+      }),
       myOption,
       tableData,
       filterValue(item, val) {

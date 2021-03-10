@@ -1,4 +1,4 @@
-import ClCheckBox from "./check-box";
+import ClCheckBox from "./index.vue";
 
 ClCheckBox.install = function(Vue) {
   Vue.component(ClCheckBox.name, ClCheckBox);

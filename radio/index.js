@@ -1,4 +1,4 @@
-import ClRadio from "./radio";
+import ClRadio from "./index.vue";
 
 ClRadio.install = function(Vue) {
   Vue.component(ClRadio.name, ClRadio);

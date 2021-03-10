@@ -7,7 +7,7 @@ const beanUtil = {
    */
   copyPropertiesNotEmpty(source, target) {
     if (!source) {
-      return this.deepClone(source);
+      return JSON.parse(JSON.stringify(source));
     }
     const isObject = source.constructor === Object;
     const isArray = source.constructor === Array;
@@ -44,7 +44,7 @@ const beanUtil = {
     }
     if (type === "array") {
       for (let i = 0, len = data.length; i < len; i++) {
-        obj.push(this.deepClone(data[i]));
+        obj.push(JSON.parse(JSON.stringify(data[i])));
       }
     } else if (type === "object") {
       for (let key in data) {

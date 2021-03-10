@@ -9,9 +9,13 @@ export const timePickerTypeArray = ["time", "timerange"];
 export const datePickerTypeArray = [
   "year",
   "month",
-  "monthrange",
   "date",
+  "dates",
+  "week",
   "daterange",
+  "monthrange"
+];
+export const dateTimePickerTypeArray = [
   "datetime",
   "datetimerange"
 ];
