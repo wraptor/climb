@@ -48,8 +48,7 @@ export default {
   emits: ["update:modelValue"],
   methods: {
     handleChange(val) {
-      console.log(val);
-      //this.$emit("update:modelValue", val);
+      this.$emit("update:modelValue", val);
     }
   }
 };

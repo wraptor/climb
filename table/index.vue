@@ -237,8 +237,6 @@ export default {
     },
     handleAdd() {
       this.type = "add";
-      console.log(this.defaultForm);
-      console.log(this.form);
       this.form = JSON.parse(JSON.stringify(this.defaultForm));
       this.toBefore(this.form, () => {
         this.visible = true;
