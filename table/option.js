@@ -3,8 +3,8 @@ export default {
   index: "序号",
   columns: [],
 
-  showOverflowTooltip:true,
-  resizable:true,//是否可调整宽度
+  showOverflowTooltip: true,
+  resizable: true,//是否可调整宽度
 
   //ext
   menu: true,
@@ -42,7 +42,8 @@ export default {
     type: "text",
     text: "编 辑",
     icon: "el-icon-edit",
-    display: true //true/false
+    display: true, //true/false
+    successMessage: "修改成功"
   },
   delBtn: {
     type: "text",

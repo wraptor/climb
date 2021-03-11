@@ -73,12 +73,12 @@
   </el-pagination>
 
   <el-dialog v-model="visible">
-    <cl-form :option="myOption" v-model="form"></cl-form>
+    <cl-form :option="myOption" v-model="form" @submit="handleSubmit"></cl-form>
   </el-dialog>
 </template>
 
 <script>
-import { ref, reactive, watch, onMounted } from "vue";
+import { ref, reactive, watch, onMounted, toRaw } from "vue";
 import option from "./option";
 import beanUtil from "../util/bean-util";
 import { ElMessageBox, ElMessage } from "element-plus";
@@ -114,7 +114,8 @@ export default {
       deep: true
     }
   },
-  emits: ["load", "add", "edit", "del"],
+  inheritAttrs: false,
+  emits: ["load", "add", "edit", "del", "before", "after"],
   data() {
     let page = {
       size: 10,
@@ -163,10 +164,27 @@ export default {
         this.loading = false;
       });
     },
+    toBefore(type, row, done) {
+      if (this.$attrs["before"]) {
+        this.$attrs["before"](type, row, done);
+      } else {
+        done();
+      }
+    },
+    toAfter(type, row, flag) {
+      if (this.$attrs["after"]) {
+        this.$attrs["after"](type, row, flag);
+      }
+    },
     delCallback(row) {
-      this.$emit("del", row, () => {
-        this.loadData();
-        ElMessage.success(this.myOption.delBtn.successMessage);
+      this.toBefore("del", row, () => {
+        this.$emit("del", row, (flag = true) => {
+          if (flag === true) {
+            this.loadData();
+            ElMessage.success(this.myOption.delBtn.successMessage);
+          }
+          this.toAfter("del", row, flag);
+        });
       });
     },
     handlePageSizeChange(size) {
@@ -203,8 +221,21 @@ export default {
     },
     handleEdit(row) {
       this.form = row;
-      console.log(this.form);
-      this.visible = true;
+      this.toBefore("edit", row, () => {
+        this.visible = true;
+      });
+    },
+    handleSubmit(form, done) {
+      this.$emit("edit", form, (flag = true) => {
+        if (flag === true) {
+          // 编辑成功才隐藏弹窗
+          this.loadData();
+          this.visible = false;
+          ElMessage.success(this.myOption.editBtn.successMessage);
+        }
+        setTimeout(done, 1000);
+        this.toAfter("edit", form, flag);
+      });
     }
   }
 };

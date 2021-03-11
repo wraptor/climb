@@ -114,11 +114,10 @@
 </template>
 
 <script>
-import { ref, reactive, watch, onMounted, readonly } from "vue";
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import { ElMessageBox, ElMessage } from "element-plus";
-import { inputTypeArray, datePickerTypeArray, timePickerTypeArray, dateTimePickerTypeArray } from "../util/type";
+import { inputTypeArray, datePickerTypeArray, timePickerTypeArray } from "../util/type";
+import { debounce } from "../util/util";
 
 export default {
   name: "ClForm",
@@ -134,7 +133,6 @@ export default {
   watch: {
     modelValue: {
       handler(val) {
-        console.log("拿到的form v-model", val);
         this.form = JSON.parse(JSON.stringify(val));
       },
       immediate: true,
@@ -149,12 +147,12 @@ export default {
       deep: true
     }
   },
+  emits: ["submit"],
   data() {
     return {
       inputTypeArray,
       datePickerTypeArray,
       timePickerTypeArray,
-      dateTimePickerTypeArray,
       loading: false,
       form: JSON.parse(JSON.stringify(this.modelValue)),
       myOption: JSON.parse(JSON.stringify(option)),
@@ -162,7 +160,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
+    onSubmit: debounce(function() {
       if (this.myOption.repeat) {
         this.loading = true;
       }
@@ -177,7 +175,7 @@ export default {
           }
         });
       });
-    },
+    }),
     onReset() {
       this.form = JSON.parse(JSON.stringify(this.backForm));
     }
