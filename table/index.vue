@@ -2,7 +2,7 @@
   <div style="width: 100%;display: flex;flex-direction: row;justify-content: space-between">
     <div>
       <el-button v-if="myPermissions.addBtn && myOption.addBtn!==false && myOption.addBtn.display"
-                 :icon="myOption.addBtn.icon" :type="myOption.addBtn.type">
+                 :icon="myOption.addBtn.icon" :type="myOption.addBtn.type" @click="handleAdd">
         {{ myOption.addBtn.text }}
       </el-button>
     </div>
@@ -43,6 +43,7 @@
       v-if="myOption.menu"
       :label="myOption.menuLabel">
       <template #default="scope">
+        <slot name="menuFront" :row="scope.row" :column="scope.column" :index="scope.$index"></slot>
         <el-button @click="handleEdit(scope.row)"
                    v-if="myPermissions.editBtn && myOption.editBtn.display && myOption.editBtn!==false"
                    :icon="myOption.editBtn.icon"
@@ -72,7 +73,7 @@
     :total="page.total">
   </el-pagination>
 
-  <el-dialog v-model="visible">
+  <el-dialog v-model="visible" destroy-on-close>
     <cl-form :option="myOption" v-model="form" @submit="handleSubmit"></cl-form>
   </el-dialog>
 </template>
@@ -102,6 +103,7 @@ export default {
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+        this.setDefaultForm();
       },
       immediate: true,
       deep: true
@@ -141,7 +143,13 @@ export default {
       loading: false,
       visible: false,
       form: {},
+      // 新增表单时的默认数据，由column每个item.value组成
+      defaultForm: {},
+      // 搜索表单时的默认数据
+      searchForm: {},
 
+      // 记录弹窗类型,add/edit
+      type: "add",
       //表格
       tableData: [],
       page: page
@@ -151,6 +159,13 @@ export default {
     this.loadData();
   },
   methods: {
+    setDefaultForm() {
+      this.myOption.columns.forEach(item => {
+        if (item.value) {
+          this.defaultForm[item.prop] = item.value;
+        }
+      });
+    },
     loadData() {
       this.loading = true;
       this.$emit("load", this.page, (res) => {
@@ -164,26 +179,26 @@ export default {
         this.loading = false;
       });
     },
-    toBefore(type, row, done) {
+    toBefore(row, done) {
       if (this.$attrs["before"]) {
-        this.$attrs["before"](type, row, done);
+        this.$attrs["before"](this.type, row, done);
       } else {
         done();
       }
     },
-    toAfter(type, row, flag) {
+    toAfter(row, flag) {
       if (this.$attrs["after"]) {
-        this.$attrs["after"](type, row, flag);
+        this.$attrs["after"](this.type, row, flag);
       }
     },
     delCallback(row) {
-      this.toBefore("del", row, () => {
+      this.toBefore(row, () => {
         this.$emit("del", row, (flag = true) => {
           if (flag === true) {
             this.loadData();
             ElMessage.success(this.myOption.delBtn.successMessage);
           }
-          this.toAfter("del", row, flag);
+          this.toAfter(row, flag);
         });
       });
     },
@@ -206,6 +221,7 @@ export default {
       return "";
     },
     handleDel(row) {
+      this.type = "del";
       if (this.myOption.delBtn.confirm) {
         ElMessageBox.confirm(this.myOption.delBtn.message, this.myOption.delBtn.title, {
           confirmButtonText: this.myOption.delBtn.confirmBtnText,
@@ -219,14 +235,24 @@ export default {
         this.delCallback(row);
       }
     },
+    handleAdd() {
+      this.type = "add";
+      console.log(this.defaultForm);
+      console.log(this.form);
+      this.form = JSON.parse(JSON.stringify(this.defaultForm));
+      this.toBefore(this.form, () => {
+        this.visible = true;
+      });
+    },
     handleEdit(row) {
+      this.type = "edit";
       this.form = row;
-      this.toBefore("edit", row, () => {
+      this.toBefore(row, () => {
         this.visible = true;
       });
     },
     handleSubmit(form, done) {
-      this.$emit("edit", form, (flag = true) => {
+      this.$emit(this.type, form, (flag = true) => {
         if (flag === true) {
           // 编辑成功才隐藏弹窗
           this.loadData();
@@ -234,7 +260,7 @@ export default {
           ElMessage.success(this.myOption.editBtn.successMessage);
         }
         setTimeout(done, 1000);
-        this.toAfter("edit", form, flag);
+        this.toAfter(form, flag);
       });
     }
   }
