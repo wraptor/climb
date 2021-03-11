@@ -12,7 +12,7 @@
 import option from "./option";
 import beanUtil from "../util/bean-util";
 import { dateFormat } from "../util/date-util";
-import { PropType } from "vue";
+import { debounce } from "../util/util";
 
 export default {
   name: "ClDatePicker",
@@ -25,7 +25,7 @@ export default {
   }, watch: {
     modelValue: {
       handler(val) {
-        if (val) {
+        if (val !== this.backValue) {
           this.value = val;
         }
       },
@@ -48,22 +48,24 @@ export default {
   data() {
     return {
       value: "",
+      backValue: "",
       myOption: JSON.parse(JSON.stringify(option))
     };
   },
   emits: ["update:modelValue"],
   methods: {
-    handleChange(val) {
+    handleChange: debounce(function(val) {
       if (Object.prototype.toString.call(val) === "[object Array]") {
         const temp = [];
         for (let i = 0; i < val.length; i++) {
           temp.push(dateFormat(val[i], this.myOption.valueFormat));
         }
-        this.$emit("update:modelValue", temp);
+        this.backValue = temp;
       } else {
-        this.$emit("update:modelValue", dateFormat(val, this.myOption.valueFormat));
+        this.backValue = dateFormat(val, this.myOption.valueFormat);
       }
-    }
+      this.$emit("update:modelValue", this.backValue);
+    }, 500, false)
   }
 };
 </script>
