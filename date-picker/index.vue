@@ -11,7 +11,6 @@
 <script>
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import { dateFormat } from "../util/date-util";
 import { debounce } from "../util/util";
 
 export default {
@@ -37,6 +36,9 @@ export default {
         if ((val.type === "datetime" || val.type === "datetimerange") && !val.format) {
           val.format = "YYYY-MM-DD hh:mm:ss";
         }
+        if ((val.type === "datetime" || val.type === "datetimerange") && !val.valueFormat) {
+          val.valueFormat = "yyyy-MM-dd HH:mm:ss";
+        }
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
         this.myOption.format = this.myOption.format.replaceAll("yyyy", "YYYY")
           .replaceAll("dd", "DD");
@@ -55,14 +57,16 @@ export default {
   emits: ["update:modelValue"],
   methods: {
     handleChange: debounce(function(val) {
-      if (Object.prototype.toString.call(val) === "[object Array]") {
+      if (!val) {
+        this.backValue = val;
+      } else if (Object.prototype.toString.call(val) === "[object Array]") {
         const temp = [];
         for (let i = 0; i < val.length; i++) {
-          temp.push(dateFormat(val[i], this.myOption.valueFormat));
+          temp.push(val[i].format(this.myOption.valueFormat));
         }
         this.backValue = temp;
       } else {
-        this.backValue = dateFormat(val, this.myOption.valueFormat);
+        this.backValue = val.format(this.myOption.valueFormat);// dateFormat(val, this.myOption.valueFormat);
       }
       this.$emit("update:modelValue", this.backValue);
     }, 500, false)

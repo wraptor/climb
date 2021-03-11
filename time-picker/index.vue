@@ -14,8 +14,6 @@
 <script>
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import { dateFormat } from "../util/date-util";
-import { PropType } from "vue";
 
 export default {
   name: "ClTimePicker",
@@ -63,11 +61,11 @@ export default {
       if (Object.prototype.toString.call(val) === "[object Array]") {
         const temp = [];
         for (let i = 0; i < val.length; i++) {
-          temp.push(dateFormat(val[i], this.myOption.valueFormat));
+          temp.push(val[i].format(this.myOption.valueFormat));
         }
         this.$emit("update:modelValue", temp);
-      } else {
-        this.$emit("update:modelValue", dateFormat(val, this.myOption.valueFormat));
+      } else if (val) {
+        this.$emit("update:modelValue", val.format(this.myOption.valueFormat));
       }
     }
   }
