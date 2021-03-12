@@ -46,11 +46,13 @@
         <slot name="menuFront" :row="scope.row" :column="scope.column" :index="scope.$index"></slot>
         <el-button @click="handleEdit(scope.row)"
                    v-if="myPermissions.editBtn && myOption.editBtn.display && myOption.editBtn!==false"
+                   :disabled="!!myOption.editBtn.disabled && (myOption.editBtn.disabled===true || myOption.editBtn.disabled(scope.row))"
                    :icon="myOption.editBtn.icon"
                    :type="myOption.editBtn.type">{{ myOption.editBtn.text }}
         </el-button>
         <el-button @click="handleDel(scope.row)"
                    v-if="myPermissions.delBtn && myOption.delBtn.display && myOption.delBtn!==false"
+                   :disabled="!!myOption.delBtn.disabled && (myOption.delBtn.disabled===true || myOption.delBtn.disabled(scope.row))"
                    :icon="myOption.delBtn.icon"
                    :type="myOption.delBtn.type">
           {{ myOption.delBtn.text }}
@@ -79,7 +81,6 @@
 </template>
 
 <script>
-import { ref, reactive, watch, onMounted, toRaw } from "vue";
 import option from "./option";
 import beanUtil from "../util/bean-util";
 import { ElMessageBox, ElMessage } from "element-plus";
