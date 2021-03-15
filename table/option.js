@@ -17,6 +17,7 @@ export default {
     circle: true,
     display: true //true/false
   },
+  searchBtnRight:true,
   searchBtn: {
     text: "搜 索",
     icon: "el-icon-search",

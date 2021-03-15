@@ -1,4 +1,9 @@
 <template>
+  <div v-if="hasSearch">
+    <cl-form :option="myOption" type="search" v-model="searchForm" :submit-btn="myOption.searchBtn"
+             :btn-right="myOption.searchBtnRight"
+             @submit="handleSearch"></cl-form>
+  </div>
   <div style="width: 100%;display: flex;flex-direction: row;justify-content: space-between">
     <div>
       <el-button v-if="myPermissions.addBtn && myOption.addBtn!==false && myOption.addBtn.display"
@@ -13,6 +18,7 @@
     </div>
   </div>
   <el-table
+    v-loading="loading"
     :index="myOption.index"
     :data="tableData"
     :border="myOption.border"
@@ -75,7 +81,7 @@
     :total="page.total">
   </el-pagination>
 
-  <el-dialog v-model="visible" destroy-on-close>
+  <el-dialog v-model="visible" destroy-on-close :title="type==='add'?'新增':'编辑'">
     <cl-form :option="myOption" :type="type" v-model="form" @submit="handleSubmit"></cl-form>
   </el-dialog>
 </template>
@@ -119,6 +125,17 @@ export default {
   },
   inheritAttrs: false,
   emits: ["load", "add", "edit", "del", "before", "after"],
+  computed: {
+    hasSearch() {
+      let search = false;
+      this.myOption.columns.forEach(item => {
+        if (item.search) {
+          search = true;
+        }
+      });
+      return search;
+    }
+  },
   data() {
     let page = {
       size: 10,
@@ -132,7 +149,6 @@ export default {
         page.size = parseInt(cachePageSize);
       }
     }
-
     return {
       myOption: JSON.parse(JSON.stringify(option)),
       myPermissions: {
@@ -164,25 +180,39 @@ export default {
   methods: {
     setDefaultForm() {
       this.defaultForm = {};
+      this.searchForm = {};
       this.myOption.columns.forEach(item => {
         if (item.value !== undefined) {
           this.defaultForm[item.prop] = item.value;
         }
+        if (item.searchValue !== undefined) {
+          this.searchForm[item.prop] = item.searchValue;
+        }
       });
-      console.log(this.myOption);
-      console.log("this.defaultForm", this.defaultForm);
+    },
+    handleSearch(form, done) {
+      this.type = "search";
+      this.toBefore(form, cusForm => {
+        this.loading = true;
+        this.$emit("load", Object.assign(this.page, cusForm ? cusForm : form), res => {
+          if (res) {
+            this.tableData = res.records;
+            this.page = {
+              size: res.size,
+              current: res.current,
+              pages: res.pages,
+              total: res.total
+            };
+          }
+          setTimeout(() => {
+            this.loading = false;
+            done();
+          }, 500);
+        });
+      });
     },
     load() {
-      this.loading = true;
-      this.$emit("load", this.page, (res) => {
-        this.tableData = res.records;
-        this.page = {
-          size: res.size,
-          current: res.current,
-          pages: res.pages,
-          total: res.total
-        };
-        this.loading = false;
+      this.handleSearch({}, () => {
       });
     },
     toBefore(row, done) {

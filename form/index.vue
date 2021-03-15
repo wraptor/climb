@@ -3,54 +3,55 @@
            :label-width="myOption.labelWidth>0?`${myOption.labelWidth}px`:myOption.labelWidth"
            ref="clFormRef" :model="form" :disabled="loading">
     <el-row :gutter="myOption.gutter">
-      <el-col
-        v-for="item in myOption.columns"
-        v-bind:key="item.prop"
-        :span="item.span && item.span > 0 ? item.span : myOption.span"
-      >
-        <el-form-item
-          style="width: 100%;"
+      <template v-for="item in myOption.columns">
+        <el-col
+          v-bind:key="item.prop"
           v-if="displayFilter(item)"
-          :label="item.label ? item.label + '：' : ''"
-          :prop="item.prop"
-          :label-width="item.labelWidth"
-          :required="item.required"
-          :rules="item.rules"
-          :error="item.error"
-          :show-message="item.showMessage"
-          :inline-message="item.inlineMessage"
-          :size="item.size"
+          :span="spanFilter(item)"
         >
-          <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
-                    :disabled="disabledFilter(item)"
-                    v-model="form[item.prop]"
-                    :option="item"
-          ></cl-input>
-          <cl-radio v-else-if="item.type==='radio'"
-                    :disabled="disabledFilter(item)"
-                    :option="item" v-model="form[item.prop]"></cl-radio>
-          <cl-check-box v-else-if="item.type==='checkbox'" :disabled="disabledFilter(item)"
-                        :option="item" v-model="form[item.prop]"></cl-check-box>
-          <cl-select v-else-if="item.type==='select'" :disabled="disabledFilter(item)"
-                     :option="item" v-model="form[item.prop]"></cl-select>
-          <cl-date-picker v-else-if="datePickerTypeArray.findIndex(i=>i===item.type)>=0"
-                          :disabled="disabledFilter(item)" :option="item"
-                          v-model="form[item.prop]"></cl-date-picker>
-          <cl-time-picker v-else-if="timePickerTypeArray.findIndex(i=>i===item.type)>=0"
-                          :disabled="disabledFilter(item)"
-                          :option="item"
-                          v-model="form[item.prop]"></cl-time-picker>
-          <template v-else>
-            {{ item.type }}
-          </template>
-        </el-form-item>
-      </el-col>
-      <el-col :span="myOption.span" v-if="myOption.btn!==false && myOption.btnRight===true">
+          <el-form-item
+            style="width: 100%;"
+            :label="item.label ? item.label + '：' : ''"
+            :prop="item.prop"
+            :label-width="item.labelWidth"
+            :required="item.required"
+            :rules="rulesFilter(item)"
+            :error="item.error"
+            :show-message="item.showMessage"
+            :inline-message="item.inlineMessage"
+            :size="item.size"
+          >
+            <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
+                      :disabled="disabledFilter(item)"
+                      v-model="form[item.prop]"
+                      :option="item"
+            ></cl-input>
+            <cl-radio v-else-if="item.type==='radio'"
+                      :disabled="disabledFilter(item)"
+                      :option="item" v-model="form[item.prop]"></cl-radio>
+            <cl-check-box v-else-if="item.type==='checkbox'" :disabled="disabledFilter(item)"
+                          :option="item" v-model="form[item.prop]"></cl-check-box>
+            <cl-select v-else-if="item.type==='select'" :disabled="disabledFilter(item)"
+                       :option="item" v-model="form[item.prop]"></cl-select>
+            <cl-date-picker v-else-if="datePickerTypeArray.findIndex(i=>i===item.type)>=0"
+                            :disabled="disabledFilter(item)" :option="item"
+                            v-model="form[item.prop]"></cl-date-picker>
+            <cl-time-picker v-else-if="timePickerTypeArray.findIndex(i=>i===item.type)>=0"
+                            :disabled="disabledFilter(item)"
+                            :option="item"
+                            v-model="form[item.prop]"></cl-time-picker>
+            <template v-else>
+              {{ item.type }}
+            </template>
+          </el-form-item>
+        </el-col>
+      </template>
+      <el-col :span="spanFilter()" v-if="myOption.btn!==false && (myOption.btnRight===true || btnRight===true)">
         <div style="text-align: center">
           <el-button
             type="primary"
             :icon="
-              loading ? 'el-icon-loading' : myOption.submitBtn.icon
+              loading ? 'el-icon-loading' : (submitBtn?submitBtn.icon:myOption.submitBtn.icon)
             "
             @click="onSubmit"
             :size="myOption.submitBtn.size"
@@ -59,7 +60,7 @@
                 myOption.submitBtn.display === true
             "
           >
-            {{ myOption.submitBtn.text }}
+            {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
           </el-button>
           <el-button
             type="primary"
@@ -82,13 +83,13 @@
     </el-row>
 
 
-    <el-row justify="center" type="flex" v-if="myOption.btn !== false && myOption.btnRight!==true">
+    <el-row justify="center" type="flex" v-if="myOption.btn !== false && myOption.btnRight!==true && btnRight!==true">
       <!--      <el-form-item v-if="myOption.btn !== false">-->
       <div>
         <el-button
           type="primary"
           :icon="
-              loading ? 'el-icon-loading' : myOption.submitBtn.icon
+              loading ? 'el-icon-loading' : (submitBtn?submitBtn.icon:myOption.submitBtn.icon)
             "
           @click="onSubmit"
           :size="myOption.submitBtn.size"
@@ -97,7 +98,7 @@
                 myOption.submitBtn.display === true
             "
         >
-          {{ myOption.submitBtn.text }}
+          {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
         </el-button>
         <el-button
           type="primary"
@@ -145,7 +146,9 @@ export default {
         return {};
       }
     },
-    disabled: {}
+    disabled: {},
+    submitBtn: {},
+    btnRight: {}
   },
   watch: {
     modelValue: {
@@ -176,9 +179,20 @@ export default {
     };
   },
   methods: {
+    spanFilter(item = {}) {
+      let globalSpan = this.myOption.span;
+      let itemSpan = item.span;
+      if (this.type) {
+        globalSpan = this.myOption[this.type + "Span"] ? this.myOption[this.type + "Span"] : globalSpan;
+        itemSpan = item[this.type + "Span"] ? item[this.type + "Span"] : itemSpan;
+      }
+      return (itemSpan && itemSpan > 0) ? itemSpan : globalSpan;
+    },
     displayFilter(item) {
       if (!this.type) {
         return true;
+      } else if (this.type === "search") {
+        return item && item.search;
       }
       return item[this.type + "Display"] !== false;
     },
@@ -190,6 +204,16 @@ export default {
         return false;
       }
       return item[this.type + "Disabled"] === true;
+    },
+    rulesFilter(item) {
+      if (this.type === "search") {
+        return item.searchRules;
+      }
+      if (!this.type) {
+        return item.rules;
+      }
+      const typeRules = item[this.type + "Rules"];
+      return typeRules ? typeRules : item.rules;
     },
     onSubmit: debounce(function() {
       if (this.myOption.repeat) {

@@ -20,6 +20,7 @@ export default {
   readonly: false,
   btn: true,
   span: 12,
+  searchSpan: 6,
   gutter: 20,
   btnRight: false,
 
