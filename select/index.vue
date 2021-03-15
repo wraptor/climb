@@ -1,15 +1,16 @@
 <template>
   <el-select :multiple="myOption.multiple"
              :multiple-limit="myOption.multipleLimit"
+             :disabled="myOption.disabled || disabled"
              :placeholder="myOption.placeholder"
              :clearable="myOption.clearable"
              v-model="value" @change="handleChange">
     <el-option
       v-for="item in myOption.dicData"
-      :key="item[myOption.dicProps.value]?item[myOption.dicProps.value]:
+      :key="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
 item[myOption.dicProps.label]"
       :label="item[myOption.dicProps.label]"
-      :value="item[myOption.dicProps.value]?item[myOption.dicProps.value]:
+      :value="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
 item[myOption.dicProps.label]">
     </el-option>
   </el-select>
@@ -23,13 +24,16 @@ export default {
   name: "ClSelect",
   props: {
     modelValue: {
-      type: Array,
-      default: () => []
+      type: [Array, String, Number]
     },
-    option: {}
+    option: {},
+    disabled:{}
   }, watch: {
-    modelValue(val) {
-      this.value = val;
+    modelValue: {
+      handler(val) {
+        this.value = val;
+      },
+      deep: true
     },
     option: {
       handler(val) {
@@ -42,7 +46,7 @@ export default {
   data() {
     return {
       value: this.modelValue,
-      myOption: beanUtil.deepClone(option)
+      myOption: JSON.parse(JSON.stringify(option))
     };
   },
   emits: ["update:modelValue"],

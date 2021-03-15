@@ -7,6 +7,7 @@ export default {
   resizable: true,//是否可调整宽度
 
   //ext
+  init: true,
   menu: true,
   menuWidth: 150,
   menuLabel: "操作",

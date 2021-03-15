@@ -1,6 +1,7 @@
 <template>
   <el-input :type="myOption.type"
             v-model="value"
+            :disabled="myOption.disabled || disabled"
             v-if="myOption.type!=='number'"
             :maxlength="myOption.maxlength"
             :show-word-limit="myOption.showWordLimit"
@@ -18,6 +19,7 @@
 
   <el-input-number
     v-else
+    :disabled="myOption.disabled || disabled"
     v-model="value"
     :min="myOption.min"
     :max="myOption.max"
@@ -41,7 +43,8 @@ export default {
       type: [String, Number],
       default: ""
     },
-    option: {}
+    option: {},
+    disabled:{}
   }, watch: {
     modelValue(val) {
       this.value = val;

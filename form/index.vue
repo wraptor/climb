@@ -10,6 +10,7 @@
       >
         <el-form-item
           style="width: 100%;"
+          v-if="displayFilter(item)"
           :label="item.label ? item.label + '：' : ''"
           :prop="item.prop"
           :label-width="item.labelWidth"
@@ -21,17 +22,24 @@
           :size="item.size"
         >
           <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
+                    :disabled="disabledFilter(item)"
                     v-model="form[item.prop]"
                     :option="item"
           ></cl-input>
-          <cl-radio v-else-if="item.type==='radio'" :option="item" v-model="form[item.prop]"></cl-radio>
-          <cl-check-box v-else-if="item.type==='checkbox'" :option="item" v-model="form[item.prop]"></cl-check-box>
-          <cl-select v-else-if="item.type==='select'" :option="item" v-model="form[item.prop]"></cl-select>
-          <cl-date-picker v-else-if="datePickerTypeArray.findIndex(i=>i===item.type)>=0" :option="item"
+          <cl-radio v-else-if="item.type==='radio'"
+                    :disabled="disabledFilter(item)"
+                    :option="item" v-model="form[item.prop]"></cl-radio>
+          <cl-check-box v-else-if="item.type==='checkbox'" :disabled="disabledFilter(item)"
+                        :option="item" v-model="form[item.prop]"></cl-check-box>
+          <cl-select v-else-if="item.type==='select'" :disabled="disabledFilter(item)"
+                     :option="item" v-model="form[item.prop]"></cl-select>
+          <cl-date-picker v-else-if="datePickerTypeArray.findIndex(i=>i===item.type)>=0"
+                          :disabled="disabledFilter(item)" :option="item"
                           v-model="form[item.prop]"></cl-date-picker>
-          <cl-time-picker v-else-if="timePickerTypeArray.findIndex(i=>i===item.type)>=0" :option="item"
+          <cl-time-picker v-else-if="timePickerTypeArray.findIndex(i=>i===item.type)>=0"
+                          :disabled="disabledFilter(item)"
+                          :option="item"
                           v-model="form[item.prop]"></cl-time-picker>
-
           <template v-else>
             {{ item.type }}
           </template>
@@ -122,13 +130,22 @@ import { debounce } from "../util/util";
 export default {
   name: "ClForm",
   props: {
-    modelValue: {},
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    type: {
+      type: String
+    },
     option: {
       type: Object,
       default: () => {
         return {};
       }
-    }
+    },
+    disabled: {}
   },
   watch: {
     modelValue: {
@@ -159,6 +176,21 @@ export default {
     };
   },
   methods: {
+    displayFilter(item) {
+      if (!this.type) {
+        return true;
+      }
+      return item[this.type + "Display"] !== false;
+    },
+    disabledFilter(item) {
+      if (this.disabled || this.myOption.disabled) {
+        return true;
+      }
+      if (!this.type) {
+        return false;
+      }
+      return item[this.type + "Disabled"] === true;
+    },
     onSubmit: debounce(function() {
       if (this.myOption.repeat) {
         this.loading = true;

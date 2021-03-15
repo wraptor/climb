@@ -1,5 +1,6 @@
 <template>
   <el-date-picker v-model="value"
+                  :disabled="myOption.disabled || disabled"
                   :type="myOption.type"
                   :placeholder="myOption.placeholder"
                   :format="myOption.format"
@@ -20,7 +21,8 @@ export default {
       type: [Date, Array, String],
       default: ""
     },
-    option: {}
+    option: {},
+    disabled:{}
   }, watch: {
     modelValue: {
       handler(val) {

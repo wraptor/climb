@@ -2,6 +2,7 @@
   <el-time-picker
     v-model="value"
     :is-range="myOption.type==='timerange'"
+    :disabled="myOption.disabled || disabled"
     :format="myOption.format"
     :placeholder="myOption.placeholder"
     :disabled-hours="myOption.disabledHours"
@@ -22,7 +23,8 @@ export default {
       type: [Date, Array, String],
       default: ""
     },
-    option: {}
+    option: {},
+    disabled:{}
   }, watch: {
     modelValue: {
       handler(val) {

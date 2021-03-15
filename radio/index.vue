@@ -1,6 +1,6 @@
 <template>
-  <el-radio-group v-model="value" @change="handleChange">
-    <el-radio :border="myOption.border" :label="item[myOption.dicProps.value]?item[myOption.dicProps.value]:
+  <el-radio-group v-model="value" :disabled="myOption.disabled || disabled" @change="handleChange">
+    <el-radio :border="myOption.border" :label="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
 item[myOption.dicProps.label]"
               v-for="item in myOption.dicData">
       {{ item[myOption.dicProps.label] }}
@@ -20,7 +20,8 @@ export default {
       type: [String, Number],
       default: ""
     },
-    option: {}
+    option: {},
+    disabled: {}
   }, watch: {
     modelValue(val) {
       this.value = val;

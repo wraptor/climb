@@ -7,7 +7,7 @@
       </el-button>
     </div>
     <div>
-      <el-button @click="loadData" v-show="myOption.refreshBtn.display" :circle="myOption.refreshBtn.circle"
+      <el-button @click="load" v-show="myOption.refreshBtn.display" :circle="myOption.refreshBtn.circle"
                  :icon="myOption.refreshBtn.icon" :type="myOption.refreshBtn.type">
       </el-button>
     </div>
@@ -76,7 +76,7 @@
   </el-pagination>
 
   <el-dialog v-model="visible" destroy-on-close>
-    <cl-form :option="myOption" v-model="form" @submit="handleSubmit"></cl-form>
+    <cl-form :option="myOption" :type="type" v-model="form" @submit="handleSubmit"></cl-form>
   </el-dialog>
 </template>
 
@@ -157,17 +157,22 @@ export default {
     };
   },
   created() {
-    this.loadData();
+    if (this.myOption.init) {
+      this.load();
+    }
   },
   methods: {
     setDefaultForm() {
+      this.defaultForm = {};
       this.myOption.columns.forEach(item => {
-        if (item.value) {
+        if (item.value !== undefined) {
           this.defaultForm[item.prop] = item.value;
         }
       });
+      console.log(this.myOption);
+      console.log("this.defaultForm", this.defaultForm);
     },
-    loadData() {
+    load() {
       this.loading = true;
       this.$emit("load", this.page, (res) => {
         this.tableData = res.records;
@@ -196,7 +201,7 @@ export default {
       this.toBefore(row, () => {
         this.$emit("del", row, (flag = true) => {
           if (flag === true) {
-            this.loadData();
+            this.load();
             ElMessage.success(this.myOption.delBtn.successMessage);
           }
           this.toAfter(row, flag);
@@ -208,11 +213,11 @@ export default {
       if (window && window.localStorage) {
         window.localStorage.setItem("cl-table-page-size", size);
       }
-      this.loadData();
+      this.load();
     },
     handlePageCurrentChange(current) {
       this.page.current = current;
-      this.loadData();
+      this.load();
     },
     filterValue(item, val) {
       const find = item.dicData.find(item => item.value === val);
@@ -254,7 +259,7 @@ export default {
       this.$emit(this.type, form, (flag = true) => {
         if (flag === true) {
           // 编辑成功才隐藏弹窗
-          this.loadData();
+          this.load();
           this.visible = false;
           ElMessage.success(this.myOption.editBtn.successMessage);
         }

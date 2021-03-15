@@ -1,6 +1,6 @@
 <template>
-  <el-checkbox-group v-model="value" :min="myOption.min" :max="myOption.max" @change="handleChange">
-    <el-checkbox :border="myOption.border" :label="item[myOption.dicProps.value]?item[myOption.dicProps.value]:
+  <el-checkbox-group :disabled="myOption.disabled || disabled" v-model="value" :min="myOption.min" :max="myOption.max" @change="handleChange">
+    <el-checkbox :border="myOption.border" :label="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
 item[myOption.dicProps.label]"
                  v-for="item in myOption.dicData">
       {{ item[myOption.dicProps.label] }}
@@ -19,7 +19,8 @@ export default {
       type: Array,
       default: () => []
     },
-    option: {}
+    option: {},
+    disabled:{}
   }, watch: {
     modelValue(val) {
       this.value = val;
