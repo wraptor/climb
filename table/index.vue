@@ -30,19 +30,28 @@
     <!--    =============序号=============    -->
     <el-table-column v-if="myOption.index" :label="myOption.index" type="index" />
     <!--    =============每一列=============    -->
-    <el-table-column
-      v-for="item in myOption.columns"
-      :key="item.prop"
-      :prop="item.prop"
-      :sortable="item.sortable"
-      :show-overflow-tooltip="item.showOverflowTooltip?
+    <template v-for="item in myOption.columns">
+      <el-table-column
+        v-if="item.display!==false"
+        :key="item.prop"
+        :prop="item.prop"
+        :sortable="item.sortable"
+        :show-overflow-tooltip="item.showOverflowTooltip?
       item.showOverflowTooltip:myOption.showOverflowTooltip"
-      :width="item.width?item.width:'auto'"
-      :label="item.label">
-      <template v-if="item.type==='radio' || item.type==='select'" #default="scope">
-        {{ filterValue(item, scope.row[item.prop]) }}
-      </template>
-    </el-table-column>
+        :width="item.width?item.width:'auto'"
+        :label="item.label">
+        <template #default="scope">
+          <slot :name="item.prop">
+            <template v-if="item.type==='radio' || item.type==='select'">
+              {{ filterValue(item, scope.row[item.prop]) }}
+            </template>
+            <template v-else>
+              {{ scope.row[item.prop] }}
+            </template>
+          </slot>
+        </template>
+      </el-table-column>
+    </template>
     <!--    =============操作菜单=============    -->
     <el-table-column
       :width="myOption.menuWidth"
@@ -81,8 +90,12 @@
     :total="page.total">
   </el-pagination>
 
-  <el-dialog v-model="visible" destroy-on-close :title="type==='add'?'新增':'编辑'">
-    <cl-form :option="myOption" :type="type" v-model="form" @submit="handleSubmit"></cl-form>
+  <el-dialog v-model="visible" destroy-on-close :title="type==='add'?'新增':'编辑'" :model-value="visible">
+    <cl-form :option="myOption" :type="type" v-model="form" @submit="handleSubmit">
+      <template v-for="item in myOption.columns" v-slot:[item.prop]>
+        <slot :name="item.prop+'Form'" :form="form"></slot>
+      </template>
+    </cl-form>
   </el-dialog>
 </template>
 
@@ -111,6 +124,7 @@ export default {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
         this.setDefaultForm();
+        this.setDefaultDicData();
       },
       immediate: true,
       deep: true
@@ -178,6 +192,15 @@ export default {
     }
   },
   methods: {
+    setDefaultDicData() {
+      this.myOption.columns.forEach(item => {
+        if (item.dicUrl && window.axios) {
+          window.axios.get(item.dicUrl).then(res => {
+            item.dicData = res;
+          });
+        }
+      });
+    },
     setDefaultForm() {
       this.defaultForm = {};
       this.searchForm = {};
@@ -250,6 +273,9 @@ export default {
       this.load();
     },
     filterValue(item, val) {
+      if (!item.dicData) {
+        return val;
+      }
       const find = item.dicData.find(item => item.value === val);
       if (find) {
         return find.label;
@@ -274,7 +300,10 @@ export default {
     handleAdd() {
       this.type = "add";
       this.form = JSON.parse(JSON.stringify(this.defaultForm));
-      this.toBefore(this.form, () => {
+      this.toBefore(this.form, (row) => {
+        if (row) {
+          this.form = row;
+        }
         this.visible = true;
       });
     },

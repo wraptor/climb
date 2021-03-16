@@ -7,7 +7,7 @@ const beanUtil = {
    */
   copyPropertiesNotEmpty(source, target) {
     if (!source) {
-      return JSON.parse(JSON.stringify(source));
+      return source;
     }
     const isObject = source.constructor === Object;
     const isArray = source.constructor === Array;

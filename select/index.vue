@@ -27,8 +27,28 @@ export default {
       type: [Array, String, Number]
     },
     option: {},
-    disabled:{}
+    dicData: {},
+    dicProps: {},
+    disabled: {}
   }, watch: {
+    dicProps: {
+      handler(val) {
+        if (val) {
+          beanUtil.copyPropertiesNotEmpty({ dicProps: val }, this.myOption);
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    dicData: {
+      handler(val) {
+        if (val) {
+          this.myOption.dicData = val;
+        }
+      },
+      immediate: true,
+      deep: true
+    },
     modelValue: {
       handler(val) {
         this.value = val;
@@ -48,6 +68,12 @@ export default {
       value: this.modelValue,
       myOption: JSON.parse(JSON.stringify(option))
     };
+  },
+  created() {
+    setTimeout(() => {
+      console.log(this.myOption);
+
+    }, 2000);
   },
   emits: ["update:modelValue"],
   methods: {

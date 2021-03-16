@@ -21,28 +21,30 @@
             :inline-message="item.inlineMessage"
             :size="item.size"
           >
-            <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
-                      :disabled="disabledFilter(item)"
-                      v-model="form[item.prop]"
-                      :option="item"
-            ></cl-input>
-            <cl-radio v-else-if="item.type==='radio'"
-                      :disabled="disabledFilter(item)"
-                      :option="item" v-model="form[item.prop]"></cl-radio>
-            <cl-check-box v-else-if="item.type==='checkbox'" :disabled="disabledFilter(item)"
-                          :option="item" v-model="form[item.prop]"></cl-check-box>
-            <cl-select v-else-if="item.type==='select'" :disabled="disabledFilter(item)"
-                       :option="item" v-model="form[item.prop]"></cl-select>
-            <cl-date-picker v-else-if="datePickerTypeArray.findIndex(i=>i===item.type)>=0"
-                            :disabled="disabledFilter(item)" :option="item"
-                            v-model="form[item.prop]"></cl-date-picker>
-            <cl-time-picker v-else-if="timePickerTypeArray.findIndex(i=>i===item.type)>=0"
-                            :disabled="disabledFilter(item)"
-                            :option="item"
-                            v-model="form[item.prop]"></cl-time-picker>
-            <template v-else>
-              {{ item.type }}
-            </template>
+            <slot :name="item.prop">
+              <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
+                        :disabled="disabledFilter(item)"
+                        v-model="form[item.prop]"
+                        :option="item"
+              ></cl-input>
+              <cl-radio v-else-if="item.type==='radio'"
+                        :disabled="disabledFilter(item)"
+                        :option="item" v-model="form[item.prop]"></cl-radio>
+              <cl-check-box v-else-if="item.type==='checkbox'" :disabled="disabledFilter(item)"
+                            :option="item" v-model="form[item.prop]"></cl-check-box>
+              <cl-select v-else-if="item.type==='select'" :disabled="disabledFilter(item)"
+                         :option="item" v-model="form[item.prop]"></cl-select>
+              <cl-date-picker v-else-if="datePickerTypeArray.findIndex(i=>i===item.type)>=0"
+                              :disabled="disabledFilter(item)" :option="item"
+                              v-model="form[item.prop]"></cl-date-picker>
+              <cl-time-picker v-else-if="timePickerTypeArray.findIndex(i=>i===item.type)>=0"
+                              :disabled="disabledFilter(item)"
+                              :option="item"
+                              v-model="form[item.prop]"></cl-time-picker>
+              <template v-else>
+                {{ item.type }}
+              </template>
+            </slot>
           </el-form-item>
         </el-col>
       </template>
