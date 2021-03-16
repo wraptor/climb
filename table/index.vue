@@ -21,6 +21,7 @@
     v-loading="loading"
     :index="myOption.index"
     :data="tableData"
+    :row-style="myOption.rowStyle"
     :border="myOption.border"
     :empty-text="myOption.emptyText"
     :tooltip-effect="myOption.tooltipEffect"

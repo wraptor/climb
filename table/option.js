@@ -2,6 +2,9 @@ export default {
   stripe: true, //是否为斑马纹 table
   index: "序号",
   columns: [],
+  rowStyle: {
+    height: '50px'
+  },
 
   showOverflowTooltip: true,
   resizable: true,//是否可调整宽度
@@ -17,7 +20,7 @@ export default {
     circle: true,
     display: true //true/false
   },
-  searchBtnRight:true,
+  searchBtnRight: true,
   searchBtn: {
     text: "搜 索",
     icon: "el-icon-search",
