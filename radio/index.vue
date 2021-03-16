@@ -2,14 +2,14 @@
   <el-radio-group v-model="value" :disabled="myOption.disabled || disabled" @change="handleChange">
     <el-radio :border="myOption.border" :label="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
 item[myOption.dicProps.label]"
-              v-for="item in myOption.dicData">
+              v-for="item in myOption.dicData" :key="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
+item[myOption.dicProps.label]">
       {{ item[myOption.dicProps.label] }}
     </el-radio>
   </el-radio-group>
 </template>
 
 <script>
-import { ref, reactive } from "vue";
 import option from "./option";
 import beanUtil from "../util/bean-util";
 
