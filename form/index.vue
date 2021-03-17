@@ -41,6 +41,8 @@
                               :disabled="disabledFilter(item)"
                               :option="item"
                               v-model="form[item.prop]"></cl-time-picker>
+              <cl-tree-select v-else-if="treeSelectArray.findIndex(i=>i===item.type)>=0" :option="item"
+                              v-model="form[item.prop]"></cl-tree-select>
               <template v-else>
                 {{ item.type }}
               </template>
@@ -55,7 +57,7 @@
             :icon="
               loading ? 'el-icon-loading' : (submitBtn?submitBtn.icon:myOption.submitBtn.icon)
             "
-            @click="onSubmit"
+            @click="submit"
             :size="myOption.submitBtn.size"
             v-if="
               myOption.submitBtn !== false &&
@@ -93,7 +95,7 @@
           :icon="
               loading ? 'el-icon-loading' : (submitBtn?submitBtn.icon:myOption.submitBtn.icon)
             "
-          @click="onSubmit"
+          @click="submit"
           :size="myOption.submitBtn.size"
           v-if="
               myOption.submitBtn !== false &&
@@ -127,7 +129,7 @@
 <script>
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import { inputTypeArray, datePickerTypeArray, timePickerTypeArray } from "../util/type";
+import { inputTypeArray, datePickerTypeArray, timePickerTypeArray, treeSelectArray } from "../util/type";
 import { debounce } from "../util/util";
 
 export default {
@@ -143,7 +145,7 @@ export default {
       type: String
     },
     option: {
-      type: Object,
+      type: [Object, Function],
       default: () => {
         return {};
       }
@@ -174,6 +176,7 @@ export default {
       inputTypeArray,
       datePickerTypeArray,
       timePickerTypeArray,
+      treeSelectArray,
       loading: false,
       form: JSON.parse(JSON.stringify(this.modelValue)),
       myOption: JSON.parse(JSON.stringify(option)),
@@ -217,7 +220,7 @@ export default {
       const typeRules = item[this.type + "Rules"];
       return typeRules ? typeRules : item.rules;
     },
-    onSubmit: debounce(function() {
+    submit: debounce(function() {
       if (this.myOption.repeat) {
         this.loading = true;
       }

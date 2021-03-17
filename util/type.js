@@ -16,3 +16,6 @@ export const datePickerTypeArray = [
   "datetime",
   "datetimerange"
 ];
+export const treeSelectArray = [
+  "tree", "treeselect", "treeSelect"
+];

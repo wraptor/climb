@@ -58,6 +58,12 @@ export default {
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+        console.log(this.myOption);
+        if (this.myOption.dicUrl) {
+          window.axios.get(this.myOption.dicUrl).then(res => {
+            this.myOption.dicData = res;
+          });
+        }
       },
       immediate: true,
       deep: true
