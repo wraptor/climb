@@ -8,6 +8,7 @@ import ClTimePicker from "./time-picker";
 import ClDatePicker from "./date-picker";
 import ClMenu from "./menu";
 import ClTreeSelect from "./tree-select";
+import ClTagInput from "./tag-input";
 
 const components = [
   ClForm,
@@ -19,7 +20,8 @@ const components = [
   ClMenu,
   ClTimePicker,
   ClDatePicker,
-  ClTreeSelect
+  ClTreeSelect,
+  ClTagInput
 ];
 
 (function() {

@@ -1,9 +1,9 @@
 <template>
   <el-checkbox-group :disabled="myOption.disabled || disabled" v-model="value" :min="myOption.min" :max="myOption.max" @change="handleChange">
-    <el-checkbox :border="myOption.border" :label="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
-item[myOption.dicProps.label]"
+    <el-checkbox :border="myOption.border" :label="item[myOption.props.value]!==undefined?item[myOption.props.value]:
+item[myOption.props.label]"
                  v-for="item in myOption.dicData">
-      {{ item[myOption.dicProps.label] }}
+      {{ item[myOption.props.label] }}
     </el-checkbox>
   </el-checkbox-group>
 </template>

@@ -43,6 +43,9 @@
                               v-model="form[item.prop]"></cl-time-picker>
               <cl-tree-select v-else-if="treeSelectArray.findIndex(i=>i===item.type)>=0" :option="item"
                               v-model="form[item.prop]"></cl-tree-select>
+              <cl-tag-input v-else-if="tagInputArray.findIndex(i=>i===item.type)>=0" :option="item"
+                            v-model="form[item.prop]"></cl-tag-input>
+
               <template v-else>
                 {{ item.type }}
               </template>
@@ -129,7 +132,7 @@
 <script>
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import { inputTypeArray, datePickerTypeArray, timePickerTypeArray, treeSelectArray } from "../util/type";
+import { inputTypeArray, datePickerTypeArray, timePickerTypeArray, treeSelectArray, tagInputArray } from "../util/type";
 import { debounce } from "../util/util";
 
 export default {
@@ -157,7 +160,16 @@ export default {
   watch: {
     modelValue: {
       handler(val) {
-        this.form = JSON.parse(JSON.stringify(val));
+        this.form = val;
+      },
+      immediate: true,
+      deep: true
+    },
+    form: {
+      handler(val) {
+        if (val) {
+          this.$emit("update:modelValue", val);
+        }
       },
       immediate: true,
       deep: true
@@ -170,13 +182,14 @@ export default {
       deep: true
     }
   },
-  emits: ["submit"],
+  emits: ["submit", "update:modelValue"],
   data() {
     return {
       inputTypeArray,
       datePickerTypeArray,
       timePickerTypeArray,
       treeSelectArray,
+      tagInputArray,
       loading: false,
       form: JSON.parse(JSON.stringify(this.modelValue)),
       myOption: JSON.parse(JSON.stringify(option)),
@@ -194,12 +207,19 @@ export default {
       return (itemSpan && itemSpan > 0) ? itemSpan : globalSpan;
     },
     displayFilter(item) {
+      let display;
       if (!this.type) {
-        return true;
+        display = item.display;
       } else if (this.type === "search") {
         return item && item.search;
+      } else {
+        display = item[this.type + "Display"];
       }
-      return item[this.type + "Display"] !== false;
+      if (Object.prototype.toString.call(display) === "[object Function]") {
+        return display(this.form);
+      } else {
+        return display !== false;
+      }
     },
     disabledFilter(item) {
       if (this.disabled || this.myOption.disabled) {

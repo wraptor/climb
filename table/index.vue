@@ -91,7 +91,8 @@
     :total="page.total">
   </el-pagination>
 
-  <el-dialog v-model="visible" destroy-on-close :title="type==='add'?'新增':'编辑'" :model-value="visible">
+  <el-dialog v-model="visible" destroy-on-close :title="type==='add'?'新增':'编辑'" :model-value="visible"
+             :width="myOption.dialogWidth">
     <cl-form :option="myOption" :type="type" v-model="form" @submit="handleSubmit">
       <template v-for="item in myOption.columns" v-slot:[item.prop]>
         <slot :name="item.prop+'Form'" :form="form"></slot>
@@ -214,8 +215,8 @@ export default {
         }
       });
     },
-    handleSearch(form, done) {
-      this.type = "search";
+    handleSearch(form, done, type = "search") {
+      this.type = type;
       this.toBefore(form, cusForm => {
         this.loading = true;
         this.$emit("load", Object.assign(this.page, cusForm ? cusForm : form), res => {
@@ -237,7 +238,7 @@ export default {
     },
     load() {
       this.handleSearch({}, () => {
-      });
+      }, "load");
     },
     toBefore(row, done) {
       if (this.$attrs["before"]) {

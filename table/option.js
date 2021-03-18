@@ -3,13 +3,14 @@ export default {
   index: "序号",
   columns: [],
   rowStyle: {
-    height: '50px'
+    height: "50px"
   },
 
   showOverflowTooltip: true,
   resizable: true,//是否可调整宽度
 
   //ext
+  dialogWidth: "50%",
   init: true,
   menu: true,
   menuWidth: 150,

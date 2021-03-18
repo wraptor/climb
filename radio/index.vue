@@ -1,10 +1,10 @@
 <template>
   <el-radio-group v-model="value" :disabled="myOption.disabled || disabled" @change="handleChange">
-    <el-radio :border="myOption.border" :label="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
-item[myOption.dicProps.label]"
-              v-for="item in myOption.dicData" :key="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
-item[myOption.dicProps.label]">
-      {{ item[myOption.dicProps.label] }}
+    <el-radio :border="myOption.border" :label="item[myOption.props.value]!==undefined?item[myOption.props.value]:
+item[myOption.props.label]"
+              v-for="item in myOption.dicData" :key="item[myOption.props.value]!==undefined?item[myOption.props.value]:
+item[myOption.props.label]">
+      {{ item[myOption.props.label] }}
     </el-radio>
   </el-radio-group>
 </template>

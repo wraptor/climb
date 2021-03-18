@@ -1,13 +1,13 @@
 // BeanUtils
 const dicUtil = {
-  getData(http, url, dicProps, callback) {
+  getData(http, url, props, callback) {
     if (http) {
       if (url) {
         http
           .get(url)
           .then(response => {
-            if (dicProps.data) {
-              callback(response.data[dicProps.data]);
+            if (props.data) {
+              callback(response.data[props.data]);
             } else {
               callback(response.data);
             }

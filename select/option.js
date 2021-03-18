@@ -5,7 +5,7 @@ export default {
 
   //ext
   dicData: [], //字典数据
-  dicProps: {
+  props: {
     //字典的prop修改
     label: "label",
     value: "value",

@@ -7,11 +7,11 @@
              v-model="value" @change="handleChange">
     <el-option
       v-for="item in myOption.dicData"
-      :key="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
-item[myOption.dicProps.label]"
-      :label="item[myOption.dicProps.label]"
-      :value="item[myOption.dicProps.value]!==undefined?item[myOption.dicProps.value]:
-item[myOption.dicProps.label]">
+      :key="item[myOption.props.value]!==undefined?item[myOption.props.value]:
+item[myOption.props.label]"
+      :label="item[myOption.props.label]"
+      :value="item[myOption.props.value]!==undefined?item[myOption.props.value]:
+item[myOption.props.label]">
     </el-option>
   </el-select>
 </template>
@@ -28,13 +28,13 @@ export default {
     },
     option: {},
     dicData: {},
-    dicProps: {},
+    props: {},
     disabled: {}
   }, watch: {
-    dicProps: {
+    props: {
       handler(val) {
         if (val) {
-          beanUtil.copyPropertiesNotEmpty({ dicProps: val }, this.myOption);
+          beanUtil.copyPropertiesNotEmpty({ props: val }, this.myOption);
         }
       },
       immediate: true,
