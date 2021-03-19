@@ -4,6 +4,7 @@
              :disabled="myOption.disabled || disabled"
              :placeholder="myOption.placeholder"
              :clearable="myOption.clearable"
+             style="width: 100%"
              v-model="value" @change="handleChange">
     <el-option
       v-for="item in myOption.dicData"

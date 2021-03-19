@@ -198,10 +198,13 @@ export default {
  },
  methods: {
   labelWidthFilter(item) {
-   if (!this.type) {
-    return item.labelWidth+'px';
+   let globalWidth = this.myOption.labelWidth;
+   let itemWidth = item.labelWidth;
+   if (this.type) {
+    globalWidth = this.myOption[this.type + "LabelWidth"] ? this.myOption[this.type + "LabelWidth"] : globalWidth;
+    itemWidth = item[this.type + "LabelWidth"] ? item[this.type + "LabelWidth"] : itemWidth;
    }
-   return item[this.type + "LabelWidth"]?item[this.type + "LabelWidth"]+'px':item.labelWidth+'px';
+   return (itemWidth && itemWidth > 0) ? itemWidth + 'px' : globalWidth + 'px';
   },
   spanFilter(item = {}) {
    let globalSpan = this.myOption.span;
@@ -217,7 +220,6 @@ export default {
    if (this.type) {
     globalSpan = this.myOption[this.type + "BtnSpan"] ? this.myOption[this.type + "BtnSpan"] : globalSpan;
    }
-   console.log("ssssssss",globalSpan)
    return globalSpan;
   },
   displayFilter(item) {
