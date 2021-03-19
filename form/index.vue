@@ -84,7 +84,7 @@
           >
             {{ myOption.resetBtn.text }}
           </el-button>
-          <slot name="btn"/>
+          <slot name="btn" />
         </div>
       </el-col>
     </el-row>
@@ -122,7 +122,7 @@
         >
           {{ myOption.resetBtn.text }}
         </el-button>
-        <slot name="btn"/>
+        <slot name="btn" />
       </div>
       <!--      </el-form-item>-->
     </el-row>
@@ -132,150 +132,160 @@
 <script>
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import {inputTypeArray, datePickerTypeArray, timePickerTypeArray, treeSelectArray, tagInputArray} from "../util/type";
-import {debounce} from "../util/util";
+import { inputTypeArray, datePickerTypeArray, timePickerTypeArray, treeSelectArray, tagInputArray } from "../util/type";
+import { debounce } from "../util/util";
 
 export default {
- name: "ClForm",
- props: {
-  modelValue: {
-   type: Object,
-   default: () => {
-    return {};
-   }
+  name: "ClForm",
+  props: {
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    type: {
+      type: String
+    },
+    option: {
+      type: [Object, Function],
+      default: () => {
+        return {};
+      }
+    },
+    disabled: {},
+    submitBtn: {},
+    btnRight: {},
+    resetBtn: {}
   },
-  type: {
-   type: String
-  },
-  option: {
-   type: [Object, Function],
-   default: () => {
-    return {};
-   }
-  },
-  disabled: {},
-  submitBtn: {},
-  btnRight: {}
- },
- watch: {
-  modelValue: {
-   handler(val) {
-    this.form = val;
-   },
-   immediate: true,
-   deep: true
-  },
-  form: {
-   handler(val) {
-    if (val) {
-     this.$emit("update:modelValue", val);
+  watch: {
+    modelValue: {
+      handler(val) {
+        this.form = val;
+      },
+      immediate: true,
+      deep: true
+    },
+    form: {
+      handler(val) {
+        if (val) {
+          this.$emit("update:modelValue", val);
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    resetBtn: {
+      handler(val) {
+        if (val !== undefined) {
+          beanUtil.copyPropertiesNotEmpty({ resetBtn: val }, this.myOption);
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    option: {
+      handler(val) {
+        beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+      },
+      immediate: true,
+      deep: true
     }
-   },
-   immediate: true,
-   deep: true
   },
-  option: {
-   handler(val) {
-    beanUtil.copyPropertiesNotEmpty(val, this.myOption);
-   },
-   immediate: true,
-   deep: true
-  }
- },
- emits: ["submit", "update:modelValue"],
- data() {
-  return {
-   inputTypeArray,
-   datePickerTypeArray,
-   timePickerTypeArray,
-   treeSelectArray,
-   tagInputArray,
-   loading: false,
-   form: JSON.parse(JSON.stringify(this.modelValue)),
-   myOption: JSON.parse(JSON.stringify(option)),
-   backForm: JSON.parse(JSON.stringify(this.modelValue))
-  };
- },
- methods: {
-  labelWidthFilter(item) {
-   let globalWidth = this.myOption.labelWidth;
-   let itemWidth = item.labelWidth;
-   if (this.type) {
-    globalWidth = this.myOption[this.type + "LabelWidth"] ? this.myOption[this.type + "LabelWidth"] : globalWidth;
-    itemWidth = item[this.type + "LabelWidth"] ? item[this.type + "LabelWidth"] : itemWidth;
-   }
-   return (itemWidth && itemWidth > 0) ? itemWidth + 'px' : globalWidth + 'px';
+  emits: ["submit", "update:modelValue"],
+  data() {
+    return {
+      inputTypeArray,
+      datePickerTypeArray,
+      timePickerTypeArray,
+      treeSelectArray,
+      tagInputArray,
+      loading: false,
+      form: JSON.parse(JSON.stringify(this.modelValue)),
+      myOption: JSON.parse(JSON.stringify(option)),
+      backForm: JSON.parse(JSON.stringify(this.modelValue))
+    };
   },
-  spanFilter(item = {}) {
-   let globalSpan = this.myOption.span;
-   let itemSpan = item.span;
-   if (this.type) {
-    globalSpan = this.myOption[this.type + "Span"] ? this.myOption[this.type + "Span"] : globalSpan;
-    itemSpan = item[this.type + "Span"] ? item[this.type + "Span"] : itemSpan;
-   }
-   return (itemSpan && itemSpan > 0) ? itemSpan : globalSpan;
-  },
-  btnSpanFilter() {
-   let globalSpan = this.myOption.span;
-   if (this.type) {
-    globalSpan = this.myOption[this.type + "BtnSpan"] ? this.myOption[this.type + "BtnSpan"] : globalSpan;
-   }
-   return globalSpan;
-  },
-  displayFilter(item) {
-   let display;
-   if (!this.type) {
-    display = item.display;
-   } else if (this.type === "search") {
-    return item && item.search;
-   } else {
-    display = item[this.type + "Display"];
-   }
-   if (Object.prototype.toString.call(display) === "[object Function]") {
-    return display(this.form);
-   } else {
-    return display !== false;
-   }
-  },
-  disabledFilter(item) {
-   if (this.disabled || this.myOption.disabled) {
-    return true;
-   }
-   if (!this.type) {
-    return false;
-   }
-   return item[this.type + "Disabled"] === true;
-  },
-  rulesFilter(item) {
-   if (this.type === "search") {
-    return item.searchRules;
-   }
-   if (!this.type) {
-    return item.rules;
-   }
-   const typeRules = item[this.type + "Rules"];
-   return typeRules ? typeRules : item.rules;
-  },
-  submit: debounce(function () {
-   if (this.myOption.repeat) {
-    this.loading = true;
-   }
-   this.$nextTick(() => {
-    this.$refs.clFormRef.validate(isValidate => {
-     if (isValidate) {
-      this.$emit("submit", this.form, () => {
-       this.loading = false;
+  methods: {
+    labelWidthFilter(item) {
+      let globalWidth = this.myOption.labelWidth;
+      let itemWidth = item.labelWidth;
+      if (this.type) {
+        globalWidth = this.myOption[this.type + "LabelWidth"] ? this.myOption[this.type + "LabelWidth"] : globalWidth;
+        itemWidth = item[this.type + "LabelWidth"] ? item[this.type + "LabelWidth"] : itemWidth;
+      }
+      return (itemWidth && itemWidth > 0) ? itemWidth + "px" : globalWidth + "px";
+    },
+    spanFilter(item = {}) {
+      let globalSpan = this.myOption.span;
+      let itemSpan = item.span;
+      if (this.type) {
+        globalSpan = this.myOption[this.type + "Span"] ? this.myOption[this.type + "Span"] : globalSpan;
+        itemSpan = item[this.type + "Span"] ? item[this.type + "Span"] : itemSpan;
+      }
+      return (itemSpan && itemSpan > 0) ? itemSpan : globalSpan;
+    },
+    btnSpanFilter() {
+      let globalSpan = this.myOption.span;
+      if (this.type) {
+        globalSpan = this.myOption[this.type + "BtnSpan"] ? this.myOption[this.type + "BtnSpan"] : globalSpan;
+      }
+      return globalSpan;
+    },
+    displayFilter(item) {
+      let display;
+      if (!this.type) {
+        display = item.display;
+      } else if (this.type === "search") {
+        return item && item.search;
+      } else {
+        display = item[this.type + "Display"];
+      }
+      if (Object.prototype.toString.call(display) === "[object Function]") {
+        return display(this.form);
+      } else {
+        return display !== false;
+      }
+    },
+    disabledFilter(item) {
+      if (this.disabled || this.myOption.disabled) {
+        return true;
+      }
+      if (!this.type) {
+        return false;
+      }
+      return item[this.type + "Disabled"] === true;
+    },
+    rulesFilter(item) {
+      if (this.type === "search") {
+        return item.searchRules;
+      }
+      if (!this.type) {
+        return item.rules;
+      }
+      const typeRules = item[this.type + "Rules"];
+      return typeRules ? typeRules : item.rules;
+    },
+    submit: debounce(function() {
+      if (this.myOption.repeat) {
+        this.loading = true;
+      }
+      this.$nextTick(() => {
+        this.$refs.clFormRef.validate(isValidate => {
+          if (isValidate) {
+            this.$emit("submit", this.form, () => {
+              this.loading = false;
+            });
+          } else {
+            this.loading = false;
+          }
+        });
       });
-     } else {
-      this.loading = false;
-     }
-    });
-   });
-  }),
-  onReset() {
-   this.form = JSON.parse(JSON.stringify(this.backForm));
+    }),
+    onReset() {
+      this.form = JSON.parse(JSON.stringify(this.backForm));
+    }
   }
- }
 };
 </script>
 
