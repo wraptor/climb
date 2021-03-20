@@ -1,8 +1,11 @@
 <template>
   <el-date-picker v-model="value"
+                  :style="myOption.width?{width: myOption.width+'px'}:{}"
                   :disabled="myOption.disabled || disabled"
                   :type="myOption.type"
                   :placeholder="myOption.placeholder"
+                  :start-placeholder="myOption.startPlaceholder"
+                  :end-placeholder="myOption.endPlaceholder"
                   :format="myOption.format"
                   @change="handleChange">
 
