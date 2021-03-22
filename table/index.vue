@@ -1,24 +1,32 @@
 <template>
+  <!--  搜索区域  -->
   <div v-if="hasSearch">
     <cl-form :option="myOption" type="search" v-model="searchForm" :submit-btn="myOption.searchBtn"
+             :reset-btn="myOption.searchResetBtn"
              :btn-right="myOption.searchBtnRight"
              @submit="handleSearch"></cl-form>
   </div>
+  <!--  顶部操作菜单  -->
   <div style="width: 100%;display: flex;flex-direction: row;justify-content: space-between">
     <div>
-      <el-button v-if="myPermissions.addBtn && myOption.addBtn!==false && myOption.addBtn.display"
-                 :icon="myOption.addBtn.icon" :type="myOption.addBtn.type" @click="handleAdd">
+      <el-button
+        v-if="myOption.menu!==false && myPermissions.addBtn && myOption.addBtn!==false && myOption.addBtn.display"
+        :icon="myOption.addBtn.icon" :type="myOption.addBtn.type" @click="handleAdd">
         {{ myOption.addBtn.text }}
       </el-button>
+      <slot name="menuLeft"></slot>
     </div>
     <div>
-      <el-button @click="load" v-show="myOption.refreshBtn.display" :circle="myOption.refreshBtn.circle"
+      <slot name="menuRight"></slot>
+      <el-button @click="load" v-if="myOption.refreshBtn!==false && myOption.refreshBtn.display===true"
+                 :circle="myOption.refreshBtn.circle"
                  :icon="myOption.refreshBtn.icon" :type="myOption.refreshBtn.type">
       </el-button>
     </div>
   </div>
   <el-table
     v-loading="loading"
+    @selection-change="handleSelectionChange"
     :index="myOption.index"
     :data="tableData"
     :row-style="myOption.rowStyle"
@@ -28,6 +36,8 @@
     :highlight-current-row="myOption.highlightCurrentRow"
     :stripe="myOption.stripe"
     style="width: 100%;margin-top: 10px">
+    <!--    =============多选=============    -->
+    <el-table-column v-if="myOption.selection" type="selection"></el-table-column>
     <!--    =============序号=============    -->
     <el-table-column v-if="myOption.index" :label="myOption.index" type="index" />
     <!--    =============每一列=============    -->
@@ -42,7 +52,7 @@
         :width="item.width?item.width:'auto'"
         :label="item.label">
         <template #default="scope">
-          <slot :name="item.prop">
+          <slot :name="item.prop" :row="scope.row">
             <template v-if="item.type==='radio' || item.type==='select'">
               {{ filterValue(item, scope.row[item.prop]) }}
             </template>
@@ -55,8 +65,8 @@
     </template>
     <!--    =============操作菜单=============    -->
     <el-table-column
-      :width="myOption.menuWidth"
       v-if="myOption.menu"
+      :width="myOption.menuWidth"
       :label="myOption.menuLabel">
       <template #default="scope">
         <slot name="menuFront" :row="scope.row" :column="scope.column" :index="scope.$index"></slot>
@@ -73,7 +83,8 @@
                    :type="myOption.delBtn.type">
           {{ myOption.delBtn.text }}
         </el-button>
-        <slot name="menu" :row="scope.row" :column="scope.column" :index="scope.$index"></slot>
+        <slot name="menu" :row="scope.row" :column="scope.column" :index="scope.$index">
+        </slot>
       </template>
     </el-table-column>
   </el-table>
@@ -140,7 +151,7 @@ export default {
     }
   },
   inheritAttrs: false,
-  emits: ["load", "add", "edit", "del", "before", "after"],
+  emits: ["load", "add", "edit", "del", "before", "after", "selection-change"],
   computed: {
     hasSearch() {
       let search = false;
@@ -236,7 +247,10 @@ export default {
         });
       });
     },
-    load() {
+    load(reload) {
+      if (reload) {
+        this.page.current = 1;
+      }
       this.handleSearch({}, () => {
       }, "load");
     },
@@ -327,6 +341,9 @@ export default {
         setTimeout(done, 1000);
         this.toAfter(form, flag);
       });
+    },
+    handleSelectionChange(selection) {
+      this.$emit("selection-change", selection);
     }
   }
 };
