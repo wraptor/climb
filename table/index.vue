@@ -292,11 +292,19 @@ export default {
       if (!item.dicData) {
         return val;
       }
-      const find = item.dicData.find(item => item.value === val);
-      if (find) {
-        return find.label;
+      let props ={
+       //字典的prop修改
+       label: "label",
+       value: "value",
+       children: "children",
+       data: "data"
       }
-      return "";
+      beanUtil.copyPropertiesNotEmpty(item.props,props)
+      const find = item.dicData.find(item => item[props.value] === val);
+      if (find) {
+        return find[props.label];
+      }
+      return val;
     },
     handleDel(row) {
       this.type = "del";
