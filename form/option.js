@@ -13,7 +13,7 @@ export default {
   // disabled: false, //true/false,是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效
   //el
   inline: false,   //行内表单
-  labelWidth: "100px",
+  labelWidth: 100,
 
   //ext
   repeat: true, //true/false,是否防重提交

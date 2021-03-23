@@ -27,10 +27,10 @@
                         v-model="form[item.prop]"
                         :option="item"
               >
-                <template #suffix>
+                <template #suffix v-if="$slots[item.prop+'Suffix']">
                   <slot :name="item.prop+'Suffix'"></slot>
                 </template>
-                <template #prefix>
+                <template #prefix v-if="$slots[item.prop+'Prefix']">
                   <slot :name="item.prop+'Prefix'"></slot>
                 </template>
               </cl-input>
@@ -194,7 +194,7 @@ export default {
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
-        console.log(val,this.myOption)
+        console.log(val, this.myOption)
       },
       immediate: true,
       deep: true
