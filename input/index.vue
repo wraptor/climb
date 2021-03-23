@@ -14,17 +14,11 @@
             :name="myOption.prop"
             :placeholder="myOption.placeholder"
             @input="handleInput">
-    <template #suffix>
+    <template #suffix v-if="$slots.suffix">
       <slot name="suffix"></slot>
     </template>
-    <template #append>
-      <slot name="append"></slot>
-    </template>
-    <template #prefix>
+    <template #prefix v-if="$slots.prefix">
       <slot name="prefix"></slot>
-    </template>
-    <template #prepend>
-      <slot name="prepend"></slot>
     </template>
   </el-input>
 
@@ -68,6 +62,9 @@ export default {
       immediate: true,
       deep: true
     }
+  },
+  created() {
+    console.log("slot",this.$slots)
   },
   setup(props, ctx) {
     return {
