@@ -33,12 +33,6 @@
                 <template #prefix>
                   <slot :name="item.prop+'Prefix'"></slot>
                 </template>
-                <template #append>
-                  <slot :name="item.prop+'Append'"></slot>
-                </template>
-                <template #prepend>
-                  <slot :name="item.prop+'Prepend'"></slot>
-                </template>
               </cl-input>
               <cl-radio v-else-if="item.type==='radio'"
                         :disabled="disabledFilter(item)"
