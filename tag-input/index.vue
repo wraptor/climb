@@ -43,7 +43,9 @@ export default {
   watch: {
     modelValue: {
       handler(val) {
-        this.dynamicTags = JSON.parse(JSON.stringify(val))
+        if (val) {
+          this.dynamicTags = JSON.parse(JSON.stringify(val))
+        }
       },
       immediate: true,
       deep: true
