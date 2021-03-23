@@ -14,13 +14,25 @@
             :name="myOption.prop"
             :placeholder="myOption.placeholder"
             @input="handleInput">
-
+    <template #suffix>
+      <slot name="suffix"></slot>
+    </template>
+    <template #append>
+      <slot name="append"></slot>
+    </template>
+    <template #prefix>
+      <slot name="prefix"></slot>
+    </template>
+    <template #prepend>
+      <slot name="prepend"></slot>
+    </template>
   </el-input>
 
   <el-input-number
     v-else
     :disabled="myOption.disabled || disabled"
     v-model="value"
+    :model-value="value"
     :min="myOption.min"
     :max="myOption.max"
     :step="myOption.step"
