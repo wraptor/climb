@@ -333,13 +333,13 @@ export default {
     },
     handleEdit(row) {
       this.type = "edit";
-      this.form = row;
+      this.form = JSON.parse(JSON.stringify(row));
       this.toBefore(row, () => {
         this.visible = true;
       });
     },
     handleSubmit(form, done) {
-      this.$emit(this.type, form, (flag = true) => {
+     this.$emit(this.type, form, (flag = true) => {
         if (flag === true) {
           // 编辑成功才隐藏弹窗
           this.load();
