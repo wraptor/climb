@@ -83,7 +83,7 @@
                    :type="myOption.delBtn.type">
           {{ myOption.delBtn.text }}
         </el-button>
-        <slot name="menu" :row="scope.row" :column="scope.column" :index="scope.$index">
+        <slot name="menu" :row="scope.row" :column="scope.column" :index="scope.$index" :page="page">
         </slot>
       </template>
     </el-table-column>
