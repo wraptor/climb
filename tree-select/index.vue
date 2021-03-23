@@ -4,7 +4,8 @@
       <el-tree :empty-text="myOption.emptyText" :default-expand-all="myOption.defaultExpandAll"
                :node-key="myOption.nodeKey?myOption.nodeKey:myOption.props.value"
                :data="myOption.dicData"
-               :expand-on-click-node="myOption.expandOnClickMode	"
+               :default-checked-keys="myOption.showCheckbox?modelValue:[]"
+               :expand-on-click-node="myOption.expandOnClickMode"
                :accordion="myOption.accordion"
                :show-checkbox="myOption.showCheckbox"
                :check-strictly="myOption.checkStrictly"
@@ -93,7 +94,6 @@ export default {
     handleNodeClick(data) {
       if (!this.myOption.showCheckbox) {
         this.value = data[this.myOption.props.value] ? data[this.myOption.props.value] : data[this.myOption.props.label];
-        this.label = data[this.myOption.props.label];
         this.$emit("update:modelValue", this.value);
         this.$refs.treeSelectRef.blur();
         if (this.myOption.change) {
