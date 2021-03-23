@@ -1,10 +1,11 @@
 <template>
-  <el-select :model-value="value" ref="treeSelectRef">
-    <el-option :value="value" :label="label">
+  <el-select :model-value="myValue" ref="treeSelectRef">
+    <el-option :value="myValue" :label="label">
       <el-tree :empty-text="myOption.emptyText" :default-expand-all="myOption.defaultExpandAll"
                :node-key="myOption.nodeKey?myOption.nodeKey:myOption.props.value"
                :data="myOption.dicData"
-               :expand-on-click-node="myOption.expandOnClickMode	"
+               :default-checked-keys="myOption.showCheckbox?modelValue:[]"
+               :expand-on-click-node="myOption.expandOnClickMode"
                :accordion="myOption.accordion"
                :show-checkbox="myOption.showCheckbox"
                :check-strictly="myOption.checkStrictly"
@@ -14,9 +15,6 @@
     </el-option>
   </el-select>
 </template>
-<!--        <template #default="{ node, data }">-->
-<!--          <span :class="{'is-not-check-box-mode':!myOption.showCheckbox}">{{ data.name }}</span>-->
-<!--        </template>-->
 <script>
 import beanUtil from "../util/bean-util";
 import option from "./option";
@@ -30,6 +28,15 @@ export default {
   },
   emits: ["update:modelValue"],
   watch: {
+    modelValue: {
+      handler(val) {
+        if (val !== undefined) {
+          this.value = val
+        }
+      },
+      immediate: true,
+      deep: true
+    },
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
@@ -42,9 +49,35 @@ export default {
   data() {
     return {
       value: "",
-      label: "",
       myOption: JSON.parse(JSON.stringify(option))
     };
+  },
+  computed: {
+    myValue() {
+      if (this.modelValue && this.modelValue.length > 0) {
+        return JSON.stringify(this.modelValue)
+      }
+      return ""
+    },
+    label() {
+      if (!this.myOption.showCheckbox) {
+        const find = this.myOption.dicData.find(item => item[this.myOption.props.value] === this.modelValue)
+        if (find) {
+          return find[this.myOption.props.label]
+        }
+      } else {
+        const checkedNodes = this.myOption.dicData.filter(item => this.modelValue.findIndex(i => item[this.myOption.props.value] === i) >= 0)
+        let label = "";
+        for (let i = 0; i < checkedNodes.length; i++) {
+          label += checkedNodes[i][this.myOption.props.label];
+          if (i < checkedNodes.length - 1) {
+            label += " | ";
+          }
+        }
+        return label
+      }
+      return ""
+    }
   },
   methods: {
     initDic() {
@@ -54,26 +87,13 @@ export default {
         });
       }
     },
-    handleCheck(data, { checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys }) {
-      console.log(data);
-      console.log(checkedNodes);
-      console.log(checkedKeys);
-
+    handleCheck(data, {checkedKeys}) {
       this.value = checkedKeys;
-      this.label = "";
-      for (let i = 0; i < checkedNodes.length; i++) {
-        this.label += checkedNodes[i][this.myOption.props.label];
-        if (i < checkedNodes.length - 1) {
-          this.label += " | ";
-        }
-      }
       this.$emit("update:modelValue", checkedKeys);
     },
     handleNodeClick(data) {
-      console.log(data);
       if (!this.myOption.showCheckbox) {
         this.value = data[this.myOption.props.value] ? data[this.myOption.props.value] : data[this.myOption.props.label];
-        this.label = data[this.myOption.props.label];
         this.$emit("update:modelValue", this.value);
         this.$refs.treeSelectRef.blur();
         if (this.myOption.change) {

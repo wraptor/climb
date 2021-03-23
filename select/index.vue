@@ -59,7 +59,6 @@ export default {
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
-        console.log(this.myOption);
         if (this.myOption.dicUrl) {
           window.axios.get(this.myOption.dicUrl).then(res => {
             this.myOption.dicData = res;
@@ -75,12 +74,6 @@ export default {
       value: this.modelValue,
       myOption: JSON.parse(JSON.stringify(option))
     };
-  },
-  created() {
-    setTimeout(() => {
-      console.log(this.myOption);
-
-    }, 2000);
   },
   emits: ["update:modelValue"],
   methods: {
