@@ -49,7 +49,7 @@
         :sortable="item.sortable"
         :show-overflow-tooltip="item.showOverflowTooltip?
       item.showOverflowTooltip:myOption.showOverflowTooltip"
-        :width="item.width?item.width:'auto'"
+        :width="widthFilter(item)"
         :label="item.label">
         <template #default="scope">
           <slot :name="item.prop" :row="scope.row">
@@ -205,6 +205,9 @@ export default {
     }
   },
   methods: {
+     widthFilter(item){
+      return item.width>0?item.width+'px':'auto'
+     },
     setDefaultDicData() {
       this.myOption.columns.forEach(item => {
         if (item.dicUrl && window.axios) {
