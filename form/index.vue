@@ -5,28 +5,41 @@
     <el-row :gutter="myOption.gutter">
       <template v-for="item in myOption.columns">
         <el-col
-          v-bind:key="item.prop"
-          v-if="displayFilter(item)"
-          :span="spanFilter(item)"
+            v-bind:key="item.prop"
+            v-if="displayFilter(item)"
+            :span="spanFilter(item)"
         >
           <el-form-item
-            style="width: 100%;"
-            :label="item.label ? item.label + '：' : ''"
-            :prop="item.prop"
-            :label-width="labelWidthFilter(item)"
-            :required="item.required"
-            :rules="rulesFilter(item)"
-            :error="item.error"
-            :show-message="item.showMessage"
-            :inline-message="item.inlineMessage"
-            :size="item.size"
+              style="width: 100%;"
+              :label="item.label ? item.label + '：' : ''"
+              :prop="item.prop"
+              :label-width="labelWidthFilter(item)"
+              :required="item.required"
+              :rules="rulesFilter(item)"
+              :error="item.error"
+              :show-message="item.showMessage"
+              :inline-message="item.inlineMessage"
+              :size="item.size"
           >
             <slot :name="item.prop">
               <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
                         :disabled="disabledFilter(item)"
                         v-model="form[item.prop]"
                         :option="item"
-              ></cl-input>
+              >
+                <template #suffix>
+                  <slot :name="item.prop+'Suffix'"></slot>
+                </template>
+                <template #prefix>
+                  <slot :name="item.prop+'Prefix'"></slot>
+                </template>
+                <template #append>
+                  <slot :name="item.prop+'Append'"></slot>
+                </template>
+                <template #prepend>
+                  <slot :name="item.prop+'Prepend'"></slot>
+                </template>
+              </cl-input>
               <cl-radio v-else-if="item.type==='radio'"
                         :disabled="disabledFilter(item)"
                         :option="item" v-model="form[item.prop]"></cl-radio>
@@ -56,6 +69,44 @@
       <el-col :span="btnSpanFilter()" v-if="myOption.btn!==false && (myOption.btnRight===true || btnRight===true)">
         <div style="display: flex;justify-content: flex-end;width: 100%">
           <el-button
+              type="primary"
+              :icon="
+              loading ? 'el-icon-loading' : (submitBtn?submitBtn.icon:myOption.submitBtn.icon)
+            "
+              @click="submit"
+              :size="myOption.submitBtn.size"
+              v-if="
+              myOption.submitBtn !== false &&
+                myOption.submitBtn.display === true
+            "
+          >
+            {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
+          </el-button>
+          <el-button
+              type="primary"
+              plain
+              :icon="
+              loading ? 'el-icon-loading' : myOption.resetBtn.icon
+            "
+              @click="onReset"
+              :size="myOption.resetBtn.size"
+              v-if="
+              myOption.resetBtn !== false &&
+                myOption.resetBtn.display === true
+            "
+          >
+            {{ myOption.resetBtn.text }}
+          </el-button>
+          <slot name="btn"/>
+        </div>
+      </el-col>
+    </el-row>
+
+
+    <el-row justify="center" type="flex" v-if="myOption.btn !== false && myOption.btnRight!==true && btnRight!==true">
+      <!--      <el-form-item v-if="myOption.btn !== false">-->
+      <div>
+        <el-button
             type="primary"
             :icon="
               loading ? 'el-icon-loading' : (submitBtn?submitBtn.icon:myOption.submitBtn.icon)
@@ -66,10 +117,10 @@
               myOption.submitBtn !== false &&
                 myOption.submitBtn.display === true
             "
-          >
-            {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
-          </el-button>
-          <el-button
+        >
+          {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
+        </el-button>
+        <el-button
             type="primary"
             plain
             :icon="
@@ -81,48 +132,10 @@
               myOption.resetBtn !== false &&
                 myOption.resetBtn.display === true
             "
-          >
-            {{ myOption.resetBtn.text }}
-          </el-button>
-          <slot name="btn" />
-        </div>
-      </el-col>
-    </el-row>
-
-
-    <el-row justify="center" type="flex" v-if="myOption.btn !== false && myOption.btnRight!==true && btnRight!==true">
-      <!--      <el-form-item v-if="myOption.btn !== false">-->
-      <div>
-        <el-button
-          type="primary"
-          :icon="
-              loading ? 'el-icon-loading' : (submitBtn?submitBtn.icon:myOption.submitBtn.icon)
-            "
-          @click="submit"
-          :size="myOption.submitBtn.size"
-          v-if="
-              myOption.submitBtn !== false &&
-                myOption.submitBtn.display === true
-            "
-        >
-          {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
-        </el-button>
-        <el-button
-          type="primary"
-          plain
-          :icon="
-              loading ? 'el-icon-loading' : myOption.resetBtn.icon
-            "
-          @click="onReset"
-          :size="myOption.resetBtn.size"
-          v-if="
-              myOption.resetBtn !== false &&
-                myOption.resetBtn.display === true
-            "
         >
           {{ myOption.resetBtn.text }}
         </el-button>
-        <slot name="btn" />
+        <slot name="btn"/>
       </div>
       <!--      </el-form-item>-->
     </el-row>
@@ -132,8 +145,8 @@
 <script>
 import option from "./option";
 import beanUtil from "../util/bean-util";
-import { inputTypeArray, datePickerTypeArray, timePickerTypeArray, treeSelectArray, tagInputArray } from "../util/type";
-import { debounce } from "../util/util";
+import {inputTypeArray, datePickerTypeArray, timePickerTypeArray, treeSelectArray, tagInputArray} from "../util/type";
+import {debounce} from "../util/util";
 
 export default {
   name: "ClForm",
@@ -178,7 +191,7 @@ export default {
     resetBtn: {
       handler(val) {
         if (val !== undefined) {
-          beanUtil.copyPropertiesNotEmpty({ resetBtn: val }, this.myOption);
+          beanUtil.copyPropertiesNotEmpty({resetBtn: val}, this.myOption);
         }
       },
       immediate: true,
@@ -187,6 +200,7 @@ export default {
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+        console.log(val,this.myOption)
       },
       immediate: true,
       deep: true
@@ -266,7 +280,7 @@ export default {
       const typeRules = item[this.type + "Rules"];
       return typeRules ? typeRules : item.rules;
     },
-    submit: debounce(function() {
+    submit: debounce(function () {
       if (this.myOption.repeat) {
         this.loading = true;
       }
