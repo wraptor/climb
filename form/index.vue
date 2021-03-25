@@ -1,5 +1,6 @@
 <template>
   <el-form :inline="myOption.inline"
+           :label-position="myOption.labelPosition"
            :label-width="myOption.labelWidth>0?`${myOption.labelWidth}px`:myOption.labelWidth"
            ref="clFormRef" :model="form" :disabled="loading">
     <el-row :gutter="myOption.gutter">
