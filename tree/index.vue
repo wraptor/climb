@@ -111,11 +111,11 @@ export default {
     },
     append(data) {
       if (this.myOption.addPrompt) {
-        this.$prompt(this.myOption.addPromptText, '提示', {
+        this.$prompt(this.myOption.addPromptText, '添加', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          // inputErrorMessage: '邮箱格式不正确'
+          inputPattern: this.myOption.addPromptPattern,
+          inputErrorMessage: this.myOption.addPromptError
         }).then(({value}) => {
           this.$emit('add', data, value, () => {
             this.initDic()

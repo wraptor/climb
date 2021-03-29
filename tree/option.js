@@ -10,6 +10,8 @@ export default {
     defaultCurrent:false,
     addPrompt:true,
     addPromptText:'请输入',
+    addPromptPattern:undefined,
+    addPromptError:'错误',
     addBtn: {
         icon: 'el-icon-plus',
         text: '添加',
