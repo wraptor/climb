@@ -12,6 +12,7 @@ import ClTagInput from "./tag-input";
 import ClTree from './tree'
 import ClRow from './row'
 import ClCol from './col'
+import ClList from './list'
 const components = [
   ClForm,
   ClTable,
@@ -26,7 +27,8 @@ const components = [
   ClTagInput,
   ClTree,
   ClRow,
-  ClCol
+  ClCol,
+  ClList
 ];
 
 (function() {
