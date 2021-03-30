@@ -19,6 +19,7 @@ export default {
   repeat: true, //true/false,是否防重提交
   readonly: false,
   btn: true,
+  btnTop:0,
   span: 12,
   searchSpan: 6,
   gutter: 20,

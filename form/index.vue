@@ -21,7 +21,7 @@
               :inline-message="item.inlineMessage"
               :size="item.size"
           >
-            <slot :name="item.prop">
+            <slot :name="item.prop" :form="form">
               <cl-input v-if="inputTypeArray.findIndex(i=>i===item.type)>=0"
                         :disabled="disabledFilter(item)"
                         v-model="form[item.prop]"
@@ -99,7 +99,7 @@
 
     <el-row justify="center" type="flex" v-if="myOption.btn !== false && myOption.btnRight!==true && btnRight!==true">
       <!--      <el-form-item v-if="myOption.btn !== false">-->
-      <div>
+      <div :style="{marginTop:myOption.btnTop+'px'}">
         <el-button
             type="primary"
             :icon="
