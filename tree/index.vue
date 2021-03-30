@@ -3,7 +3,7 @@
        v-loading="loading">
     <div class="el-tree__empty-block" style="min-height: 80px">
       <div class="el-tree__empty-text un-select" style="margin-top: 10px">
-        <div>暂无部门</div>
+        <div>{{myOption.empty}}</div>
         <el-button type="text" @click="append({id:0})" style="padding: 2px 15px;">点击添加</el-button>
       </div>
     </div>

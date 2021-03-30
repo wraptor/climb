@@ -7,6 +7,7 @@ export default {
         disabled: "disabled"
     },
     menu:true,
+    empty:"暂无数据",
     defaultCurrent:false,
     addPrompt:true,
     addPromptText:'请输入',
