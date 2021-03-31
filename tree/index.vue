@@ -27,19 +27,23 @@
     <template #default="{ node, data }">
       <div class="custom-tree-node">
         {{ node.label }}
-        <el-dropdown trigger="click" v-show="myOption.menu" placement="bottom-start">
-          <el-button type="text" size="mini" style="margin-right: 6px">操作</el-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item :icon="myOption.addBtn.icon" @click.native="() => append(data)"
-                                v-if="myOption.addBtn">{{ myOption.addBtn.text }}
-              </el-dropdown-item>
-              <el-dropdown-item :icon="myOption.delBtn.icon" @click.native="() => remove(node, data)"
-                                v-if="myOption.delBtn">{{ myOption.delBtn.text }}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <div>
+          <el-button type="text" v-if="myOption.addBtn" @click.native="() => append(data)">{{ myOption.addBtn.text }}</el-button>
+          <el-button type="text" v-if="myOption.delBtn" @click.native="() => remove(node, data)">{{ myOption.delBtn.text }}</el-button>
+        </div>
+<!--        <el-dropdown trigger="click" v-show="myOption.menu" placement="bottom-start">-->
+<!--          <el-button type="text" size="mini" style="margin-right: 6px">操作</el-button>-->
+<!--          <template #dropdown>-->
+<!--            <el-dropdown-menu>-->
+<!--              <el-dropdown-item :icon="myOption.addBtn.icon" @click.native="() => append(data)"-->
+<!--                                v-if="myOption.addBtn">{{ myOption.addBtn.text }}-->
+<!--              </el-dropdown-item>-->
+<!--              <el-dropdown-item :icon="myOption.delBtn.icon" @click.native="() => remove(node, data)"-->
+<!--                                v-if="myOption.delBtn">{{ myOption.delBtn.text }}-->
+<!--              </el-dropdown-item>-->
+<!--            </el-dropdown-menu>-->
+<!--          </template>-->
+<!--        </el-dropdown>-->
       </div>
     </template>
   </el-tree>
