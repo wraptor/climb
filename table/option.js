@@ -7,7 +7,7 @@ export default {
   },
 
   showOverflowTooltip: true,
-  resizable: true,//是否可调整宽度
+  resizable: true, //是否可调整宽度
 
   //ext
   dialogWidth: "50%",

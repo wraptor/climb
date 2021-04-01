@@ -12,14 +12,14 @@ export default {
   // size: undefined, //large/medium/small/mini,用于控制该表单内组件的尺寸
   // disabled: false, //true/false,是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效
   //el
-  inline: false,   //行内表单
+  inline: false, //行内表单
   labelWidth: 100,
 
   //ext
   repeat: true, //true/false,是否防重提交
   readonly: false,
   btn: true,
-  btnTop:0,
+  btnTop: 0,
   span: 12,
   searchSpan: 6,
   gutter: 20,

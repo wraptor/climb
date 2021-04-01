@@ -21,7 +21,6 @@ export default {
   //   data: "data"
   // }
 
-
   //ext
   dicData: [], //字典数据
   props: {

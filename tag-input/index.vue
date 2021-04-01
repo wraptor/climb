@@ -1,25 +1,29 @@
 <template>
   <el-tag
-      :key="index"
-      style="margin-right: 10px"
-      v-for="(item,index) in dynamicTags"
-      closable
-      :disable-transitions="false"
-      @close="tagDel(item)">
+    :key="index"
+    style="margin-right: 10px"
+    v-for="(item, index) in dynamicTags"
+    closable
+    :disable-transitions="false"
+    @close="tagDel(item)"
+  >
     {{ item }}
   </el-tag>
   <el-input
-      :style="{width:myOption.inputWidth+'px'}"
-      v-model.trim="inputValue"
-      ref="saveTagInput"
-      v-if="inputVisible"
-      :maxlength="myOption.maxlength"
-      :show-word-limit="myOption.showWordLimit"
-      @keyup.enter.native="handleInputConfirm(false)"
-      @blur="handleInputConfirm"
+    :style="{ width: myOption.inputWidth + 'px' }"
+    v-model.trim="inputValue"
+    ref="saveTagInput"
+    v-if="inputVisible"
+    :maxlength="myOption.maxlength"
+    :show-word-limit="myOption.showWordLimit"
+    @keyup.enter="handleInputConfirm(false)"
+    @blur="handleInputConfirm"
   ></el-input>
-  <el-button v-show="!inputVisible && dynamicTags.length < myOption.maxCount" class="button-new-tag"
-             @click="showTagInput">+ 新标签
+  <el-button
+    v-show="!inputVisible && dynamicTags.length < myOption.maxCount"
+    class="button-new-tag"
+    @click="showTagInput"
+    >+ 新标签
   </el-button>
 </template>
 
@@ -44,7 +48,7 @@ export default {
     modelValue: {
       handler(val) {
         if (val) {
-          this.dynamicTags = JSON.parse(JSON.stringify(val))
+          this.dynamicTags = JSON.parse(JSON.stringify(val));
         }
       },
       immediate: true,

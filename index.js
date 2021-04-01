@@ -9,10 +9,10 @@ import ClDatePicker from "./date-picker";
 import ClMenu from "./menu";
 import ClTreeSelect from "./tree-select";
 import ClTagInput from "./tag-input";
-import ClTree from './tree'
-import ClRow from './row'
-import ClCol from './col'
-import ClList from './list'
+import ClTree from "./tree";
+import ClRow from "./row";
+import ClCol from "./col";
+import ClList from "./list";
 const components = [
   ClForm,
   ClTable,
@@ -74,8 +74,7 @@ const components = [
   Date.prototype.format = function(format = "yyyy-MM-dd hh:mm:ss") {
     return dateFormat(this, format);
   };
-}).call(this);
-
+}.call(this));
 
 export default {
   install(Vue) {

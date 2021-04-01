@@ -1,49 +1,62 @@
 <template>
-  <div v-if="!myOption.dicData.length"
-       v-loading="loading">
+  <div v-if="!myOption.dicData.length" v-loading="loading">
     <div class="el-tree__empty-block" style="min-height: 80px">
       <div class="el-tree__empty-text un-select" style="margin-top: 10px">
-        <div>{{myOption.empty}}</div>
-        <el-button type="text" @click="append({id:0})" style="padding: 2px 15px;">点击添加</el-button>
+        <div>{{ myOption.empty }}</div>
+        <el-button
+          type="text"
+          @click="append({ id: 0 })"
+          style="padding: 2px 15px;"
+          >点击添加</el-button
+        >
       </div>
     </div>
-
-
   </div>
   <el-tree
-      v-else
-      v-loading="loading"
-      :current-node-key="currentNodeKey"
-      :data="myOption.dicData"
-      :node-key="myOption.props.value"
-      :draggable="myOption.draggable"
-      highlight-current
-      :props="myOption.props"
-      @node-drop="handleDrop"
-      @node-click="handleNodeClick"
-      default-expand-all
-      empty-text="暂无部门"
-      :expand-on-click-node="false">
+    v-else
+    v-loading="loading"
+    :current-node-key="currentNodeKey"
+    :data="myOption.dicData"
+    :node-key="myOption.props.value"
+    :draggable="myOption.draggable"
+    highlight-current
+    :props="myOption.props"
+    @node-drop="handleDrop"
+    @node-click="handleNodeClick"
+    default-expand-all
+    empty-text="暂无部门"
+    :expand-on-click-node="false"
+  >
     <template #default="{ node, data }">
       <div class="custom-tree-node">
         {{ node.label }}
         <div>
-          <el-button type="text" v-if="myOption.addBtn" @click.native="() => append(data)">{{ myOption.addBtn.text }}</el-button>
-          <el-button type="text" v-if="myOption.delBtn" @click.native="() => remove(node, data)">{{ myOption.delBtn.text }}</el-button>
+          <el-button
+            type="text"
+            v-if="myOption.addBtn"
+            @click="() => append(data)"
+            >{{ myOption.addBtn.text }}</el-button
+          >
+          <el-button
+            type="text"
+            v-if="myOption.delBtn"
+            @click="() => remove(node, data)"
+            >{{ myOption.delBtn.text }}</el-button
+          >
         </div>
-<!--        <el-dropdown trigger="click" v-show="myOption.menu" placement="bottom-start">-->
-<!--          <el-button type="text" size="mini" style="margin-right: 6px">操作</el-button>-->
-<!--          <template #dropdown>-->
-<!--            <el-dropdown-menu>-->
-<!--              <el-dropdown-item :icon="myOption.addBtn.icon" @click.native="() => append(data)"-->
-<!--                                v-if="myOption.addBtn">{{ myOption.addBtn.text }}-->
-<!--              </el-dropdown-item>-->
-<!--              <el-dropdown-item :icon="myOption.delBtn.icon" @click.native="() => remove(node, data)"-->
-<!--                                v-if="myOption.delBtn">{{ myOption.delBtn.text }}-->
-<!--              </el-dropdown-item>-->
-<!--            </el-dropdown-menu>-->
-<!--          </template>-->
-<!--        </el-dropdown>-->
+        <!--        <el-dropdown trigger="click" v-show="myOption.menu" placement="bottom-start">-->
+        <!--          <el-button type="text" size="mini" style="margin-right: 6px">操作</el-button>-->
+        <!--          <template #dropdown>-->
+        <!--            <el-dropdown-menu>-->
+        <!--              <el-dropdown-item :icon="myOption.addBtn.icon" @click.native="() => append(data)"-->
+        <!--                                v-if="myOption.addBtn">{{ myOption.addBtn.text }}-->
+        <!--              </el-dropdown-item>-->
+        <!--              <el-dropdown-item :icon="myOption.delBtn.icon" @click.native="() => remove(node, data)"-->
+        <!--                                v-if="myOption.delBtn">{{ myOption.delBtn.text }}-->
+        <!--              </el-dropdown-item>-->
+        <!--            </el-dropdown-menu>-->
+        <!--          </template>-->
+        <!--        </el-dropdown>-->
       </div>
     </template>
   </el-tree>
@@ -66,7 +79,7 @@ export default {
     modelValue: {
       handler(val) {
         if (val !== undefined) {
-          this.value = val
+          this.value = val;
         }
       },
       immediate: true,
@@ -97,62 +110,71 @@ export default {
   },
   methods: {
     initDic() {
-      const dicUrl = this.dicUrl ? this.dicUrl : this.myOption.dicUrl
+      const dicUrl = this.dicUrl ? this.dicUrl : this.myOption.dicUrl;
       if (dicUrl) {
-        this.loading = true
-        window.axios.get(dicUrl).then(res => {
-          this.loading = false
-          this.myOption.dicData = res;
-          if (this.myOption.defaultCurrent && res && res.length > 0) {
-            this.currentNodeKey = res[0][this.myOption.props.value]
-            this.handleNodeClick(res[0])
-          }
-        }).catch((err) => {
-          console.error(err)
-          this.loading = false
-        });
+        this.loading = true;
+        window.axios
+          .get(dicUrl)
+          .then(res => {
+            this.loading = false;
+            this.myOption.dicData = res;
+            if (this.myOption.defaultCurrent && res && res.length > 0) {
+              this.currentNodeKey = res[0][this.myOption.props.value];
+              this.handleNodeClick(res[0]);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            this.loading = false;
+          });
       }
     },
     append(data) {
       if (this.myOption.addPrompt) {
-        this.$prompt(this.myOption.addPromptText, '添加', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$prompt(this.myOption.addPromptText, "添加", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
           inputPattern: this.myOption.addPromptPattern,
           inputErrorMessage: this.myOption.addPromptError
-        }).then(({value}) => {
-          this.$emit('add', data, value, () => {
-            this.initDic()
+        })
+          .then(({ value }) => {
+            this.$emit("add", data, value, () => {
+              this.initDic();
+            });
           })
-        }).catch(() => {
-        });
+          .catch(() => {});
       } else {
-        this.$emit('add', data, newChild => {
+        this.$emit("add", data, newChild => {
           if (!data.children) {
-            this.$set(data, 'children', []);
+            this.$set(data, "children", []);
           }
           data.children.push(newChild);
-        })
+        });
       }
     },
     remove(node, data) {
-      this.$confirm('是否确认将"' + data[this.myOption.props.label] + '"删除?', '提示', {type: 'warning'}).then(() => {
-        this.$emit('del', data, () => {
-          this.initDic()
+      this.$confirm(
+        '是否确认将"' + data[this.myOption.props.label] + '"删除?',
+        "提示",
+        { type: "warning" }
+      )
+        .then(() => {
+          this.$emit("del", data, () => {
+            this.initDic();
+          });
         })
-      }).catch(() => {
-      })
+        .catch(() => {});
     },
     handleDrop(draggingNode, dropNode, dropType) {
-      this.$emit('node-drop', draggingNode, dropNode, dropType, () => {
-        this.initDic()
-      })
+      this.$emit("node-drop", draggingNode, dropNode, dropType, () => {
+        this.initDic();
+      });
     },
     handleNodeClick(data) {
-      this.$emit('node-click', data)
+      this.$emit("node-click", data);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -167,8 +189,8 @@ export default {
   width: 100%;
 }
 
-.el-tree > > > .is-current .el-tree-node__label {
-  color: #2E41D9;
+.el-tree > .is-current .el-tree-node__label {
+  color: #2e41d9;
   font-weight: bold;
 }
 </style>

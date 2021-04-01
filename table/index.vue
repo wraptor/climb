@@ -1,26 +1,47 @@
 <template>
   <!--  搜索区域  -->
   <div v-if="hasSearch">
-    <cl-form :option="myOption" type="search" v-model="searchForm" :submit-btn="myOption.searchBtn"
-             :reset-btn="myOption.searchResetBtn"
-             :btn-right="myOption.searchBtnRight"
-             @submit="handleSearch"></cl-form>
+    <cl-form
+      :option="myOption"
+      type="search"
+      v-model="searchForm"
+      :submit-btn="myOption.searchBtn"
+      :reset-btn="myOption.searchResetBtn"
+      :btn-right="myOption.searchBtnRight"
+      @submit="handleSearch"
+    ></cl-form>
   </div>
   <!--  顶部操作菜单  -->
-  <div style="width: 100%;display: flex;flex-direction: row;justify-content: space-between">
+  <div
+    style="width: 100%;display: flex;flex-direction: row;justify-content: space-between"
+  >
     <div>
       <el-button
-        v-if="myOption.menu!==false && myPermissions.addBtn && myOption.addBtn!==false && myOption.addBtn.display"
-        :icon="myOption.addBtn.icon" :type="myOption.addBtn.type" @click="handleAdd">
+        v-if="
+          myOption.menu !== false &&
+            myPermissions.addBtn &&
+            myOption.addBtn !== false &&
+            myOption.addBtn.display
+        "
+        :icon="myOption.addBtn.icon"
+        :type="myOption.addBtn.type"
+        @click="handleAdd"
+      >
         {{ myOption.addBtn.text }}
       </el-button>
       <slot name="menuLeft"></slot>
     </div>
     <div>
       <slot name="menuRight"></slot>
-      <el-button @click="load" v-if="myOption.refreshBtn!==false && myOption.refreshBtn.display===true"
-                 :circle="myOption.refreshBtn.circle"
-                 :icon="myOption.refreshBtn.icon" :type="myOption.refreshBtn.type">
+      <el-button
+        @click="load"
+        v-if="
+          myOption.refreshBtn !== false && myOption.refreshBtn.display === true
+        "
+        :circle="myOption.refreshBtn.circle"
+        :icon="myOption.refreshBtn.icon"
+        :type="myOption.refreshBtn.type"
+      >
       </el-button>
     </div>
   </div>
@@ -35,25 +56,37 @@
     :tooltip-effect="myOption.tooltipEffect"
     :highlight-current-row="myOption.highlightCurrentRow"
     :stripe="myOption.stripe"
-    style="width: 100%;margin-top: 10px">
+    style="width: 100%;margin-top: 10px"
+  >
     <!--    =============多选=============    -->
-    <el-table-column v-if="myOption.selection" type="selection"></el-table-column>
+    <el-table-column
+      v-if="myOption.selection"
+      type="selection"
+    ></el-table-column>
     <!--    =============序号=============    -->
-    <el-table-column v-if="myOption.index" :label="myOption.index" type="index" />
+    <el-table-column
+      v-if="myOption.index"
+      :label="myOption.index"
+      type="index"
+    />
     <!--    =============每一列=============    -->
     <template v-for="item in myOption.columns">
       <el-table-column
-        v-if="item.display!==false"
+        v-if="item.display !== false"
         :key="item.prop"
         :prop="item.prop"
         :sortable="item.sortable"
-        :show-overflow-tooltip="item.showOverflowTooltip?
-      item.showOverflowTooltip:myOption.showOverflowTooltip"
+        :show-overflow-tooltip="
+          item.showOverflowTooltip
+            ? item.showOverflowTooltip
+            : myOption.showOverflowTooltip
+        "
         :width="widthFilter(item)"
-        :label="item.label">
+        :label="item.label"
+      >
         <template #default="scope">
           <slot :name="item.prop" :row="scope.row">
-            <template v-if="item.type==='radio' || item.type==='select'">
+            <template v-if="item.type === 'radio' || item.type === 'select'">
               {{ filterValue(item, scope.row[item.prop]) }}
             </template>
             <template v-else>
@@ -67,23 +100,55 @@
     <el-table-column
       v-if="myOption.menu"
       :width="myOption.menuWidth"
-      :label="myOption.menuLabel">
+      :label="myOption.menuLabel"
+    >
       <template #default="scope">
-        <slot name="menuFront" :row="scope.row" :column="scope.column" :index="scope.$index"></slot>
-        <el-button @click="handleEdit(scope.row)"
-                   v-if="myPermissions.editBtn && myOption.editBtn.display && myOption.editBtn!==false"
-                   :disabled="!!myOption.editBtn.disabled && (myOption.editBtn.disabled===true || myOption.editBtn.disabled(scope.row))"
-                   :icon="myOption.editBtn.icon"
-                   :type="myOption.editBtn.type">{{ myOption.editBtn.text }}
+        <slot
+          name="menuFront"
+          :row="scope.row"
+          :column="scope.column"
+          :index="scope.$index"
+        ></slot>
+        <el-button
+          @click="handleEdit(scope.row)"
+          v-if="
+            myPermissions.editBtn &&
+              myOption.editBtn.display &&
+              myOption.editBtn !== false
+          "
+          :disabled="
+            !!myOption.editBtn.disabled &&
+              (myOption.editBtn.disabled === true ||
+                myOption.editBtn.disabled(scope.row))
+          "
+          :icon="myOption.editBtn.icon"
+          :type="myOption.editBtn.type"
+          >{{ myOption.editBtn.text }}
         </el-button>
-        <el-button @click="handleDel(scope.row)"
-                   v-if="myPermissions.delBtn && myOption.delBtn.display && myOption.delBtn!==false"
-                   :disabled="!!myOption.delBtn.disabled && (myOption.delBtn.disabled===true || myOption.delBtn.disabled(scope.row))"
-                   :icon="myOption.delBtn.icon"
-                   :type="myOption.delBtn.type">
+        <el-button
+          @click="handleDel(scope.row)"
+          v-if="
+            myPermissions.delBtn &&
+              myOption.delBtn.display &&
+              myOption.delBtn !== false
+          "
+          :disabled="
+            !!myOption.delBtn.disabled &&
+              (myOption.delBtn.disabled === true ||
+                myOption.delBtn.disabled(scope.row))
+          "
+          :icon="myOption.delBtn.icon"
+          :type="myOption.delBtn.type"
+        >
           {{ myOption.delBtn.text }}
         </el-button>
-        <slot name="menu" :row="scope.row" :column="scope.column" :index="scope.$index" :page="page">
+        <slot
+          name="menu"
+          :row="scope.row"
+          :column="scope.column"
+          :index="scope.$index"
+          :page="page"
+        >
         </slot>
       </template>
     </el-table-column>
@@ -98,15 +163,26 @@
     style="width: 100%;text-align: right;margin-top: 40px"
     layout="total,sizes,prev,pager,next,jumper"
     :current-page="page.current"
-    :page-size.sync="page.size"
-    :total="page.total">
+    v-model:page-size="page.size"
+    :total="page.total"
+  >
   </el-pagination>
 
-  <el-dialog v-model="visible" destroy-on-close :title="type==='add'?'新增':'编辑'" :model-value="visible"
-             :width="myOption.dialogWidth">
-    <cl-form :option="myOption" :type="type" v-model="form" @submit="handleSubmit">
+  <el-dialog
+    v-model="visible"
+    destroy-on-close
+    :title="type === 'add' ? '新增' : '编辑'"
+    :model-value="visible"
+    :width="myOption.dialogWidth"
+  >
+    <cl-form
+      :option="myOption"
+      :type="type"
+      v-model="form"
+      @submit="handleSubmit"
+    >
       <template v-for="item in myOption.columns" v-slot:[item.prop]>
-        <slot :name="item.prop+'Form'" :form="form"></slot>
+        <slot :name="item.prop + 'Form'" :form="form"></slot>
       </template>
     </cl-form>
   </el-dialog>
@@ -122,8 +198,7 @@ export default {
   props: {
     option: {
       type: Object,
-      default: () => {
-      }
+      default: () => {}
     },
     permissions: {
       type: Object,
@@ -205,9 +280,9 @@ export default {
     }
   },
   methods: {
-     widthFilter(item){
-      return item.width>0?item.width+'px':'auto'
-     },
+    widthFilter(item) {
+      return item.width > 0 ? item.width + "px" : "auto";
+    },
     setDefaultDicData() {
       this.myOption.columns.forEach(item => {
         if (item.dicUrl && window.axios) {
@@ -233,29 +308,32 @@ export default {
       this.type = type;
       this.toBefore(form, cusForm => {
         this.loading = true;
-        this.$emit("load", Object.assign(this.page, cusForm ? cusForm : form), res => {
-          if (res) {
-            this.tableData = res.records;
-            this.page = {
-              size: res.size,
-              current: res.current,
-              pages: res.pages,
-              total: res.total
-            };
+        this.$emit(
+          "load",
+          Object.assign(this.page, cusForm ? cusForm : form),
+          res => {
+            if (res) {
+              this.tableData = res.records;
+              this.page = {
+                size: res.size,
+                current: res.current,
+                pages: res.pages,
+                total: res.total
+              };
+            }
+            setTimeout(() => {
+              this.loading = false;
+              done();
+            }, 500);
           }
-          setTimeout(() => {
-            this.loading = false;
-            done();
-          }, 500);
-        });
+        );
       });
     },
     load(reload) {
       if (reload) {
         this.page.current = 1;
       }
-      this.handleSearch({}, () => {
-      }, "load");
+      this.handleSearch({}, () => {}, "load");
     },
     toBefore(row, done) {
       if (this.$attrs["before"]) {
@@ -295,14 +373,14 @@ export default {
       if (!item.dicData) {
         return val;
       }
-      let props ={
-       //字典的prop修改
-       label: "label",
-       value: "value",
-       children: "children",
-       data: "data"
-      }
-      beanUtil.copyPropertiesNotEmpty(item.props,props)
+      let props = {
+        //字典的prop修改
+        label: "label",
+        value: "value",
+        children: "children",
+        data: "data"
+      };
+      beanUtil.copyPropertiesNotEmpty(item.props, props);
       const find = item.dicData.find(item => item[props.value] === val);
       if (find) {
         return find[props.label];
@@ -312,14 +390,19 @@ export default {
     handleDel(row) {
       this.type = "del";
       if (this.myOption.delBtn.confirm) {
-        ElMessageBox.confirm(this.myOption.delBtn.message, this.myOption.delBtn.title, {
-          confirmButtonText: this.myOption.delBtn.confirmBtnText,
-          cancelButtonText: this.myOption.delBtn.cancelBtnText,
-          type: "warning"
-        }).then(() => {
-          this.delCallback(row);
-        }).catch(() => {
-        });
+        ElMessageBox.confirm(
+          this.myOption.delBtn.message,
+          this.myOption.delBtn.title,
+          {
+            confirmButtonText: this.myOption.delBtn.confirmBtnText,
+            cancelButtonText: this.myOption.delBtn.cancelBtnText,
+            type: "warning"
+          }
+        )
+          .then(() => {
+            this.delCallback(row);
+          })
+          .catch(() => {});
       } else {
         this.delCallback(row);
       }
@@ -327,7 +410,7 @@ export default {
     handleAdd() {
       this.type = "add";
       this.form = JSON.parse(JSON.stringify(this.defaultForm));
-      this.toBefore(this.form, (row) => {
+      this.toBefore(this.form, row => {
         if (row) {
           this.form = row;
         }
@@ -342,7 +425,7 @@ export default {
       });
     },
     handleSubmit(form, done) {
-     this.$emit(this.type, form, (flag = true) => {
+      this.$emit(this.type, form, (flag = true) => {
         if (flag === true) {
           // 编辑成功才隐藏弹窗
           this.load();
@@ -360,6 +443,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

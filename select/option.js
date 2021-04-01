@@ -2,7 +2,6 @@ export default {
   //element attributes
   // clearable: true,
 
-
   //ext
   dicData: [], //字典数据
   props: {

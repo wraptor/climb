@@ -1,18 +1,28 @@
 <template>
-  <el-select :multiple="myOption.multiple"
-             :multiple-limit="myOption.multipleLimit"
-             :disabled="myOption.disabled || disabled"
-             :placeholder="myOption.placeholder"
-             :clearable="myOption.clearable"
-             style="width: 100%"
-             v-model="value" @change="handleChange">
+  <el-select
+    :multiple="myOption.multiple"
+    :multiple-limit="myOption.multipleLimit"
+    :disabled="myOption.disabled || disabled"
+    :placeholder="myOption.placeholder"
+    :clearable="myOption.clearable"
+    style="width: 100%"
+    v-model="value"
+    @change="handleChange"
+  >
     <el-option
       v-for="item in myOption.dicData"
-      :key="item[myOption.props.value]!==undefined?item[myOption.props.value]:
-item[myOption.props.label]"
+      :key="
+        item[myOption.props.value] !== undefined
+          ? item[myOption.props.value]
+          : item[myOption.props.label]
+      "
       :label="item[myOption.props.label]"
-      :value="item[myOption.props.value]!==undefined?item[myOption.props.value]:
-item[myOption.props.label]">
+      :value="
+        item[myOption.props.value] !== undefined
+          ? item[myOption.props.value]
+          : item[myOption.props.label]
+      "
+    >
     </el-option>
   </el-select>
 </template>
@@ -31,7 +41,8 @@ export default {
     dicData: {},
     props: {},
     disabled: {}
-  }, watch: {
+  },
+  watch: {
     props: {
       handler(val) {
         if (val) {
@@ -84,6 +95,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

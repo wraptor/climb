@@ -7,9 +7,7 @@
 <script>
 export default {
   name: "ClCol"
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,8 +1,6 @@
 export default {
   //el and ext
-  type: "text",
-
-
+  type: "text"
 
   // maxlength: undefined, //原生属性，最大输入长度
   // minlength: undefined, //原生属性，最小输入长度

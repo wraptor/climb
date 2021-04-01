@@ -1,5 +1,4 @@
 export default {
-
   //element form attributes
   type: "time",
   placeholder: "请选择时间",

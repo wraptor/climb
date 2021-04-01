@@ -1,4 +1,11 @@
-export const inputTypeArray = [undefined, "input", "text", "number", "textarea", "password"];
+export const inputTypeArray = [
+  undefined,
+  "input",
+  "text",
+  "number",
+  "textarea",
+  "password"
+];
 export const radioTypeArray = ["radio"];
 export const checkboxTypeArray = ["checkbox"];
 export const selectTypeArray = ["select"];
@@ -16,7 +23,5 @@ export const datePickerTypeArray = [
   "datetime",
   "datetimerange"
 ];
-export const treeSelectArray = [
-  "tree", "treeselect", "treeSelect"
-];
+export const treeSelectArray = ["tree", "treeselect", "treeSelect"];
 export const tagInputArray = ["tag", "tags", "taginput", "tagInput"];

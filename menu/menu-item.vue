@@ -20,8 +20,10 @@
           :index="item.index ? item.index : level + index"
           :key="item.index ? item.index : level + index"
         >
-          <i v-if="item.icon" :class="item.icon" />
-          <span slot="title">{{ item.title }}</span>
+          <template #title>
+            <i v-if="item.icon" :class="item.icon" />
+            <span> {{ item.title }}</span>
+          </template>
         </el-menu-item>
         <el-submenu
           v-else
@@ -33,9 +35,9 @@
           :index="item.index ? item.index : level + index"
           :key="item.index ? item.index : level + index"
         >
-          <template v-slot:title>
+          <template #title>
             <i v-if="item.icon" :class="item.icon" />
-            <span slot="title">{{ item.title }}</span>
+            <span> {{ item.title }}</span>
           </template>
           <cl-menu-item
             :items="item.items"

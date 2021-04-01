@@ -1,17 +1,20 @@
 <template>
   <el-select :model-value="myValue" ref="treeSelectRef">
     <el-option :value="myValue" :label="label">
-      <el-tree :empty-text="myOption.emptyText" :default-expand-all="myOption.defaultExpandAll"
-               :node-key="myOption.nodeKey?myOption.nodeKey:myOption.props.value"
-               :data="myOption.dicData"
-               :default-checked-keys="myOption.showCheckbox?modelValue:[]"
-               :expand-on-click-node="myOption.expandOnClickMode"
-               :accordion="myOption.accordion"
-               :show-checkbox="myOption.showCheckbox"
-               :check-strictly="myOption.checkStrictly"
-               :props="myOption.props"
-               @node-click="handleNodeClick"
-               @check="handleCheck"></el-tree>
+      <el-tree
+        :empty-text="myOption.emptyText"
+        :default-expand-all="myOption.defaultExpandAll"
+        :node-key="myOption.nodeKey ? myOption.nodeKey : myOption.props.value"
+        :data="myOption.dicData"
+        :default-checked-keys="myOption.showCheckbox ? modelValue : []"
+        :expand-on-click-node="myOption.expandOnClickMode"
+        :accordion="myOption.accordion"
+        :show-checkbox="myOption.showCheckbox"
+        :check-strictly="myOption.checkStrictly"
+        :props="myOption.props"
+        @node-click="handleNodeClick"
+        @check="handleCheck"
+      ></el-tree>
     </el-option>
   </el-select>
 </template>
@@ -31,7 +34,7 @@ export default {
     modelValue: {
       handler(val) {
         if (val !== undefined) {
-          this.value = val
+          this.value = val;
         }
       },
       immediate: true,
@@ -55,18 +58,25 @@ export default {
   computed: {
     myValue() {
       if (this.modelValue && this.modelValue.length > 0) {
-        return JSON.stringify(this.modelValue)
+        return JSON.stringify(this.modelValue);
       }
-      return ""
+      return "";
     },
     label() {
       if (!this.myOption.showCheckbox) {
-        const find = this.myOption.dicData.find(item => item[this.myOption.props.value] === this.modelValue)
+        const find = this.myOption.dicData.find(
+          item => item[this.myOption.props.value] === this.modelValue
+        );
         if (find) {
-          return find[this.myOption.props.label]
+          return find[this.myOption.props.label];
         }
       } else {
-        const checkedNodes = this.myOption.dicData.filter(item => this.modelValue.findIndex(i => item[this.myOption.props.value] === i) >= 0)
+        const checkedNodes = this.myOption.dicData.filter(
+          item =>
+            this.modelValue.findIndex(
+              i => item[this.myOption.props.value] === i
+            ) >= 0
+        );
         let label = "";
         for (let i = 0; i < checkedNodes.length; i++) {
           label += checkedNodes[i][this.myOption.props.label];
@@ -74,9 +84,9 @@ export default {
             label += " | ";
           }
         }
-        return label
+        return label;
       }
-      return ""
+      return "";
     }
   },
   methods: {
@@ -87,13 +97,15 @@ export default {
         });
       }
     },
-    handleCheck(data, {checkedKeys}) {
+    handleCheck(data, { checkedKeys }) {
       this.value = checkedKeys;
       this.$emit("update:modelValue", checkedKeys);
     },
     handleNodeClick(data) {
       if (!this.myOption.showCheckbox) {
-        this.value = data[this.myOption.props.value] ? data[this.myOption.props.value] : data[this.myOption.props.label];
+        this.value = data[this.myOption.props.value]
+          ? data[this.myOption.props.value]
+          : data[this.myOption.props.label];
         this.$emit("update:modelValue", this.value);
         this.$refs.treeSelectRef.blur();
         if (this.myOption.change) {
@@ -118,7 +130,7 @@ export default {
   font-weight: normal;
 }
 
-ul li > > > .el-tree .el-tree-node__content {
+ul li > .el-tree .el-tree-node__content {
   height: auto;
   padding: 0 20px;
 }
@@ -127,12 +139,12 @@ ul li > > > .el-tree .el-tree-node__content {
   font-weight: normal;
 }
 
-.el-tree > > > .is-current .el-tree-node__label {
-  color: #2E41D9;
+.el-tree > .is-current .el-tree-node__label {
+  color: #2e41d9;
   font-weight: bold;
 }
 
-.el-tree > > > .is-current .el-tree-node__children .el-tree-node__label {
+.el-tree > .is-current .el-tree-node__children .el-tree-node__label {
   color: #434343;
   font-weight: normal;
 }

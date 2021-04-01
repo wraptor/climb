@@ -1,14 +1,15 @@
 <template>
   <el-time-picker
     v-model="value"
-    :is-range="myOption.type==='timerange'"
+    :is-range="myOption.type === 'timerange'"
     :disabled="myOption.disabled || disabled"
     :format="myOption.format"
     :placeholder="myOption.placeholder"
     :disabled-hours="myOption.disabledHours"
     :disabled-minutes="myOption.disabledMinutes"
     :disabled-seconds="myOption.disabledSeconds"
-    @change="handleChange">
+    @change="handleChange"
+  >
   </el-time-picker>
 </template>
 
@@ -24,8 +25,9 @@ export default {
       default: ""
     },
     option: {},
-    disabled:{}
-  }, watch: {
+    disabled: {}
+  },
+  watch: {
     modelValue: {
       handler(val) {
         if (val) {
@@ -74,6 +76,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

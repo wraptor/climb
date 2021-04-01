@@ -20,7 +20,6 @@ export default {
   //   data: "data"
   // }
 
-
   dicData: [],
   props: {
     //字典的prop修改

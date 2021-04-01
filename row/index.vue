@@ -7,9 +7,7 @@
 <script>
 export default {
   name: "ClRow"
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

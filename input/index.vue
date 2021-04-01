@@ -1,19 +1,23 @@
 <template>
-  <el-input :type="myOption.type"
-            v-model="value"
-            :disabled="myOption.disabled || disabled"
-            v-if="myOption.type!=='number'"
-            :maxlength="myOption.maxlength"
-            :show-word-limit="myOption.showWordLimit"
-            :show-password="myOption.type==='password' && myOption.showPassword!==false"
-            :prefix-icon="myOption.prefixIcon"
-            :suffix-icon="myOption.suffixIcon"
-            :rows="myOption.rows"
-            :autosize="myOption.autosize"
-            :autocomplete="myOption.autocomplete"
-            :name="myOption.prop"
-            :placeholder="myOption.placeholder"
-            @input="handleInput">
+  <el-input
+    :type="myOption.type"
+    v-model="value"
+    :disabled="myOption.disabled || disabled"
+    v-if="myOption.type !== 'number'"
+    :maxlength="myOption.maxlength"
+    :show-word-limit="myOption.showWordLimit"
+    :show-password="
+      myOption.type === 'password' && myOption.showPassword !== false
+    "
+    :prefix-icon="myOption.prefixIcon"
+    :suffix-icon="myOption.suffixIcon"
+    :rows="myOption.rows"
+    :autosize="myOption.autosize"
+    :autocomplete="myOption.autocomplete"
+    :name="myOption.prop"
+    :placeholder="myOption.placeholder"
+    @input="handleInput"
+  >
     <template #suffix v-if="$slots.suffix">
       <slot name="suffix"></slot>
     </template>
@@ -34,7 +38,8 @@
     :precision="myOption.precision"
     :controls="myOption.controls"
     :controls-position="myOption.controlsPosition"
-    @change="handleInput" />
+    @change="handleInput"
+  />
 </template>
 
 <script>
@@ -50,8 +55,9 @@ export default {
       default: ""
     },
     option: {},
-    disabled:{}
-  }, watch: {
+    disabled: {}
+  },
+  watch: {
     modelValue(val) {
       this.value = val;
     },
@@ -64,13 +70,13 @@ export default {
     }
   },
   created() {
-    console.log("slot",this.$slots)
+    console.log("slot", this.$slots);
   },
   setup(props, ctx) {
     return {
       value: ref(props.modelValue),
       myOption: reactive(JSON.parse(JSON.stringify(option))),
-      handleInput: (val) => {
+      handleInput: val => {
         ctx.emit("update:modelValue", val);
       }
     };
@@ -78,6 +84,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
