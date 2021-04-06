@@ -13,6 +13,7 @@ import ClTree from "./tree";
 import ClRow from "./row";
 import ClCol from "./col";
 import ClList from "./list";
+import ClBackTop from "./back-top";
 const components = [
   ClForm,
   ClTable,
@@ -28,7 +29,8 @@ const components = [
   ClTree,
   ClRow,
   ClCol,
-  ClList
+  ClList,
+  ClBackTop
 ];
 
 (function() {
