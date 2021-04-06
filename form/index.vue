@@ -248,6 +248,7 @@ export default {
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+        this.initDefaultForm();
       },
       immediate: true,
       deep: true
@@ -268,6 +269,17 @@ export default {
     };
   },
   methods: {
+    initDefaultForm() {
+      this.myOption.columns.forEach(item => {
+        if (
+          item.value !== undefined &&
+          this.backForm[item.prop] === undefined
+        ) {
+          this.backForm[item.prop] = item.value;
+        }
+      });
+      this.onReset();
+    },
     labelWidthFilter(item) {
       let globalWidth = this.myOption.labelWidth;
       let itemWidth = item.labelWidth;
