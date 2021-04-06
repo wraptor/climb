@@ -1,191 +1,194 @@
 <template>
-  <!--  搜索区域  -->
-  <div v-if="hasSearch">
-    <cl-form
-      :option="myOption"
-      type="search"
-      v-model="searchForm"
-      :submit-btn="myOption.searchBtn"
-      :reset-btn="myOption.searchResetBtn"
-      :btn-right="myOption.searchBtnRight"
-      @submit="handleSearch"
-    ></cl-form>
-  </div>
-  <!--  顶部操作菜单  -->
-  <div
-    style="width: 100%;display: flex;flex-direction: row;justify-content: space-between"
-  >
-    <div>
-      <el-button
-        v-if="
-          myOption.menu !== false &&
-            myPermissions.addBtn &&
-            myOption.addBtn !== false &&
-            myOption.addBtn.display
-        "
-        :icon="myOption.addBtn.icon"
-        :type="myOption.addBtn.type"
-        @click="handleAdd"
-      >
-        {{ myOption.addBtn.text }}
-      </el-button>
-      <slot name="menuLeft"></slot>
+  <div>
+    <!--  搜索区域  -->
+    <div v-if="hasSearch">
+      <cl-form
+        :option="myOption"
+        type="search"
+        v-model="searchForm"
+        :submit-btn="myOption.searchBtn"
+        :reset-btn="myOption.searchResetBtn"
+        :btn-right="myOption.searchBtnRight"
+        @submit="handleSearch"
+      ></cl-form>
     </div>
-    <div>
-      <slot name="menuRight"></slot>
-      <el-button
-        @click="load"
-        v-if="
-          myOption.refreshBtn !== false && myOption.refreshBtn.display === true
-        "
-        :circle="myOption.refreshBtn.circle"
-        :icon="myOption.refreshBtn.icon"
-        :type="myOption.refreshBtn.type"
-      >
-      </el-button>
+    <!--  顶部操作菜单  -->
+    <div
+      style="width: 100%;display: flex;flex-direction: row;justify-content: space-between"
+    >
+      <div>
+        <el-button
+          v-if="
+            myOption.menu !== false &&
+              myPermissions.addBtn &&
+              myOption.addBtn !== false &&
+              myOption.addBtn.display
+          "
+          :icon="myOption.addBtn.icon"
+          :type="myOption.addBtn.type"
+          @click="handleAdd"
+        >
+          {{ myOption.addBtn.text }}
+        </el-button>
+        <slot name="menuLeft"></slot>
+      </div>
+      <div>
+        <slot name="menuRight"></slot>
+        <el-button
+          @click="load"
+          v-if="
+            myOption.refreshBtn !== false &&
+              myOption.refreshBtn.display === true
+          "
+          :circle="myOption.refreshBtn.circle"
+          :icon="myOption.refreshBtn.icon"
+          :type="myOption.refreshBtn.type"
+        >
+        </el-button>
+      </div>
     </div>
-  </div>
-  <el-table
-    v-loading="loading"
-    @selection-change="handleSelectionChange"
-    :index="myOption.index"
-    :data="tableData"
-    :row-style="myOption.rowStyle"
-    :border="myOption.border"
-    :empty-text="myOption.emptyText"
-    :tooltip-effect="myOption.tooltipEffect"
-    :highlight-current-row="myOption.highlightCurrentRow"
-    :stripe="myOption.stripe"
-    style="width: 100%;margin-top: 10px"
-  >
-    <!--    =============多选=============    -->
-    <el-table-column
-      v-if="myOption.selection"
-      type="selection"
-    ></el-table-column>
-    <!--    =============序号=============    -->
-    <el-table-column
-      v-if="myOption.index"
-      :label="myOption.index"
-      type="index"
-    />
-    <!--    =============每一列=============    -->
-    <template v-for="item in myOption.columns">
+    <el-table
+      v-loading="loading"
+      @selection-change="handleSelectionChange"
+      :index="myOption.index"
+      :data="tableData"
+      :row-style="myOption.rowStyle"
+      :border="myOption.border"
+      :empty-text="myOption.emptyText"
+      :tooltip-effect="myOption.tooltipEffect"
+      :highlight-current-row="myOption.highlightCurrentRow"
+      :stripe="myOption.stripe"
+      style="margin-top: 10px"
+    >
+      <!--    =============多选=============    -->
       <el-table-column
-        v-if="item.display !== false"
-        :key="item.prop"
-        :prop="item.prop"
-        :sortable="item.sortable"
-        :show-overflow-tooltip="
-          item.showOverflowTooltip
-            ? item.showOverflowTooltip
-            : myOption.showOverflowTooltip
-        "
-        :width="widthFilter(item)"
-        :label="item.label"
+        v-if="myOption.selection"
+        type="selection"
+      ></el-table-column>
+      <!--    =============序号=============    -->
+      <el-table-column
+        v-if="myOption.index"
+        :label="myOption.index"
+        type="index"
+      />
+      <!--    =============每一列=============    -->
+      <template v-for="item in myOption.columns">
+        <el-table-column
+          v-if="item.display !== false"
+          :key="item.prop"
+          :prop="item.prop"
+          :sortable="item.sortable"
+          :show-overflow-tooltip="
+            item.showOverflowTooltip
+              ? item.showOverflowTooltip
+              : myOption.showOverflowTooltip
+          "
+          :width="widthFilter(item)"
+          :label="item.label"
+        >
+          <template #default="scope">
+            <slot :name="item.prop" :row="scope.row">
+              <template v-if="item.type === 'radio' || item.type === 'select'">
+                {{ filterValue(item, scope.row[item.prop]) }}
+              </template>
+              <template v-else>
+                {{ scope.row[item.prop] }}
+              </template>
+            </slot>
+          </template>
+        </el-table-column>
+      </template>
+      <!--    =============操作菜单=============    -->
+      <el-table-column
+        v-if="myOption.menu"
+        :width="myOption.menuWidth"
+        :label="myOption.menuLabel"
       >
         <template #default="scope">
-          <slot :name="item.prop" :row="scope.row">
-            <template v-if="item.type === 'radio' || item.type === 'select'">
-              {{ filterValue(item, scope.row[item.prop]) }}
-            </template>
-            <template v-else>
-              {{ scope.row[item.prop] }}
-            </template>
+          <slot
+            name="menuFront"
+            :row="scope.row"
+            :column="scope.column"
+            :index="scope.$index"
+          ></slot>
+          <el-button
+            @click="handleEdit(scope.row)"
+            v-if="
+              myPermissions.editBtn &&
+                myOption.editBtn.display &&
+                myOption.editBtn !== false
+            "
+            :disabled="
+              !!myOption.editBtn.disabled &&
+                (myOption.editBtn.disabled === true ||
+                  myOption.editBtn.disabled(scope.row))
+            "
+            :icon="myOption.editBtn.icon"
+            :type="myOption.editBtn.type"
+            >{{ myOption.editBtn.text }}
+          </el-button>
+          <el-button
+            @click="handleDel(scope.row)"
+            v-if="
+              myPermissions.delBtn &&
+                myOption.delBtn.display &&
+                myOption.delBtn !== false
+            "
+            :disabled="
+              !!myOption.delBtn.disabled &&
+                (myOption.delBtn.disabled === true ||
+                  myOption.delBtn.disabled(scope.row))
+            "
+            :icon="myOption.delBtn.icon"
+            :type="myOption.delBtn.type"
+          >
+            {{ myOption.delBtn.text }}
+          </el-button>
+          <slot
+            name="menu"
+            :row="scope.row"
+            :column="scope.column"
+            :index="scope.$index"
+            :page="page"
+          >
           </slot>
         </template>
       </el-table-column>
-    </template>
-    <!--    =============操作菜单=============    -->
-    <el-table-column
-      v-if="myOption.menu"
-      :width="myOption.menuWidth"
-      :label="myOption.menuLabel"
-    >
-      <template #default="scope">
-        <slot
-          name="menuFront"
-          :row="scope.row"
-          :column="scope.column"
-          :index="scope.$index"
-        ></slot>
-        <el-button
-          @click="handleEdit(scope.row)"
-          v-if="
-            myPermissions.editBtn &&
-              myOption.editBtn.display &&
-              myOption.editBtn !== false
-          "
-          :disabled="
-            !!myOption.editBtn.disabled &&
-              (myOption.editBtn.disabled === true ||
-                myOption.editBtn.disabled(scope.row))
-          "
-          :icon="myOption.editBtn.icon"
-          :type="myOption.editBtn.type"
-          >{{ myOption.editBtn.text }}
-        </el-button>
-        <el-button
-          @click="handleDel(scope.row)"
-          v-if="
-            myPermissions.delBtn &&
-              myOption.delBtn.display &&
-              myOption.delBtn !== false
-          "
-          :disabled="
-            !!myOption.delBtn.disabled &&
-              (myOption.delBtn.disabled === true ||
-                myOption.delBtn.disabled(scope.row))
-          "
-          :icon="myOption.delBtn.icon"
-          :type="myOption.delBtn.type"
-        >
-          {{ myOption.delBtn.text }}
-        </el-button>
-        <slot
-          name="menu"
-          :row="scope.row"
-          :column="scope.column"
-          :index="scope.$index"
-          :page="page"
-        >
-        </slot>
-      </template>
-    </el-table-column>
-  </el-table>
+    </el-table>
 
-  <el-pagination
-    background
-    @size-change="handlePageSizeChange"
-    @current-change="handlePageCurrentChange"
-    @prev-click="handlePageCurrentChange"
-    @next-click="handlePageCurrentChange"
-    style="width: 100%;text-align: right;margin-top: 40px"
-    layout="total,sizes,prev,pager,next,jumper"
-    :current-page="page.current"
-    v-model:page-size="page.size"
-    :total="page.total"
-  >
-  </el-pagination>
-
-  <el-dialog
-    v-model="visible"
-    destroy-on-close
-    :title="type === 'add' ? '新增' : '编辑'"
-    :model-value="visible"
-    :width="myOption.dialogWidth"
-  >
-    <cl-form
-      :option="myOption"
-      :type="type"
-      v-model="form"
-      @submit="handleSubmit"
+    <el-pagination
+      background
+      @size-change="handlePageSizeChange"
+      @current-change="handlePageCurrentChange"
+      @prev-click="handlePageCurrentChange"
+      @next-click="handlePageCurrentChange"
+      style="width: 100%;text-align: right;margin-top: 40px"
+      layout="total,sizes,prev,pager,next,jumper"
+      :current-page="page.current"
+      v-model:page-size="page.size"
+      :total="page.total"
     >
-      <template v-for="item in myOption.columns" v-slot:[item.prop]>
-        <slot :name="item.prop + 'Form'" :form="form"></slot>
-      </template>
-    </cl-form>
-  </el-dialog>
+    </el-pagination>
+
+    <el-dialog
+      v-model="visible"
+      destroy-on-close
+      :title="type === 'add' ? '新增' : '编辑'"
+      :model-value="visible"
+      :width="myOption.dialogWidth"
+    >
+      <cl-form
+        :option="myOption"
+        :type="type"
+        v-model="form"
+        @submit="handleSubmit"
+      >
+        <template v-for="item in myOption.columns" v-slot:[item.prop]>
+          <slot :name="item.prop + 'Form'" :form="form"></slot>
+        </template>
+      </cl-form>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
