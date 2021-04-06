@@ -248,7 +248,6 @@ export default {
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
-        console.log(val, this.myOption);
       },
       immediate: true,
       deep: true

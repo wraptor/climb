@@ -69,9 +69,6 @@ export default {
       deep: true
     }
   },
-  created() {
-    console.log("slot", this.$slots);
-  },
   setup(props, ctx) {
     return {
       value: ref(props.modelValue),
