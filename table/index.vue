@@ -53,6 +53,10 @@
       :index="myOption.index"
       :data="tableData"
       :row-style="myOption.rowStyle"
+      :row-key="myOption.rowKey"
+      :lazy="myOption.lazy"
+      :load="handleLoadTreeData"
+      :tree-props="myOption.treeProps"
       :border="myOption.border"
       :empty-text="myOption.emptyText"
       :tooltip-effect="myOption.tooltipEffect"
@@ -113,11 +117,7 @@
           ></slot>
           <el-button
             @click="handleEdit(scope.row)"
-            v-if="
-              myPermissions.editBtn &&
-                myOption.editBtn.display &&
-                myOption.editBtn !== false
-            "
+            v-if="filterBtnDisplay('editBtn', scope.row)"
             :disabled="
               !!myOption.editBtn.disabled &&
                 (myOption.editBtn.disabled === true ||
@@ -129,11 +129,7 @@
           </el-button>
           <el-button
             @click="handleDel(scope.row)"
-            v-if="
-              myPermissions.delBtn &&
-                myOption.delBtn.display &&
-                myOption.delBtn !== false
-            "
+            v-if="filterBtnDisplay('delBtn', scope.row)"
             :disabled="
               !!myOption.delBtn.disabled &&
                 (myOption.delBtn.disabled === true ||
@@ -229,7 +225,16 @@ export default {
     }
   },
   inheritAttrs: false,
-  emits: ["load", "add", "edit", "del", "before", "after", "selection-change"],
+  emits: [
+    "load",
+    "add",
+    "edit",
+    "del",
+    "before",
+    "after",
+    "selection-change",
+    "load-tree"
+  ],
   computed: {
     hasSearch() {
       let search = false;
@@ -283,6 +288,25 @@ export default {
     }
   },
   methods: {
+    /**
+     *
+     * @param btnProp eg. editBtn addBtn
+     * @param row row
+     */
+    filterBtnDisplay(btnProp, row) {
+      if (
+        this.myOption[btnProp] &&
+        Object.prototype.toString.call(this.myOption[btnProp].display) ===
+          "[object Function]"
+      ) {
+        return this.myOption[btnProp].display(row);
+      }
+      return (
+        this.myPermissions[btnProp] &&
+        this.myOption[btnProp].display &&
+        this.myOption[btnProp] !== false
+      );
+    },
     widthFilter(item) {
       return item.width > 0 ? item.width + "px" : "auto";
     },
@@ -441,6 +465,15 @@ export default {
     },
     handleSelectionChange(selection) {
       this.$emit("selection-change", selection);
+    },
+    handleLoadTreeData(row, treeNode, resolve) {
+      this.loading = true;
+      this.$emit("load-tree", row, treeNode, treeData => {
+        if (treeData !== undefined) {
+          resolve(treeData);
+        }
+        this.loading = false;
+      });
     }
   }
 };
