@@ -1,7 +1,8 @@
 <template>
-  <el-select :model-value="myValue" ref="treeSelectRef">
+  <el-select :model-value="myValue" ref="treeSelectRef" style="width: 100%;">
     <el-option :value="myValue" :label="label">
       <el-tree
+        ref="elTreeRef"
         :empty-text="myOption.emptyText"
         :default-expand-all="myOption.defaultExpandAll"
         :node-key="myOption.nodeKey ? myOption.nodeKey : myOption.props.value"
@@ -35,6 +36,7 @@ export default {
       handler(val) {
         if (val !== undefined) {
           this.value = val;
+          this.resetCheckNodes();
         }
       },
       immediate: true,
@@ -52,7 +54,8 @@ export default {
   data() {
     return {
       value: "",
-      myOption: JSON.parse(JSON.stringify(option))
+      myOption: JSON.parse(JSON.stringify(option)),
+      checkedNodes: []
     };
   },
   computed: {
@@ -70,17 +73,11 @@ export default {
         if (find) {
           return find[this.myOption.props.label];
         }
-      } else {
-        const checkedNodes = this.myOption.dicData.filter(
-          item =>
-            this.modelValue.findIndex(
-              i => item[this.myOption.props.value] === i
-            ) >= 0
-        );
+      } else if (this.modelValue !== undefined) {
         let label = "";
-        for (let i = 0; i < checkedNodes.length; i++) {
-          label += checkedNodes[i][this.myOption.props.label];
-          if (i < checkedNodes.length - 1) {
+        for (let i = 0; i < this.checkedNodes.length; i++) {
+          label += this.checkedNodes[i][this.myOption.props.label];
+          if (i < this.checkedNodes.length - 1) {
             label += " | ";
           }
         }
@@ -94,11 +91,30 @@ export default {
       if (this.myOption.dicUrl) {
         window.axios.get(this.myOption.dicUrl).then(res => {
           this.myOption.dicData = res;
+          this.resetCheckNodes();
         });
       }
     },
-    handleCheck(data, { checkedKeys }) {
+    resetCheckNodes() {
+      if (this.myOption.showCheckbox) {
+        setTimeout(() => {
+          this.$nextTick(() => {
+            try {
+              this.checkedNodes = this.$refs.elTreeRef.getCheckedNodes();
+            } catch (e) {
+              console.warn(
+                "this.checkedNodes = this.$refs.elTreeRef.getCheckedNodes(); is warning"
+              );
+            }
+          });
+        }, 10);
+      }
+    },
+    handleCheck(data, { checkedNodes, checkedKeys }) {
       this.value = checkedKeys;
+      this.checkedNodes = checkedNodes;
+      console.log(checkedNodes);
+      console.log(checkedKeys);
       this.$emit("update:modelValue", checkedKeys);
     },
     handleNodeClick(data) {
