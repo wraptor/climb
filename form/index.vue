@@ -10,12 +10,8 @@
     :disabled="loading"
   >
     <el-row :gutter="myOption.gutter">
-      <template v-for="item in myOption.columns">
-        <el-col
-          v-bind:key="item.prop"
-          v-if="displayFilter(item)"
-          :span="spanFilter(item)"
-        >
+      <template v-for="item in myOption.columns" v-bind:key="item.prop">
+        <el-col v-show="displayFilter(item)" :span="spanFilter(item)">
           <el-form-item
             style="width: 100%;"
             :label="item.label ? item.label + '：' : ''"
