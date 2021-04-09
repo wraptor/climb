@@ -331,11 +331,20 @@ export default {
       }
     },
     disabledFilter(item) {
-      if (this.disabled || this.myOption.disabled) {
-        return true;
+      if (this.type === undefined) {
+        if (
+          Object.prototype.toString.call(this.myOption.disabled) ===
+          "[object Function]"
+        ) {
+          return this.myOption.disabled(this.form);
+        }
+        return this.disabled || this.myOption.disabled;
       }
-      if (!this.type) {
-        return false;
+      if (
+        Object.prototype.toString.call(item[this.type + "Disabled"]) ===
+        "[object Function]"
+      ) {
+        return item[this.type + "Disabled"](this.form);
       }
       return item[this.type + "Disabled"] === true;
     },
