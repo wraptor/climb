@@ -14,6 +14,8 @@ import ClRow from "./row";
 import ClCol from "./col";
 import ClList from "./list";
 import ClBackTop from "./back-top";
+import ClListSelect from "./list-select";
+
 const components = [
   ClForm,
   ClTable,
@@ -30,7 +32,8 @@ const components = [
   ClRow,
   ClCol,
   ClList,
-  ClBackTop
+  ClBackTop,
+  ClListSelect
 ];
 
 (function() {

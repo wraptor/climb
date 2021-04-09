@@ -82,6 +82,11 @@
                 :option="item"
                 v-model="form[item.prop]"
               ></cl-tag-input>
+              <cl-list-select
+                v-else-if="listSelectArray.findIndex(i => i === item.type) >= 0"
+                :option="item"
+                v-model="form[item.prop]"
+              ></cl-list-select>
 
               <template v-else>
                 {{ item.type }}
@@ -188,7 +193,8 @@ import {
   datePickerTypeArray,
   timePickerTypeArray,
   treeSelectArray,
-  tagInputArray
+  tagInputArray,
+  listSelectArray
 } from "../util/type";
 import { debounce } from "../util/util";
 
@@ -258,6 +264,7 @@ export default {
       timePickerTypeArray,
       treeSelectArray,
       tagInputArray,
+      listSelectArray,
       loading: false,
       form: JSON.parse(JSON.stringify(this.modelValue)),
       myOption: JSON.parse(JSON.stringify(option)),

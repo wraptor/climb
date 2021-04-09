@@ -25,3 +25,4 @@ export const datePickerTypeArray = [
 ];
 export const treeSelectArray = ["tree", "treeselect", "treeSelect"];
 export const tagInputArray = ["tag", "tags", "taginput", "tagInput"];
+export const listSelectArray = ["list", "listselect"];
