@@ -171,7 +171,11 @@
       destroy-on-close
       :title="type === 'add' ? '新增' : '编辑'"
       :model-value="visible"
-      :width="myOption.dialogWidth"
+      :width="
+        myOption.dialogWidth > 0
+          ? myOption.dialogWidth + 'px'
+          : myOption.dialogWidth
+      "
     >
       <cl-form
         :option="myOption"
@@ -357,10 +361,10 @@ export default {
       });
     },
     load(reload) {
-      if (reload) {
+      if (reload === true) {
         this.page.current = 1;
       }
-      this.handleSearch({}, () => {}, "load");
+      this.handleSearch(this.myOption.params, () => {}, "load");
     },
     toBefore(row, done) {
       if (this.$attrs["before"]) {
