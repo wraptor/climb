@@ -3,7 +3,7 @@ const beanUtil = {
   /**
    * @param source source
    * @param target target
-   * @returns target
+   * @returns quota.vue
    */
   copyPropertiesNotEmpty(source, target) {
     if (!source) {
