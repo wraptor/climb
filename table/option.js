@@ -10,6 +10,7 @@ export default {
   resizable: true, //是否可调整宽度
 
   //ext
+  params: {}, //load 搜索额外参数
   rowKey: "id",
   dialogWidth: "50%",
   init: true,
