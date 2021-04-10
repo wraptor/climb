@@ -5,6 +5,7 @@
     :disabled="myOption.disabled || disabled"
     :placeholder="myOption.placeholder"
     :clearable="myOption.clearable"
+    :filterable="myOption.filterable"
     style="width: 100%"
     v-model="value"
     @change="handleChange"
