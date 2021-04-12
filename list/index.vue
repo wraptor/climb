@@ -1,7 +1,9 @@
 <template>
   <div class="cl-list" v-loading="loading">
+    <slot name="header" :page="page"></slot>
     <div
       class="cl-list-body"
+      :style="row ? { flexDirection: 'row' } : { flexDirection: 'column' }"
       v-infinite-scroll="loadMore"
       :infinite-scroll-delay="delay"
       :infinite-scroll-disabled="page.current === page.pages"
@@ -31,6 +33,10 @@ export default {
     empty: {
       type: String,
       default: "没有数据"
+    },
+    row: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -76,7 +82,7 @@ export default {
 
 .cl-list-body {
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;*/
 }
 
 .cl-list-item {
@@ -88,6 +94,7 @@ export default {
 .cl-list-tip {
   text-align: center;
   font-size: 14px;
+  background-color: #fff;
   color: #7e7e7e;
 }
 </style>
