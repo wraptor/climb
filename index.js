@@ -15,7 +15,7 @@ import ClCol from "./col";
 import ClList from "./list";
 import ClBackTop from "./back-top";
 import ClListSelect from "./list-select";
-
+import ClButton from "./button";
 const components = [
   ClForm,
   ClTable,
@@ -33,7 +33,8 @@ const components = [
   ClCol,
   ClList,
   ClBackTop,
-  ClListSelect
+  ClListSelect,
+  ClButton
 ];
 
 (function() {
