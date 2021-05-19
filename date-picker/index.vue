@@ -1,7 +1,9 @@
 <template>
   <el-date-picker
     v-model="value"
-    :style="myOption.width ? { width: myOption.width + 'px' } : {}"
+    :style="
+      myOption.width ? { width: myOption.width + 'px' } : { width: '100%' }
+    "
     :disabled="myOption.disabled || disabled"
     :type="myOption.type"
     :placeholder="myOption.placeholder"

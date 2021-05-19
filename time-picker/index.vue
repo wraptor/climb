@@ -1,6 +1,9 @@
 <template>
   <el-time-picker
     v-model="value"
+    :style="
+      myOption.width ? { width: myOption.width + 'px' } : { width: '100%' }
+    "
     :is-range="myOption.type === 'timerange'"
     :disabled="myOption.disabled || disabled"
     :format="myOption.format"
