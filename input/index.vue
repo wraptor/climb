@@ -28,6 +28,7 @@
 
   <el-input-number
     v-else
+    style="width: 100%"
     :disabled="myOption.disabled || disabled"
     v-model="value"
     :model-value="value"
@@ -51,8 +52,7 @@ export default {
   name: "ClInput",
   props: {
     modelValue: {
-      type: [String, Number],
-      default: ""
+      type: [String, Number]
     },
     option: {},
     disabled: {}
