@@ -92,7 +92,14 @@
         >
           <template #default="scope">
             <slot :name="item.prop" :row="scope.row">
-              <template v-if="item.type === 'radio' || item.type === 'select'">
+              <template
+                v-if="
+                  item.type === 'radio' ||
+                    item.type === 'select' ||
+                    item.type === 'cascader' ||
+                    item.type === 'tags'
+                "
+              >
                 {{ filterValue(item, scope.row[item.prop]) }}
               </template>
               <template v-else>
@@ -319,9 +326,11 @@ export default {
         if (item.dicUrl && window.axios) {
           window.axios.get(item.dicUrl).then(res => {
             item.dicData = res;
+            item.dicUrl = undefined;
           });
         }
       });
+      console.log("初始化", this.myOption);
     },
     setDefaultForm() {
       this.defaultForm = {};
@@ -401,6 +410,9 @@ export default {
       this.load();
     },
     filterValue(item, val) {
+      if (item.type === "tags" && val) {
+        return val.toString();
+      }
       if (!item.dicData) {
         return val;
       }
@@ -412,7 +424,24 @@ export default {
         data: "data"
       };
       beanUtil.copyPropertiesNotEmpty(item.props, props);
-      const find = item.dicData.find(item => item[props.value] === val);
+
+      if (val && item.type === "cascader") {
+        let dicData = JSON.parse(JSON.stringify(item.dicData));
+        let label = "";
+        for (let i = 0; i < val.length; i++) {
+          const find = dicData.find(item => item[props.value] === val[i]);
+          if (find) {
+            dicData = find[props.children];
+            label += "," + find[props.label];
+          }
+        }
+        return label === "" ? "" : label.substring(1);
+      } else {
+        return this.findValueByProps(val, item.dicData, props);
+      }
+    },
+    findValueByProps(val, dicData, props) {
+      const find = dicData.find(item => item[props.value] === val);
       if (find) {
         return find[props.label];
       }
