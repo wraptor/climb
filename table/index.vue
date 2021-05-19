@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-dialog-drag>
     <!--  搜索区域  -->
     <div v-if="hasSearch">
       <cl-form
@@ -512,4 +512,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+::v-deep(.el-dialog__header) {
+  padding: 16px 20px;
+}
+</style>
