@@ -6,6 +6,7 @@ export const inputTypeArray = [
   "textarea",
   "password"
 ];
+export const inputRangeTypeArray = ["inputRange", "textRange", "numberRange"];
 export const radioTypeArray = ["radio"];
 export const checkboxTypeArray = ["checkbox"];
 export const selectTypeArray = ["select"];

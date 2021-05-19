@@ -1,6 +1,7 @@
 import ClForm from "./form";
 import ClTable from "./table";
 import ClInput from "./input";
+import ClInputRange from "./input-range";
 import ClRadio from "./radio";
 import ClCheckBox from "./check-box";
 import ClSelect from "./select";
@@ -16,10 +17,12 @@ import ClList from "./list";
 import ClBackTop from "./back-top";
 import ClListSelect from "./list-select";
 import ClButton from "./button";
+import ClCascader from "./cascader";
 const components = [
   ClForm,
   ClTable,
   ClInput,
+  ClInputRange,
   ClRadio,
   ClCheckBox,
   ClSelect,
@@ -34,7 +37,8 @@ const components = [
   ClList,
   ClBackTop,
   ClListSelect,
-  ClButton
+  ClButton,
+  ClCascader
 ];
 
 (function() {

@@ -38,6 +38,15 @@
                   <slot :name="item.prop + 'Prefix'"></slot>
                 </template>
               </cl-input>
+              <cl-input-range
+                v-else-if="
+                  inputRangeTypeArray.findIndex(i => i === item.type) >= 0
+                "
+                :disabled="disabledFilter(item)"
+                v-model="form[item.prop]"
+                :option="item"
+              >
+              </cl-input-range>
               <cl-radio
                 v-else-if="item.type === 'radio'"
                 :disabled="disabledFilter(item)"
@@ -56,6 +65,12 @@
                 :option="item"
                 v-model="form[item.prop]"
               ></cl-select>
+              <cl-cascader
+                v-else-if="item.type === 'cascader'"
+                :disabled="disabledFilter(item)"
+                :option="item"
+                v-model="form[item.prop]"
+              ></cl-cascader>
               <cl-date-picker
                 v-else-if="
                   datePickerTypeArray.findIndex(i => i === item.type) >= 0
@@ -190,6 +205,7 @@ import option from "./option";
 import beanUtil from "../util/bean-util";
 import {
   inputTypeArray,
+  inputRangeTypeArray,
   datePickerTypeArray,
   timePickerTypeArray,
   treeSelectArray,
@@ -260,6 +276,7 @@ export default {
   data() {
     return {
       inputTypeArray,
+      inputRangeTypeArray,
       datePickerTypeArray,
       timePickerTypeArray,
       treeSelectArray,
