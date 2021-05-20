@@ -46,6 +46,7 @@ export default {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
         this.initDic();
+        this.resetCheckNodes();
       },
       immediate: true,
       deep: true
@@ -97,24 +98,20 @@ export default {
     },
     resetCheckNodes() {
       if (this.myOption.showCheckbox) {
-        setTimeout(() => {
-          this.$nextTick(() => {
-            try {
-              this.checkedNodes = this.$refs.elTreeRef.getCheckedNodes();
-            } catch (e) {
-              console.warn(
-                "this.checkedNodes = this.$refs.elTreeRef.getCheckedNodes(); is warning"
-              );
-            }
-          });
-        }, 10);
+        this.$nextTick(() => {
+          try {
+            this.checkedNodes = this.$refs.elTreeRef.getCheckedNodes();
+          } catch (e) {
+            console.warn(
+              "this.checkedNodes = this.$refs.elTreeRef.getCheckedNodes(); is warning"
+            );
+          }
+        });
       }
     },
     handleCheck(data, { checkedNodes, checkedKeys }) {
       this.value = checkedKeys;
       this.checkedNodes = checkedNodes;
-      console.log(checkedNodes);
-      console.log(checkedKeys);
       this.$emit("update:modelValue", checkedKeys);
     },
     handleNodeClick(data) {
