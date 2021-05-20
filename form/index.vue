@@ -112,6 +112,7 @@
       </template>
       <el-col
         :span="btnSpanFilter()"
+        style="text-align: right"
         v-if="
           myOption.btn !== false &&
             (myOption.btnRight === true || btnRight === true)
