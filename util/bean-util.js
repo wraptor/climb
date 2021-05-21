@@ -32,17 +32,17 @@ const beanUtil = {
     return target;
   },
   deepClone(data) {
-    const type = typeof data;
+    const type = Object.prototype.toString.call(data);
     let obj;
     // 数组的话遍历拷贝
-    if (type === "array") {
+    if (type === "[object Array]") {
       obj = [];
       for (let i = 0, len = data.length; i < len; i++) {
         obj.push(this.deepClone(data[i]));
       }
     }
     // 对象的话遍历属性拷贝
-    else if (type === "object") {
+    else if (type === "[object Object]") {
       obj = {};
       for (let key in data) {
         // eslint-disable-next-line no-prototype-builtins
