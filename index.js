@@ -92,5 +92,6 @@ export default {
       Vue.component(component.name, component);
     });
     window.beanUtil = beanUtil;
+    window.deepClone = beanUtil.deepClone;
   }
 };
