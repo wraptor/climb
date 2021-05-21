@@ -1,6 +1,7 @@
 <template>
   <el-select
     v-model="myValue"
+    :multiple="myOption.multiple"
     :multiple-limit="myOption.multipleLimit"
     :disabled="myOption.disabled || disabled"
     :placeholder="myOption.placeholder"
