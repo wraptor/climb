@@ -291,14 +291,15 @@ export default {
   },
   methods: {
     initDefaultForm() {
-      this.myOption.columns.forEach(item => {
+      for (let i = 0; i < this.myOption.columns.length; i++) {
+        const item = this.myOption.columns[i];
         if (
           item.value !== undefined &&
           this.backForm[item.prop] === undefined
         ) {
           this.backForm[item.prop] = item.value;
         }
-      });
+      }
       this.onReset();
     },
     labelWidthFilter(item) {

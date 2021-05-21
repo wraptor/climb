@@ -1,8 +1,11 @@
 <template>
   <el-select
     v-model="myValue"
-    multiple
-    :disabled="disabled || myOption.disabled"
+    :multiple-limit="myOption.multipleLimit"
+    :disabled="myOption.disabled || disabled"
+    :placeholder="myOption.placeholder"
+    :clearable="myOption.clearable"
+    :filterable="myOption.filterable"
     ref="listSelectRef"
     style="width: 100%;"
   >
@@ -10,7 +13,7 @@
       <template #default="{item}">
         <el-option
           :value="item[myOption.props.value]"
-          :label="item[myOption.props.label]"
+          :label="filterLabel(item)"
         >
         </el-option>
       </template>
@@ -26,7 +29,6 @@ export default {
   name: "ClListSelect",
   props: {
     modelValue: {
-      type: Array,
       default: () => []
     },
     option: {},
@@ -58,6 +60,15 @@ export default {
     }
   },
   methods: {
+    filterLabel(item) {
+      if (
+        Object.prototype.toString.call(this.myOption.props.label) ===
+        "[object Function]"
+      ) {
+        return this.myOption.props.label(item);
+      }
+      return item[this.myOption.props.label];
+    },
     handleLoad(page, done) {
       if (this.myOption.dicUrl) {
         window.axios

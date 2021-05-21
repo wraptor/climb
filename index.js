@@ -40,7 +40,7 @@ const components = [
   ClButton,
   ClCascader
 ];
-
+import beanUtil from "./util/bean-util";
 (function() {
   // Defining patterns
   var dateFormat = function(date, format = "yyyy-MM-dd hh:mm:ss") {
@@ -91,5 +91,6 @@ export default {
     components.forEach(component => {
       Vue.component(component.name, component);
     });
+    window.beanUtil = beanUtil;
   }
 };

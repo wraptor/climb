@@ -34,25 +34,27 @@ const beanUtil = {
   deepClone(data) {
     const type = typeof data;
     let obj;
+    // 数组的话遍历拷贝
     if (type === "array") {
       obj = [];
-    } else if (type === "object") {
-      obj = {};
-    } else {
-      //不再具有下一层次
-      return data;
-    }
-    if (type === "array") {
       for (let i = 0, len = data.length; i < len; i++) {
-        obj.push(JSON.parse(JSON.stringify(data[i])));
+        obj.push(this.deepClone(data[i]));
       }
-    } else if (type === "object") {
+    }
+    // 对象的话遍历属性拷贝
+    else if (type === "object") {
+      obj = {};
       for (let key in data) {
         // eslint-disable-next-line no-prototype-builtins
         if (data.hasOwnProperty(key)) {
           obj[key] = this.deepClone(data[key]);
         }
       }
+    }
+    //其他类型直接返回
+    else {
+      //不再具有下一层次
+      return data;
     }
     return obj;
   },

@@ -323,14 +323,13 @@ export default {
     },
     setDefaultDicData() {
       this.myOption.columns.forEach(item => {
-        if (item.dicUrl && window.axios) {
+        if (item.dicUrl && window.axios && item.type !== "list") {
           window.axios.get(item.dicUrl).then(res => {
             item.dicData = res;
             item.dicUrl = undefined;
           });
         }
       });
-      console.log("初始化", this.myOption);
     },
     setDefaultForm() {
       this.defaultForm = {};
