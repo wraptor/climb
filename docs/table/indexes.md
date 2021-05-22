@@ -22,7 +22,12 @@ export default {
                 columns:[{
                         prop:'name',
                         label:'姓名',
-                        type:'text'
+                        type:'text',
+                        rules:[{
+                            required: true,
+                            message: '请填写姓名',
+                            trigger: 'blur'
+                        }]
                     },{
                         prop:'age',
                         label:'年龄',

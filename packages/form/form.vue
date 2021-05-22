@@ -106,7 +106,6 @@
             form: {
                 deep: true,
                 handler(val) {
-                    console.log('xiangform', val)
                     this.$emit('input', val)
                 }
             },

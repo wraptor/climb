@@ -349,7 +349,6 @@
                             this.defaultFormOption.items.push(theItem)
                         }
                     })
-                    console.log(this.defaultFormOption.items, this.defaultFormOption.items.length)
                 }
                 this.crudObj = {type: type, index: index, row: row}
                 if (this.defaultLoading.repeat) {

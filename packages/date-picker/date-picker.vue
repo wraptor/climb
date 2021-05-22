@@ -45,7 +45,6 @@
                 immediate: true,
                 handler(val) {
                     beanUtil.copyPropertiesNotEmpty(val, this.defaultOption)
-                    console.log(this.defaultOption)
                 }
             }, value(val) {
                 this.myValue = val

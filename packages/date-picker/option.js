@@ -20,7 +20,6 @@ export default {
         }, {
             text: '一周前',
             onClick(picker) {
-                console.log(picker)
                 const date = new Date();
                 date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
                 picker.$emit('pick', date);

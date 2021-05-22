@@ -1,7 +1,7 @@
 {
   "name": "climb-ui",
   "description": "climb:collect element",
-  "version": "0.2.2",
+  "version": "0.2.5",
   "author": "seepine <seepine@163.com>",
   "license": "MIT",
   "private": false,
@@ -30,7 +30,7 @@
     "lib"
   ],
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.0",
     "core-js": "^3.6.4",
     "element-ui": "^2.13.2",
     "vue": "^2.6.11"
