@@ -17,7 +17,7 @@
           ? item[myOption.props.value]
           : item[myOption.props.label]
       "
-      :label="item[myOption.props.label]"
+      :label="filterLabel(item)"
       :value="
         item[myOption.props.value] !== undefined
           ? item[myOption.props.value]
@@ -89,6 +89,15 @@ export default {
   },
   emits: ["update:modelValue"],
   methods: {
+    filterLabel(item) {
+      if (
+        Object.prototype.toString.call(this.myOption.props.label) ===
+        "[object Function]"
+      ) {
+        return this.myOption.props.label(item);
+      }
+      return item[this.myOption.props.label];
+    },
     handleChange(val) {
       this.$emit("update:modelValue", val);
     }
