@@ -6,17 +6,31 @@
       :style="row ? { flexDirection: 'row' } : { flexDirection: 'column' }"
       v-infinite-scroll="loadMore"
       :infinite-scroll-delay="delay"
-      :infinite-scroll-disabled="page.current === page.pages"
+      :infinite-scroll-disabled="!auto || page.current === page.pages"
     >
       <div class="cl-list-item" v-for="(item, index) in data" :key="index">
         <slot :item="item" :index="index">
           {{ item }}
         </slot>
       </div>
-      <el-empty :description="empty" v-if="page.total === 0"></el-empty>
-      <el-divider v-else-if="page.current === page.pages"
-        ><p class="cl-list-tip">没有更多了</p></el-divider
+      <div v-if="page.total === 0">
+        <slot name="empty">
+          <el-empty :description="empty"></el-empty>
+        </slot>
+      </div>
+      <div
+        class="flex-row justify-center"
+        v-else-if="page.current === page.pages"
       >
+        <el-divider style="width: 80%;" v-if="auto"
+          ><p class="cl-list-tip">没有更多了</p></el-divider
+        >
+      </div>
+      <div v-else-if="!auto" style="text-align: center">
+        <el-button @click="loadMore" type="text" style="width: 100px"
+          >加载更多</el-button
+        >
+      </div>
       <el-divider v-else><p class="cl-list-tip">加载中...</p></el-divider>
     </div>
   </div>
@@ -37,6 +51,22 @@ export default {
     row: {
       type: Boolean,
       default: false
+    },
+    // 是否自动加载更多
+    auto: {
+      type: Boolean,
+      default: true
+    },
+    size: {}
+  },
+  watch: {
+    size: {
+      handler(val) {
+        if (val) {
+          this.page.size = val;
+        }
+      },
+      immediate: true
     }
   },
   data() {

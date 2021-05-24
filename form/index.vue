@@ -11,7 +11,11 @@
   >
     <el-row :gutter="myOption.gutter">
       <template v-for="item in myOption.columns" v-bind:key="item.prop">
-        <el-col v-show="displayFilter(item)" :span="spanFilter(item)">
+        <el-col
+          v-show="item.if ? true : displayFilter(item)"
+          v-if="item.if ? displayFilter(item) : true"
+          :span="spanFilter(item)"
+        >
           <el-form-item
             style="width: 100%;"
             :label="item.label ? item.label + '：' : ''"
