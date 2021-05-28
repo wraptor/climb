@@ -29,9 +29,7 @@ import option from "./option";
 export default {
   name: "ClListSelect",
   props: {
-    modelValue: {
-      default: () => []
-    },
+    modelValue: {},
     option: {},
     disabled: {}
   },
@@ -53,7 +51,13 @@ export default {
   computed: {
     myValue: {
       get() {
-        return this.modelValue;
+        if (this.modelValue) {
+          return this.modelValue;
+        }
+        if (this.myOption.multiple) {
+          return [];
+        }
+        return "";
       },
       set(val) {
         this.$emit("update:modelValue", val);
