@@ -362,7 +362,7 @@ export default {
           Object.prototype.toString.call(this.myOption.disabled) ===
           "[object Function]"
         ) {
-          return this.myOption.disabled(this.form);
+          return this.myOption.disabled(this.form, this.backForm);
         }
         return this.disabled || this.myOption.disabled;
       }
@@ -370,7 +370,7 @@ export default {
         Object.prototype.toString.call(item[this.type + "Disabled"]) ===
         "[object Function]"
       ) {
-        return item[this.type + "Disabled"](this.form);
+        return item[this.type + "Disabled"](this.form, this.backForm);
       }
       return item[this.type + "Disabled"] === true;
     },
