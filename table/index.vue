@@ -375,6 +375,10 @@ export default {
       this.handleSearch(this.myOption.params, () => {}, "load");
     },
     toBefore(row, done) {
+      window.clTable = {
+        type: this.type,
+        row: row
+      };
       if (this.$attrs["before"]) {
         this.$attrs["before"](this.type, row, done);
       } else {
