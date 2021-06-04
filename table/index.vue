@@ -215,6 +215,12 @@ export default {
       default: () => {
         return {};
       }
+    },
+    params: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     }
   },
   watch: {
@@ -230,6 +236,13 @@ export default {
     permissions: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myPermissions);
+      },
+      immediate: true,
+      deep: true
+    },
+    params: {
+      handler(val) {
+        beanUtil.copyPropertiesNotEmpty(val, this.myOption.params);
       },
       immediate: true,
       deep: true
