@@ -62,6 +62,9 @@
       :tooltip-effect="myOption.tooltipEffect"
       :highlight-current-row="myOption.highlightCurrentRow"
       :stripe="myOption.stripe"
+      :show-summary="myOption.showSummary"
+      :sum-text="myOption.sumText"
+      :summary-method="myOption.summaryMethod"
       style="margin-top: 10px"
     >
       <!--    =============多选=============    -->
