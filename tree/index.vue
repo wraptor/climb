@@ -33,13 +33,13 @@
         <div>
           <el-button
             type="text"
-            v-if="myOption.addBtn"
+            v-if="myOption.addBtn && data.addBtn"
             @click="() => append(data)"
             >{{ myOption.addBtn.text }}</el-button
           >
           <el-button
             type="text"
-            v-if="myOption.delBtn"
+            v-if="myOption.delBtn  && data.delBtn"
             @click="() => remove(node, data)"
             >{{ myOption.delBtn.text }}</el-button
           >

@@ -68,9 +68,7 @@ export default {
     },
     label() {
       if (!this.myOption.showCheckbox) {
-        const find = this.myOption.dicData.find(
-          item => item[this.myOption.props.value] === this.modelValue
-        );
+        const find = this.findNode(this.myOption.dicData, this.modelValue);
         if (find) {
           return find[this.myOption.props.label];
         }
@@ -125,6 +123,20 @@ export default {
           this.myOption.change(this.value, this.$parent.form);
         }
       }
+    },
+    findNode(nodes, key) {
+      for (let i = 0; i < nodes.length; i++) {
+        const item = nodes[i];
+        if (item[this.myOption.props.value] === key) {
+          return item;
+        } else if (item.children && item.children.length > 0) {
+          const find = this.findNode(item.children, key);
+          if (find) {
+            return find;
+          }
+        }
+      }
+      return null;
     }
   }
 };
