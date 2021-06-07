@@ -39,7 +39,7 @@
           >
           <el-button
             type="text"
-            v-if="myOption.delBtn  && data.delBtn"
+            v-if="myOption.delBtn && data.delBtn"
             @click="() => remove(node, data)"
             >{{ myOption.delBtn.text }}</el-button
           >
