@@ -48,8 +48,11 @@
       </div>
     </div>
     <el-table
+      ref="elTableRef"
       v-loading="loading"
       @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
+      @row-dblclick="handleRowDblClick"
       :index="myOption.index"
       :data="tableData"
       :row-style="myOption.rowStyle"
@@ -71,6 +74,7 @@
       <el-table-column
         v-if="myOption.selection"
         type="selection"
+        :selectable="myOption.selectable"
       ></el-table-column>
       <!--    =============序号=============    -->
       <el-table-column
@@ -260,7 +264,9 @@ export default {
     "before",
     "after",
     "selection-change",
-    "load-tree"
+    "load-tree",
+    "row-click",
+    "row-dblclick"
   ],
   computed: {
     hasSearch() {
@@ -526,6 +532,15 @@ export default {
         }
         this.loading = false;
       });
+    },
+    handleRowClick(row, column, event) {
+      this.$emit("row-click", row, column, event);
+    },
+    handleRowDblClick(row, column, event) {
+      this.$emit("row-dblclick", row, column, event);
+    },
+    toggleRowSelection(row, selected) {
+      this.$refs.elTableRef.toggleRowSelection(row, selected);
     }
   }
 };
