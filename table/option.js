@@ -13,6 +13,9 @@ export default {
   params: {}, //load 搜索额外参数
   rowKey: "id",
   dialogWidth: "50%",
+  dialogTop: undefined,
+  dialogClass: "",
+  fullscreen: false,
   init: true,
   menu: true,
   menuWidth: 150,
