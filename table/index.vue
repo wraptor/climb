@@ -1,5 +1,5 @@
 <template>
-  <div v-dialog-drag>
+  <div>
     <!--  搜索区域  -->
     <div v-if="hasSearch">
       <cl-form
@@ -47,124 +47,132 @@
         </el-button>
       </div>
     </div>
-    <el-table
-      ref="elTableRef"
-      v-loading="loading"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
-      @row-dblclick="handleRowDblClick"
-      :index="myOption.index"
-      :data="tableData"
-      :row-style="myOption.rowStyle"
-      :row-key="myOption.rowKey"
-      :lazy="myOption.lazy"
-      :load="handleLoadTreeData"
-      :tree-props="myOption.treeProps"
-      :border="myOption.border"
-      :empty-text="myOption.emptyText"
-      :tooltip-effect="myOption.tooltipEffect"
-      :highlight-current-row="myOption.highlightCurrentRow"
-      :stripe="myOption.stripe"
-      :show-summary="myOption.showSummary"
-      :sum-text="myOption.sumText"
-      :summary-method="myOption.summaryMethod"
-      style="margin-top: 10px"
+
+    <div
+      class="flex-1"
+      style="position: relative"
+      ref="tableBoxRef"
+      :style="`height:${tableBoxHeight}px`"
     >
-      <!--    =============多选=============    -->
-      <el-table-column
-        v-if="myOption.selection"
-        type="selection"
-        :selectable="myOption.selectable"
-      ></el-table-column>
-      <!--    =============序号=============    -->
-      <el-table-column
-        v-if="myOption.index"
-        :label="myOption.index"
-        type="index"
-      />
-      <!--    =============每一列=============    -->
-      <template v-for="item in myOption.columns">
+      <el-table
+        ref="elTableRef"
+        style="margin-top: 10px;position: absolute;width: 100%;"
+        v-loading="loading"
+        @selection-change="handleSelectionChange"
+        @row-click="handleRowClick"
+        @row-dblclick="handleRowDblClick"
+        :index="myOption.index"
+        :data="tableData"
+        :row-style="myOption.rowStyle"
+        :row-key="myOption.rowKey"
+        :lazy="myOption.lazy"
+        :load="handleLoadTreeData"
+        :tree-props="myOption.treeProps"
+        :border="myOption.border"
+        :empty-text="myOption.emptyText"
+        :tooltip-effect="myOption.tooltipEffect"
+        :highlight-current-row="myOption.highlightCurrentRow"
+        :stripe="myOption.stripe"
+        :show-summary="myOption.showSummary"
+        :sum-text="myOption.sumText"
+        :summary-method="myOption.summaryMethod"
+      >
+        <!--    =============多选=============    -->
         <el-table-column
-          v-if="item.display !== false"
-          :key="item.prop"
-          :prop="item.prop"
-          :sortable="item.sortable"
-          :show-overflow-tooltip="
-            item.showOverflowTooltip
-              ? item.showOverflowTooltip
-              : myOption.showOverflowTooltip
-          "
-          :width="widthFilter(item)"
-          :label="item.label"
+          v-if="myOption.selection"
+          type="selection"
+          :selectable="myOption.selectable"
+        ></el-table-column>
+        <!--    =============序号=============    -->
+        <el-table-column
+          v-if="myOption.index"
+          :label="myOption.index"
+          type="index"
+        />
+        <!--    =============每一列=============    -->
+        <template v-for="item in myOption.columns">
+          <el-table-column
+            v-if="item.display !== false"
+            :key="item.prop"
+            :prop="item.prop"
+            :sortable="item.sortable"
+            :show-overflow-tooltip="
+              item.showOverflowTooltip
+                ? item.showOverflowTooltip
+                : myOption.showOverflowTooltip
+            "
+            :width="widthFilter(item)"
+            :label="item.label"
+          >
+            <template #default="scope">
+              <slot :name="item.prop" :row="scope.row">
+                <template
+                  v-if="
+                    item.type === 'radio' ||
+                      item.type === 'select' ||
+                      item.type === 'cascader' ||
+                      item.type === 'tags'
+                  "
+                >
+                  {{ filterValue(item, scope.row[item.prop]) }}
+                </template>
+                <template v-else>
+                  {{ scope.row[item.prop] }}
+                </template>
+              </slot>
+            </template>
+          </el-table-column>
+        </template>
+        <!--    =============操作菜单=============    -->
+        <el-table-column
+          v-if="myOption.menu"
+          :width="myOption.menuWidth"
+          :label="myOption.menuLabel"
         >
           <template #default="scope">
-            <slot :name="item.prop" :row="scope.row">
-              <template
-                v-if="
-                  item.type === 'radio' ||
-                    item.type === 'select' ||
-                    item.type === 'cascader' ||
-                    item.type === 'tags'
-                "
-              >
-                {{ filterValue(item, scope.row[item.prop]) }}
-              </template>
-              <template v-else>
-                {{ scope.row[item.prop] }}
-              </template>
+            <slot
+              name="menuFront"
+              :row="scope.row"
+              :column="scope.column"
+              :index="scope.$index"
+            ></slot>
+            <el-button
+              @click="handleEdit(scope.row)"
+              v-if="filterBtnDisplay('editBtn', scope.row)"
+              :disabled="
+                !!myOption.editBtn.disabled &&
+                  (myOption.editBtn.disabled === true ||
+                    myOption.editBtn.disabled(scope.row))
+              "
+              :icon="myOption.editBtn.icon"
+              :type="myOption.editBtn.type"
+              >{{ myOption.editBtn.text }}
+            </el-button>
+            <el-button
+              @click="handleDel(scope.row)"
+              v-if="filterBtnDisplay('delBtn', scope.row)"
+              :disabled="
+                !!myOption.delBtn.disabled &&
+                  (myOption.delBtn.disabled === true ||
+                    myOption.delBtn.disabled(scope.row))
+              "
+              :icon="myOption.delBtn.icon"
+              :type="myOption.delBtn.type"
+            >
+              {{ myOption.delBtn.text }}
+            </el-button>
+            <slot
+              name="menu"
+              :row="scope.row"
+              :column="scope.column"
+              :index="scope.$index"
+              :page="page"
+            >
             </slot>
           </template>
         </el-table-column>
-      </template>
-      <!--    =============操作菜单=============    -->
-      <el-table-column
-        v-if="myOption.menu"
-        :width="myOption.menuWidth"
-        :label="myOption.menuLabel"
-      >
-        <template #default="scope">
-          <slot
-            name="menuFront"
-            :row="scope.row"
-            :column="scope.column"
-            :index="scope.$index"
-          ></slot>
-          <el-button
-            @click="handleEdit(scope.row)"
-            v-if="filterBtnDisplay('editBtn', scope.row)"
-            :disabled="
-              !!myOption.editBtn.disabled &&
-                (myOption.editBtn.disabled === true ||
-                  myOption.editBtn.disabled(scope.row))
-            "
-            :icon="myOption.editBtn.icon"
-            :type="myOption.editBtn.type"
-            >{{ myOption.editBtn.text }}
-          </el-button>
-          <el-button
-            @click="handleDel(scope.row)"
-            v-if="filterBtnDisplay('delBtn', scope.row)"
-            :disabled="
-              !!myOption.delBtn.disabled &&
-                (myOption.delBtn.disabled === true ||
-                  myOption.delBtn.disabled(scope.row))
-            "
-            :icon="myOption.delBtn.icon"
-            :type="myOption.delBtn.type"
-          >
-            {{ myOption.delBtn.text }}
-          </el-button>
-          <slot
-            name="menu"
-            :row="scope.row"
-            :column="scope.column"
-            :index="scope.$index"
-            :page="page"
-          >
-          </slot>
-        </template>
-      </el-table-column>
-    </el-table>
+      </el-table>
+    </div>
 
     <el-pagination
       background
@@ -180,16 +188,14 @@
     >
     </el-pagination>
 
-    <el-dialog
+    <cl-dialog
       v-model="visible"
       destroy-on-close
+      :top="myOption.dialogTop"
       :title="type === 'add' ? '新增' : '编辑'"
-      :model-value="visible"
-      :width="
-        myOption.dialogWidth > 0
-          ? myOption.dialogWidth + 'px'
-          : myOption.dialogWidth
-      "
+      :custom-class="myOption.dialogClass"
+      :fullscreen="myOption.fullscreen"
+      :width="myOption.dialogWidth"
     >
       <cl-form
         :option="myOption"
@@ -201,7 +207,23 @@
           <slot :name="item.prop + 'Form'" :form="form"></slot>
         </template>
       </cl-form>
-    </el-dialog>
+    </cl-dialog>
+    <!--        <el-dialog-->
+    <!--          v-model="visible"-->
+    <!--          destroy-on-close-->
+    <!--          :title="type === 'add' ? '新增' : '编辑'"-->
+    <!--          :model-value="visible"-->
+    <!--          :show-close="false"-->
+    <!--          :style="myOption.fullscreen ? 'max-height:100%;' : 'max-height:75%;'"-->
+    <!--          :fullscreen="myOption.fullscreen"-->
+    <!--          :width="-->
+    <!--            myOption.dialogWidth > 0-->
+    <!--              ? myOption.dialogWidth + 'px'-->
+    <!--              : myOption.dialogWidth-->
+    <!--          "-->
+    <!--        >-->
+
+    <!--        </el-dialog>-->
   </div>
 </template>
 
@@ -209,7 +231,7 @@
 import option from "./option";
 import beanUtil from "../util/bean-util";
 import { ElMessageBox, ElMessage } from "element-plus";
-
+import elementResizeDetectorMaker from "element-resize-detector";
 export default {
   name: "ClTable",
   props: {
@@ -312,13 +334,20 @@ export default {
       type: "add",
       //表格
       tableData: [],
-      page: page
+      page: page,
+      tableBoxHeight: 0
     };
   },
   created() {
     if (this.myOption.init) {
       this.load();
     }
+  },
+  mounted() {
+    const erdm = elementResizeDetectorMaker();
+    erdm.listenTo(this.$refs.elTableRef.$el, element => {
+      this.tableBoxHeight = element.offsetHeight;
+    });
   },
   methods: {
     /**
@@ -546,8 +575,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-::v-deep(.el-dialog__header) {
-  padding: 16px 20px;
-}
-</style>
+<style></style>
