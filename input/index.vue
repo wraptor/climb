@@ -58,12 +58,27 @@ export default {
     disabled: {}
   },
   watch: {
-    modelValue(val) {
-      this.value = val;
+    modelValue: {
+      handler(val) {
+        if (this.myOption.type === "number") {
+          if (val) {
+            this.value = Number(val);
+          }
+        } else {
+          this.value = val;
+        }
+      },
+      immediate: true,
+      deep: true
     },
     option: {
       handler(val) {
         beanUtil.copyPropertiesNotEmpty(val, this.myOption);
+        if (this.myOption.type === "number") {
+          if (this.value) {
+            this.value = Number(this.value);
+          }
+        }
       },
       immediate: true,
       deep: true
@@ -72,7 +87,7 @@ export default {
   setup(props, ctx) {
     return {
       value: ref(props.modelValue),
-      myOption: reactive(JSON.parse(JSON.stringify(option))),
+      myOption: reactive(beanUtil.deepClone(option)),
       handleInput: val => {
         ctx.emit("update:modelValue", val);
       }
