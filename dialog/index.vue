@@ -13,8 +13,8 @@
       <template #title>
         <slot name="title">
           <div class="flex-row justify-between">
-            <span>{{ title }}</span>
-            <div>
+            <span style="height: 26px;line-height: 26px;">{{ title }}</span>
+            <div class="flex-row items-center">
               <el-tooltip
                 effect="dark"
                 :show-after="500"
@@ -24,6 +24,7 @@
               >
                 <i
                   class="icon-ant dialog-icon"
+                  style="font-size: 16px;"
                   :class="myFullscreen ? 'ant-Batchfolding' : 'ant-border'"
                   @click="myFullscreen = !myFullscreen"
                 ></i>
@@ -44,7 +45,7 @@
           </div>
         </slot>
       </template>
-      <template #footer>
+      <template #footer v-if="$slots['footer']">
         <slot name="footer"></slot>
       </template>
       <slot></slot>
@@ -109,7 +110,7 @@ export default {
   padding: 2px 0 2px 4px;
   cursor: pointer;
   color: #909399;
-  font-size: 18px;
+  font-size: 20px;
   height: 22px;
   line-height: 22px;
 
