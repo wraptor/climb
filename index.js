@@ -48,6 +48,15 @@ import beanUtil from "./util/bean-util";
   Date.prototype.format = function(format = "yyyy-MM-dd hh:mm:ss") {
     return beanUtil.dateFormat(this, format);
   };
+  Date.prototype.lastMonth = function() {
+    if (this.getMonth() === 0) {
+      this.setFullYear(this.getFullYear() - 1);
+      this.setMonth(11);
+    } else {
+      this.setMonth(this.getMonth() - 1);
+    }
+    return this;
+  };
 }.call(this));
 
 export default {
