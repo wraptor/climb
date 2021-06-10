@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <!--  搜索区域  -->
     <div v-if="hasSearch">
       <cl-form
@@ -47,7 +47,7 @@
         </el-button>
       </div>
     </div>
-
+    <slot name="tableTop"></slot>
     <div
       class="flex-1"
       style="position: relative"
@@ -58,7 +58,7 @@
         ref="elTableRef"
         :max-height="myOption.maxHeight"
         style="margin-top: 10px;position: absolute;width: 100%;"
-        v-loading="loading"
+        v-loading="tableLoading"
         @selection-change="handleSelectionChange"
         @row-click="handleRowClick"
         @row-dblclick="handleRowDblClick"
@@ -254,6 +254,10 @@ export default {
       default: () => {
         return {};
       }
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -326,7 +330,7 @@ export default {
         delBtn: true,
         viewBtn: true
       },
-      loading: false,
+      tableLoading: false,
       visible: false,
       form: {},
       // 新增表单时的默认数据，由column每个item.value组成
@@ -401,7 +405,7 @@ export default {
     handleSearch(form, done, type = "search") {
       this.type = type;
       this.toBefore(form, cusForm => {
-        this.loading = true;
+        this.tableLoading = true;
         this.$emit(
           "load",
           Object.assign(this.page, cusForm ? cusForm : form),
@@ -416,7 +420,7 @@ export default {
               };
             }
             setTimeout(() => {
-              this.loading = false;
+              this.tableLoading = false;
               done();
             }, 500);
           }
@@ -558,12 +562,12 @@ export default {
       this.$emit("selection-change", selection);
     },
     handleLoadTreeData(row, treeNode, resolve) {
-      this.loading = true;
+      this.tableLoading = true;
       this.$emit("load-tree", row, treeNode, treeData => {
         if (treeData !== undefined) {
           resolve(treeData);
         }
-        this.loading = false;
+        this.tableLoading = false;
       });
     },
     handleRowClick(row, column, event) {
