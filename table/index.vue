@@ -56,6 +56,7 @@
     >
       <el-table
         ref="elTableRef"
+        :max-height="myOption.maxHeight"
         style="margin-top: 10px;position: absolute;width: 100%;"
         v-loading="loading"
         @selection-change="handleSelectionChange"
@@ -81,12 +82,14 @@
         <el-table-column
           v-if="myOption.selection"
           type="selection"
+          :fixed="myOption.selectionFixed"
           :selectable="myOption.selectable"
         ></el-table-column>
         <!--    =============序号=============    -->
         <el-table-column
           v-if="myOption.index"
           :label="myOption.index"
+          :fixed="myOption.indexFixed"
           type="index"
         />
         <!--    =============每一列=============    -->
@@ -95,6 +98,7 @@
             v-if="item.display !== false"
             :key="item.prop"
             :prop="item.prop"
+            :fixed="item.fixed"
             :sortable="item.sortable"
             :show-overflow-tooltip="
               item.showOverflowTooltip

@@ -5,12 +5,16 @@ export default {
   rowStyle: {
     height: "50px"
   },
+  selectionFixed: true,
+  indexFixed: true,
+  maxHeight: undefined, //表格最大高度，指定后会自动出现滚动条
 
   showOverflowTooltip: true,
   resizable: true, //是否可调整宽度
 
   //ext
   params: {}, //load 搜索额外参数
+
   rowKey: "id",
   dialogWidth: "50%",
   dialogTop: undefined,
