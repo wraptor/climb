@@ -62,6 +62,7 @@
         @selection-change="handleSelectionChange"
         @row-click="handleRowClick"
         @row-dblclick="handleRowDblClick"
+        @header-contextmenu="handleHeaderContextmenu"
         :index="myOption.index"
         :data="tableData"
         :row-style="myOption.rowStyle"
@@ -296,7 +297,8 @@ export default {
     "selection-change",
     "load-tree",
     "row-click",
-    "row-dblclick"
+    "row-dblclick",
+    "header-contextmenu"
   ],
   computed: {
     hasSearch() {
@@ -578,6 +580,9 @@ export default {
     },
     toggleRowSelection(row, selected) {
       this.$refs.elTableRef.toggleRowSelection(row, selected);
+    },
+    handleHeaderContextmenu(column, event) {
+      this.$emit("header-contextmenu", column, event);
     }
   }
 };
