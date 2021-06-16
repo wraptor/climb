@@ -560,9 +560,11 @@ export default {
       this.$emit(this.type, form, (flag = true) => {
         if (flag === true) {
           // 编辑成功才隐藏弹窗
-          this.load();
           this.visible = false;
           ElMessage.success(this.myOption.editBtn.successMessage);
+          setTimeout(() => {
+            this.load();
+          }, 100);
         }
         setTimeout(done, 1000);
         this.toAfter(form, flag);
