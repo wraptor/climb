@@ -316,7 +316,7 @@ export default {
       size: 10,
       total: 0,
       current: 1,
-      pages: 0
+      pages: -1
     };
     if (window && window.localStorage) {
       const cachePageSize = window.localStorage.getItem("cl-table-page-size");
@@ -472,6 +472,14 @@ export default {
     handlePageCurrentChange(current) {
       this.page.current = current;
       this.load();
+    },
+    nextPage() {
+      if (this.page.pages === 0 || this.page.current === this.page.pages) {
+        return;
+      }
+      this.page.current = this.page.current + 1;
+      this.load();
+      return true;
     },
     filterValue(item, val) {
       if (item.type === "tags" && val) {
