@@ -317,7 +317,7 @@ export default {
       //表格
       tableData: [],
       page: page,
-      tableBoxHeight: 0
+      tableBoxHeight: 100
     };
   },
   created() {
