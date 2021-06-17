@@ -78,6 +78,7 @@
         :show-summary="myOption.showSummary"
         :sum-text="myOption.sumText"
         :summary-method="myOption.summaryMethod"
+        :span-method="myOption.spanMethod"
       >
         <!--    =============多选=============    -->
         <el-table-column
@@ -94,39 +95,8 @@
           type="index"
         />
         <!--    =============每一列=============    -->
-        <template v-for="item in myOption.columns">
-          <el-table-column
-            v-if="item.display !== false"
-            :key="item.prop"
-            :prop="item.prop"
-            :fixed="item.fixed"
-            :sortable="item.sortable"
-            :show-overflow-tooltip="
-              item.showOverflowTooltip
-                ? item.showOverflowTooltip
-                : myOption.showOverflowTooltip
-            "
-            :width="widthFilter(item)"
-            :label="item.label"
-          >
-            <template #default="scope">
-              <slot :name="item.prop" :row="scope.row">
-                <template
-                  v-if="
-                    item.type === 'radio' ||
-                      item.type === 'select' ||
-                      item.type === 'cascader' ||
-                      item.type === 'tags'
-                  "
-                >
-                  {{ filterValue(item, scope.row[item.prop]) }}
-                </template>
-                <template v-else>
-                  {{ scope.row[item.prop] }}
-                </template>
-              </slot>
-            </template>
-          </el-table-column>
+        <template v-for="item in myOption.columns" :key="item.prop">
+          <table-column :item="item" :option="myOption"></table-column>
         </template>
         <!--    =============操作菜单=============    -->
         <el-table-column
@@ -237,8 +207,10 @@ import option from "./option";
 import beanUtil from "../util/bean-util";
 import { ElMessageBox, ElMessage } from "element-plus";
 import elementResizeDetectorMaker from "element-resize-detector";
+import tableColumn from "./table-column.vue";
 export default {
   name: "ClTable",
+  components: { tableColumn },
   props: {
     option: {
       type: Object,
@@ -481,44 +453,44 @@ export default {
       this.load();
       return true;
     },
-    filterValue(item, val) {
-      if (item.type === "tags" && val) {
-        return val.toString();
-      }
-      if (!item.dicData) {
-        return val;
-      }
-      let props = {
-        //字典的prop修改
-        label: "label",
-        value: "value",
-        children: "children",
-        data: "data"
-      };
-      beanUtil.copyPropertiesNotEmpty(item.props, props);
-
-      if (val && item.type === "cascader") {
-        let dicData = JSON.parse(JSON.stringify(item.dicData));
-        let label = "";
-        for (let i = 0; i < val.length; i++) {
-          const find = dicData.find(item => item[props.value] === val[i]);
-          if (find) {
-            dicData = find[props.children];
-            label += "," + find[props.label];
-          }
-        }
-        return label === "" ? "" : label.substring(1);
-      } else {
-        return this.findValueByProps(val, item.dicData, props);
-      }
-    },
-    findValueByProps(val, dicData, props) {
-      const find = dicData.find(item => item[props.value] === val);
-      if (find) {
-        return find[props.label];
-      }
-      return val;
-    },
+    // filterValue(item, val) {
+    //   if (item.type === "tags" && val) {
+    //     return val.toString();
+    //   }
+    //   if (!item.dicData) {
+    //     return val;
+    //   }
+    //   let props = {
+    //     //字典的prop修改
+    //     label: "label",
+    //     value: "value",
+    //     children: "children",
+    //     data: "data"
+    //   };
+    //   beanUtil.copyPropertiesNotEmpty(item.props, props);
+    //
+    //   if (val && item.type === "cascader") {
+    //     let dicData = JSON.parse(JSON.stringify(item.dicData));
+    //     let label = "";
+    //     for (let i = 0; i < val.length; i++) {
+    //       const find = dicData.find(item => item[props.value] === val[i]);
+    //       if (find) {
+    //         dicData = find[props.children];
+    //         label += "," + find[props.label];
+    //       }
+    //     }
+    //     return label === "" ? "" : label.substring(1);
+    //   } else {
+    //     return this.findValueByProps(val, item.dicData, props);
+    //   }
+    // },
+    // findValueByProps(val, dicData, props) {
+    //   const find = dicData.find(item => item[props.value] === val);
+    //   if (find) {
+    //     return find[props.label];
+    //   }
+    //   return val;
+    // },
     handleDel(row) {
       this.type = "del";
       if (this.myOption.delBtn.confirm) {
