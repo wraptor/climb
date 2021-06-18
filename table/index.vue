@@ -183,22 +183,6 @@
         </template>
       </cl-form>
     </cl-dialog>
-    <!--        <el-dialog-->
-    <!--          v-model="visible"-->
-    <!--          destroy-on-close-->
-    <!--          :title="type === 'add' ? '新增' : '编辑'"-->
-    <!--          :model-value="visible"-->
-    <!--          :show-close="false"-->
-    <!--          :style="myOption.fullscreen ? 'max-height:100%;' : 'max-height:75%;'"-->
-    <!--          :fullscreen="myOption.fullscreen"-->
-    <!--          :width="-->
-    <!--            myOption.dialogWidth > 0-->
-    <!--              ? myOption.dialogWidth + 'px'-->
-    <!--              : myOption.dialogWidth-->
-    <!--          "-->
-    <!--        >-->
-
-    <!--        </el-dialog>-->
   </div>
 </template>
 
@@ -274,13 +258,7 @@ export default {
   ],
   computed: {
     hasSearch() {
-      let search = false;
-      this.myOption.columns.forEach(item => {
-        if (item.search) {
-          search = true;
-        }
-      });
-      return search;
+      return this.myOption.columns.findIndex(item => item.search) >= 0;
     }
   },
   data() {
@@ -453,50 +431,18 @@ export default {
       this.load();
       return true;
     },
-    // filterValue(item, val) {
-    //   if (item.type === "tags" && val) {
-    //     return val.toString();
-    //   }
-    //   if (!item.dicData) {
-    //     return val;
-    //   }
-    //   let props = {
-    //     //字典的prop修改
-    //     label: "label",
-    //     value: "value",
-    //     children: "children",
-    //     data: "data"
-    //   };
-    //   beanUtil.copyPropertiesNotEmpty(item.props, props);
-    //
-    //   if (val && item.type === "cascader") {
-    //     let dicData = JSON.parse(JSON.stringify(item.dicData));
-    //     let label = "";
-    //     for (let i = 0; i < val.length; i++) {
-    //       const find = dicData.find(item => item[props.value] === val[i]);
-    //       if (find) {
-    //         dicData = find[props.children];
-    //         label += "," + find[props.label];
-    //       }
-    //     }
-    //     return label === "" ? "" : label.substring(1);
-    //   } else {
-    //     return this.findValueByProps(val, item.dicData, props);
-    //   }
-    // },
-    // findValueByProps(val, dicData, props) {
-    //   const find = dicData.find(item => item[props.value] === val);
-    //   if (find) {
-    //     return find[props.label];
-    //   }
-    //   return val;
-    // },
     handleDel(row) {
       this.type = "del";
       if (this.myOption.delBtn.confirm) {
         ElMessageBox.confirm(
-          this.myOption.delBtn.message,
-          this.myOption.delBtn.title,
+          Object.prototype.toString.call(this.myOption.delBtn.message) ===
+            "[object Function]"
+            ? this.myOption.delBtn.message(row)
+            : this.myOption.delBtn.message,
+          Object.prototype.toString.call(this.myOption.delBtn.title) ===
+            "[object Function]"
+            ? this.myOption.delBtn.title(row)
+            : this.myOption.delBtn.title,
           {
             confirmButtonText: this.myOption.delBtn.confirmBtnText,
             cancelButtonText: this.myOption.delBtn.cancelBtnText,
