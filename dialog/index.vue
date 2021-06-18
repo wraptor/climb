@@ -2,6 +2,7 @@
   <div v-dialog-drag>
     <el-dialog
       :top="top"
+      :center="center"
       :fullscreen="myFullscreen"
       :show-close="false"
       :model-value="visible"
@@ -69,7 +70,8 @@ export default {
     },
     fullscreen: { type: Boolean, default: false },
     width: {},
-    top: {}
+    top: {},
+    center: {}
   },
   computed: {
     visible: {
