@@ -43,6 +43,8 @@ const components = [
   ClDialog
 ];
 import beanUtil from "./util/bean-util";
+import dialogDrag from "./util/directive-dialog-drag";
+import throttle from "./util/directive-throttle";
 (function() {
   // Simulates PHP's date function
   Date.prototype.format = function(format = "yyyy-MM-dd hh:mm:ss") {
@@ -61,6 +63,8 @@ import beanUtil from "./util/bean-util";
 
 export default {
   install(Vue) {
+    Vue.directive("click", throttle);
+    Vue.directive("dialog-drag", dialogDrag);
     components.forEach(component => {
       Vue.component(component.name, component);
     });
