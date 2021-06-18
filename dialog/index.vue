@@ -49,7 +49,9 @@
       <template #footer v-if="$slots['footer']">
         <slot name="footer"></slot>
       </template>
-      <slot></slot>
+      <div v-loading="loading">
+        <slot></slot>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -71,7 +73,11 @@ export default {
     fullscreen: { type: Boolean, default: false },
     width: {},
     top: {},
-    center: {}
+    center: {},
+    loading: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     visible: {
