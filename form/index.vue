@@ -157,7 +157,6 @@
         </div>
       </el-col>
     </el-row>
-
     <el-row
       justify="center"
       type="flex"
@@ -400,6 +399,26 @@ export default {
         });
       });
     }),
+    validate(done = () => {}) {
+      if (this.myOption.repeat) {
+        this.loading = true;
+      }
+      this.$nextTick(() => {
+        this.$refs.clFormRef.validate(isValidate => {
+          if (isValidate) {
+            done(true, this.form, () => {
+              this.loading = false;
+            });
+            this.$emit("submit", this.form, () => {
+              this.loading = false;
+            });
+          } else {
+            done(false);
+            this.loading = false;
+          }
+        });
+      });
+    },
     onReset() {
       this.form = JSON.parse(JSON.stringify(this.backForm));
     }
