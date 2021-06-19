@@ -1,43 +1,45 @@
 <template>
-  <el-table-column
-    v-if="item.display !== false"
-    :key="item.prop"
-    :prop="item.prop"
-    :fixed="item.fixed"
-    :sortable="item.sortable"
-    :show-overflow-tooltip="
-      item.showOverflowTooltip
-        ? item.showOverflowTooltip
-        : option.showOverflowTooltip
-    "
-    :width="widthFilter(item)"
-    :label="item.label"
-    :align="item.align"
-    :formatter="item.formatter"
-  >
-    <template #default="scope">
-      <slot :name="item.prop" :row="scope.row">
-        <template v-if="item.columns && item.columns.length > 0">
-          <template v-for="child in item.columns" :key="child.prop">
-            <table-column :item="child" :option="option"></table-column>
-          </template>
+  <template v-if="item.columns && item.columns.length > 0">
+    <template v-for="child in item.columns" :key="child.prop">
+      <el-table-column
+        v-if="child.display !== false"
+        :key="child.prop"
+        :prop="child.prop"
+        :fixed="child.fixed"
+        :sortable="child.sortable"
+        :show-overflow-tooltip="
+          child.showOverflowTooltip
+            ? child.showOverflowTooltip
+            : option.showOverflowTooltip
+        "
+        :width="widthFilter(child)"
+        :label="child.label"
+        :align="child.align"
+        :formatter="child.formatter"
+      >
+        <template #default="scope">
+          <table-column
+            :item="child"
+            :option="option"
+            :row="scope.row"
+          ></table-column>
         </template>
-        <template
-          v-else-if="
-            item.type === 'radio' ||
-              item.type === 'select' ||
-              item.type === 'cascader' ||
-              item.type === 'tags'
-          "
-        >
-          {{ filterValue(item, scope.row[item.prop]) }}
-        </template>
-        <template v-else>
-          {{ scope.row[item.prop] }}
-        </template>
-      </slot>
+      </el-table-column>
     </template>
-  </el-table-column>
+  </template>
+  <template
+    v-else-if="
+      item.type === 'radio' ||
+        item.type === 'select' ||
+        item.type === 'cascader' ||
+        item.type === 'tags'
+    "
+  >
+    {{ filterValue(item, row[item.prop]) }}
+  </template>
+  <template v-else>
+    {{ row[item.prop] }}
+  </template>
 </template>
 
 <script>
@@ -47,7 +49,8 @@ export default {
   name: "table-column",
   props: {
     item: {},
-    option: {}
+    option: {},
+    row: {}
   },
   methods: {
     widthFilter(item) {

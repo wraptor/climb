@@ -96,7 +96,32 @@
         />
         <!--    =============每一列=============    -->
         <template v-for="item in myOption.columns" :key="item.prop">
-          <table-column :item="item" :option="myOption"></table-column>
+          <el-table-column
+            v-if="item.display !== false"
+            :key="item.prop"
+            :prop="item.prop"
+            :fixed="item.fixed"
+            :sortable="item.sortable"
+            :show-overflow-tooltip="
+              item.showOverflowTooltip
+                ? item.showOverflowTooltip
+                : option.showOverflowTooltip
+            "
+            :width="widthFilter(item)"
+            :label="item.label"
+            :align="item.align"
+            :formatter="item.formatter"
+          >
+            <template #default="scope">
+              <slot :name="item.prop" :row="scope.row">
+                <table-column
+                  :item="item"
+                  :option="myOption"
+                  :row="scope.row"
+                ></table-column>
+              </slot>
+            </template>
+          </el-table-column>
         </template>
         <!--    =============操作菜单=============    -->
         <el-table-column
