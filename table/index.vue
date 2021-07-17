@@ -408,7 +408,11 @@ export default {
       if (reload === true) {
         this.page.current = 1;
       }
-      this.handleSearch(this.myOption.params, () => {}, "load");
+      this.handleSearch(
+        Object.assign(this.searchForm, this.myOption.params),
+        () => {},
+        "load"
+      );
     },
     toBefore(row, done) {
       window.clTable = {
