@@ -1,0 +1,38 @@
+{
+    "name": "climb-ui",
+    "version": "0.3.1",
+    "description": "climb:collect element",
+    "author": "wraptor <wraptor@163.com>",
+    "main": "dist/climb.common.js",
+    "private": false,
+    "keywords": [
+        "climb",
+        "climb-ui",
+        "element",
+        "element-ui"
+    ],
+    "homepage": "https://github.com/wraptor/climb",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wraptor/climb.git"
+    },
+    "license": "MIT",
+    "scripts": {
+        "build": "vite build"
+    },
+    "files": [
+        "dist"
+    ],
+    "dependencies": {
+        "vue": "^3.0.5"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^1.2.5",
+        "@vue/compiler-sfc": "^3.0.5",
+        "vite": "^2.4.3",
+        "path": "^0.12.7",
+        "element-plus": "1.0.2-beta.52",
+        "element-resize-detector": "~1.2.2"
+    },
+    "peerDependencies": {}
+}
