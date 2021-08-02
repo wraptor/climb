@@ -3,7 +3,7 @@
     :multiple="myOption.multiple"
     :multiple-limit="myOption.multipleLimit"
     :disabled="myOption.disabled || disabled"
-    :placeholder="myOption.placeholder"
+    :placeholder="myOption.placeholder?myOption.placeholder:`请选择${myOption.label}`"
     :clearable="myOption.clearable"
     :filterable="myOption.filterable"
     style="width: 100%"

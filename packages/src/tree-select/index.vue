@@ -1,5 +1,5 @@
 <template>
-  <el-select :model-value="myValue" ref="treeSelectRef" style="width: 100%">
+  <el-select :model-value="myValue" ref="treeSelectRef" style="width: 100%" :placeholder="myOption.placeholder?myOption.placeholder:`请选择${myOption.label}`">
     <el-option :value="myValue" :label="label">
       <el-tree
         ref="elTreeRef"
