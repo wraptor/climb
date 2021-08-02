@@ -32,7 +32,7 @@
     },
     "peerDependencies": {
         "vue": "^3.0.5",
-        "element-plus": "1.0.2-beta.55",
+        "element-plus": "~1.0.2-beta.62",
         "element-resize-detector": "~1.2.2"
     }
 }
