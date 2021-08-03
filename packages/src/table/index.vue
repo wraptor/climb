@@ -3,28 +3,28 @@
     <!--  搜索区域  -->
     <div v-if="hasSearch">
       <cl-form
-        :option="myOption"
-        type="search"
-        v-model="searchForm"
-        :submit-btn="myOption.searchBtn"
-        :reset-btn="myOption.searchResetBtn"
-        :btn-right="myOption.searchBtnRight"
-        @submit="handleSearch"
+          :option="myOption"
+          type="search"
+          v-model="searchForm"
+          :submit-btn="myOption.searchBtn"
+          :reset-btn="myOption.searchResetBtn"
+          :btn-right="myOption.searchBtnRight"
+          @submit="handleSearch"
       ></cl-form>
     </div>
     <!--  顶部操作菜单  -->
     <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-between">
       <div>
         <el-button
-          v-if="
+            v-if="
             myOption.menu !== false &&
             myPermissions.addBtn &&
             myOption.addBtn !== false &&
             myOption.addBtn.display
           "
-          :icon="myOption.addBtn.icon"
-          :type="myOption.addBtn.type"
-          @click="handleAdd"
+            :icon="myOption.addBtn.icon"
+            :type="myOption.addBtn.type"
+            @click="handleAdd"
         >
           {{ myOption.addBtn.text }}
         </el-button>
@@ -33,77 +33,77 @@
       <div>
         <slot name="menuRight"></slot>
         <el-button
-          @click="load"
-          v-if="myOption.refreshBtn !== false && myOption.refreshBtn.display === true"
-          :circle="myOption.refreshBtn.circle"
-          :icon="myOption.refreshBtn.icon"
-          :type="myOption.refreshBtn.type"
+            @click="load"
+            v-if="myOption.refreshBtn !== false && myOption.refreshBtn.display === true"
+            :circle="myOption.refreshBtn.circle"
+            :icon="myOption.refreshBtn.icon"
+            :type="myOption.refreshBtn.type"
         >
         </el-button>
       </div>
     </div>
     <slot name="tableTop"></slot>
     <div
-      class="flex-1"
-      style="position: relative"
-      ref="tableBoxRef"
-      :style="`height:${tableBoxHeight}px`"
+        class="flex-1"
+        style="position: relative"
+        ref="tableBoxRef"
+        :style="`height:${tableBoxHeight}px`"
     >
       <el-table
-        ref="elTableRef"
-        :max-height="myOption.maxHeight"
-        style="margin-top: 10px; position: absolute; width: 100%"
-        v-loading="tableLoading"
-        @selection-change="handleSelectionChange"
-        @row-click="handleRowClick"
-        @row-dblclick="handleRowDblClick"
-        @header-contextmenu="handleHeaderContextmenu"
-        :index="myOption.index"
-        :data="tableData"
-        :row-style="myOption.rowStyle"
-        :row-key="myOption.rowKey"
-        :lazy="myOption.lazy"
-        :load="handleLoadTreeData"
-        :tree-props="myOption.treeProps"
-        :border="myOption.border"
-        :empty-text="myOption.emptyText"
-        :tooltip-effect="myOption.tooltipEffect"
-        :highlight-current-row="myOption.highlightCurrentRow"
-        :stripe="myOption.stripe"
-        :show-summary="myOption.showSummary"
-        :sum-text="myOption.sumText"
-        :summary-method="myOption.summaryMethod"
-        :span-method="myOption.spanMethod"
+          ref="elTableRef"
+          :max-height="myOption.maxHeight"
+          style="margin-top: 10px; position: absolute; width: 100%"
+          v-loading="tableLoading"
+          @selection-change="handleSelectionChange"
+          @row-click="handleRowClick"
+          @row-dblclick="handleRowDblClick"
+          @header-contextmenu="handleHeaderContextmenu"
+          :index="myOption.index"
+          :data="tableData"
+          :row-style="myOption.rowStyle"
+          :row-key="myOption.rowKey"
+          :lazy="myOption.lazy"
+          :load="handleLoadTreeData"
+          :tree-props="myOption.treeProps"
+          :border="myOption.border"
+          :empty-text="myOption.emptyText"
+          :tooltip-effect="myOption.tooltipEffect"
+          :highlight-current-row="myOption.highlightCurrentRow"
+          :stripe="myOption.stripe"
+          :show-summary="myOption.showSummary"
+          :sum-text="myOption.sumText"
+          :summary-method="myOption.summaryMethod"
+          :span-method="myOption.spanMethod"
       >
         <!--    =============多选=============    -->
         <el-table-column
-          v-if="myOption.selection"
-          type="selection"
-          :fixed="myOption.selectionFixed"
-          :selectable="myOption.selectable"
+            v-if="myOption.selection"
+            type="selection"
+            :fixed="myOption.selectionFixed"
+            :selectable="myOption.selectable"
         ></el-table-column>
         <!--    =============序号=============    -->
         <el-table-column
-          v-if="myOption.index"
-          :label="myOption.index"
-          :fixed="myOption.indexFixed"
-          type="index"
+            v-if="myOption.index"
+            :label="myOption.index"
+            :fixed="myOption.indexFixed"
+            type="index"
         />
         <!--    =============每一列=============    -->
         <template v-for="item in myOption.columns" :key="item.prop">
           <el-table-column
-            v-if="item.display !== false"
-            :key="item.prop"
-            :prop="item.prop"
-            :fixed="item.fixed"
-            :sortable="item.sortable"
-            :show-overflow-tooltip="
+              v-if="item.display !== false"
+              :key="item.prop"
+              :prop="item.prop"
+              :fixed="item.fixed"
+              :sortable="item.sortable"
+              :show-overflow-tooltip="
               item.showOverflowTooltip ? item.showOverflowTooltip : option.showOverflowTooltip
             "
-            :width="widthFilter(item)"
-            :label="item.label"
-            :align="item.align"
-            :formatter="item.formatter"
+              :width="widthFilter(item)"
+              :label="item.label"
+              :align="item.align"
+              :formatter="item.formatter"
           >
             <template #default="scope">
               <slot :name="item.prop" :row="scope.row">
@@ -114,46 +114,46 @@
         </template>
         <!--    =============操作菜单=============    -->
         <el-table-column
-          v-if="myOption.menu"
-          :width="myOption.menuWidth"
-          :label="myOption.menuLabel"
+            v-if="myOption.menu"
+            :width="myOption.menuWidth"
+            :label="myOption.menuLabel"
         >
           <template #default="scope">
             <slot
-              name="menuFront"
-              :row="scope.row"
-              :column="scope.column"
-              :index="scope.$index"
+                name="menuFront"
+                :row="scope.row"
+                :column="scope.column"
+                :index="scope.$index"
             ></slot>
             <el-button
-              @click="handleEdit(scope.row)"
-              v-if="filterBtnDisplay('editBtn', scope.row)"
-              :disabled="
+                @click="handleEdit(scope.row)"
+                v-if="filterBtnDisplay('editBtn', scope.row)"
+                :disabled="
                 !!myOption.editBtn.disabled &&
                 (myOption.editBtn.disabled === true || myOption.editBtn.disabled(scope.row))
               "
-              :icon="myOption.editBtn.icon"
-              :type="myOption.editBtn.type"
-              >{{ myOption.editBtn.text }}
+                :icon="myOption.editBtn.icon"
+                :type="myOption.editBtn.type"
+            >{{ myOption.editBtn.text }}
             </el-button>
             <el-button
-              @click="handleDel(scope.row)"
-              v-if="filterBtnDisplay('delBtn', scope.row)"
-              :disabled="
+                @click="handleDel(scope.row)"
+                v-if="filterBtnDisplay('delBtn', scope.row)"
+                :disabled="
                 !!myOption.delBtn.disabled &&
                 (myOption.delBtn.disabled === true || myOption.delBtn.disabled(scope.row))
               "
-              :icon="myOption.delBtn.icon"
-              :type="myOption.delBtn.type"
+                :icon="myOption.delBtn.icon"
+                :type="myOption.delBtn.type"
             >
               {{ myOption.delBtn.text }}
             </el-button>
             <slot
-              name="menu"
-              :row="scope.row"
-              :column="scope.column"
-              :index="scope.$index"
-              :page="page"
+                name="menu"
+                :row="scope.row"
+                :column="scope.column"
+                :index="scope.$index"
+                :page="page"
             >
             </slot>
           </template>
@@ -162,27 +162,27 @@
     </div>
 
     <el-pagination
-      background
-      @size-change="handlePageSizeChange"
-      @current-change="handlePageCurrentChange"
-      @prev-click="handlePageCurrentChange"
-      @next-click="handlePageCurrentChange"
-      style="width: 100%; text-align: right; margin-top: 40px"
-      layout="total,sizes,prev,pager,next,jumper"
-      :current-page="page.current"
-      v-model:page-size="page.size"
-      :total="page.total"
+        background
+        @size-change="handlePageSizeChange"
+        @current-change="handlePageCurrentChange"
+        @prev-click="handlePageCurrentChange"
+        @next-click="handlePageCurrentChange"
+        style="width: 100%; text-align: right; margin-top: 40px"
+        layout="total,sizes,prev,pager,next,jumper"
+        :current-page="page.current"
+        v-model:page-size="page.size"
+        :total="page.total"
     >
     </el-pagination>
 
     <cl-dialog
-      v-model="visible"
-      destroy-on-close
-      :top="myOption.dialogTop"
-      :title="type === 'add' ? '新增' : '编辑'"
-      :custom-class="myOption.dialogClass"
-      :fullscreen="myOption.fullscreen"
-      :width="myOption.dialogWidth"
+        v-model="visible"
+        destroy-on-close
+        :top="myOption.dialogTop"
+        :title="type === 'add' ? '新增' : '编辑'"
+        :custom-class="myOption.dialogClass"
+        :fullscreen="myOption.fullscreen"
+        :width="myOption.dialogWidth"
     >
       <cl-form :option="myOption" :type="type" v-model="form" @submit="handleSubmit">
         <template v-for="item in myOption.columns" v-slot:[item.prop]>
@@ -198,14 +198,16 @@ import elementResizeDetectorMaker from 'element-resize-detector';
 import option from './option';
 import beanUtil from '../util/bean-util';
 import tableColumn from './table-column.vue';
+import {ElMessage} from "element-plus"
 
 export default {
   name: 'ClTable',
-  components: { tableColumn },
+  components: {tableColumn},
   props: {
     option: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
     },
     permissions: {
       type: Object,
@@ -320,15 +322,15 @@ export default {
      */
     filterBtnDisplay(btnProp, row) {
       if (
-        this.myOption[btnProp]
-        && Object.prototype.toString.call(this.myOption[btnProp].display) === '[object Function]'
+          this.myOption[btnProp]
+          && Object.prototype.toString.call(this.myOption[btnProp].display) === '[object Function]'
       ) {
         return this.myOption[btnProp].display(row);
       }
       return (
-        this.myPermissions[btnProp]
-        && this.myOption[btnProp].display
-        && this.myOption[btnProp] !== false
+          this.myPermissions[btnProp]
+          && this.myOption[btnProp].display
+          && this.myOption[btnProp] !== false
       );
     },
     widthFilter(item) {
@@ -337,9 +339,9 @@ export default {
     setDefaultDicData() {
       for (let i = 0; i < this.myOption.columns.length; i += 1) {
         if (
-          this.myOption.columns[i].dicUrl
-          && window.axios
-          && this.myOption.columns[i].type !== 'list'
+            this.myOption.columns[i].dicUrl
+            && window.axios
+            && this.myOption.columns[i].type !== 'list'
         ) {
           window.axios.get(this.myOption.columns[i].dicUrl).then((res) => {
             this.myOption.columns[i].dicData = res;
@@ -385,7 +387,8 @@ export default {
       if (reload === true) {
         this.page.current = 1;
       }
-      this.handleSearch(Object.assign(this.searchForm, this.myOption.params), () => {}, 'load');
+      this.handleSearch(Object.assign(this.searchForm, this.myOption.params), () => {
+      }, 'load');
     },
     toBefore(row, done) {
       window.clTable = {
@@ -408,7 +411,7 @@ export default {
         this.$emit('del', row, (flag = true) => {
           if (flag === true) {
             this.load();
-            this.$success(this.myOption.delBtn.successMessage);
+            this.$message.success(this.myOption.delBtn.successMessage);
           }
           this.toAfter(row, flag);
         });
@@ -438,22 +441,23 @@ export default {
       this.type = 'del';
       if (this.myOption.delBtn.confirm) {
         this.$confirm(
-          Object.prototype.toString.call(this.myOption.delBtn.message) === '[object Function]'
-            ? this.myOption.delBtn.message(row)
-            : this.myOption.delBtn.message,
-          Object.prototype.toString.call(this.myOption.delBtn.title) === '[object Function]'
-            ? this.myOption.delBtn.title(row)
-            : this.myOption.delBtn.title,
-          {
-            confirmButtonText: this.myOption.delBtn.confirmBtnText,
-            cancelButtonText: this.myOption.delBtn.cancelBtnText,
-            type: 'warning',
-          },
+            Object.prototype.toString.call(this.myOption.delBtn.message) === '[object Function]'
+                ? this.myOption.delBtn.message(row)
+                : this.myOption.delBtn.message,
+            Object.prototype.toString.call(this.myOption.delBtn.title) === '[object Function]'
+                ? this.myOption.delBtn.title(row)
+                : this.myOption.delBtn.title,
+            {
+              confirmButtonText: this.myOption.delBtn.confirmBtnText,
+              cancelButtonText: this.myOption.delBtn.cancelBtnText,
+              type: 'warning',
+            },
         )
-          .then(() => {
-            this.delCallback(row);
-          })
-          .catch(() => {});
+            .then(() => {
+              this.delCallback(row);
+            })
+            .catch(() => {
+            });
       } else {
         this.delCallback(row);
       }
@@ -480,7 +484,7 @@ export default {
         if (flag === true) {
           // 编辑成功才隐藏弹窗
           this.visible = false;
-          this.$success(this.myOption.editBtn.successMessage);
+          this.$message.success(this.myOption.editBtn.successMessage);
           setTimeout(() => {
             this.load();
           }, 100);
