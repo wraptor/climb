@@ -1,10 +1,12 @@
 <template>
   <el-menu
       router
+      :class="{'hide':fullPath==='/'}"
       :default-active="route.fullPath"
       class="el-menu-vertical-demo"
   >
-    <el-menu-item v-for="item in menus" :key="baseUrl+item.path" :index="baseUrl+item.path">{{item.name}}</el-menu-item>
+    <el-menu-item v-for="item in menus" :key="baseUrl+item.path" :index="baseUrl+item.path">{{ item.name }}
+    </el-menu-item>
   </el-menu>
 </template>
 
@@ -17,7 +19,9 @@ let menus = ref([]);
 let baseUrl = ref("");
 
 const route = useRoute();
+const fullPath = ref("/")
 watch(route, () => {
+  fullPath.value = route.fullPath
   routerConfig.forEach(config => {
     if (route.fullPath.indexOf(config.path) >= 0) {
       baseUrl.value = config.path;
@@ -31,5 +35,9 @@ watch(route, () => {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 180px;
   min-height: 100%;
+}
+
+.hide {
+  display: none;
 }
 </style>

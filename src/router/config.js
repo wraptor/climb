@@ -7,6 +7,12 @@ export default [{
     }, {
         name: "基础表单",
         path: "/base"
+    }, {
+        name: "表单校验",
+        path: "/rule"
+    }, {
+        name: "文件表单",
+        path: "/upload"
     }]
 }, {
     name: "表格",

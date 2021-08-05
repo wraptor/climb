@@ -6,6 +6,7 @@
         "serve": "vite preview"
     },
     "dependencies": {
+        "axios": "~0.21.1",
         "element-plus": "^1.0.2-beta.62",
         "element-resize-detector": "~1.2.2",
         "vite-plugin-vuedoc": "^3.1.3",

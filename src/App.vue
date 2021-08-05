@@ -14,16 +14,14 @@
   </el-container>
 </template>
 
-<script setup>
+<script>
 import clHeader from "./components/cl-header.vue";
 import clMenu from "./components/cl-menu.vue";
-import {watch} from "vue";
-import {useRoute} from "vue-router";
 
-const route = useRoute();
-watch(route, () => {
-  document.title = (route.name ? `${route.name} - ` : '') + 'Climb-UI';
-});
+export default {
+  name: "App",
+  components: {clHeader, clMenu}
+};
 </script>
 
 <style lang="scss">
@@ -54,8 +52,12 @@ header {
 //  color: #383a42 !important;
 //  background: #fafafa !important;
 //}
+.vuedoc {
+  margin-bottom: 30px;
+}
 
 .el-main {
+
   &::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
@@ -71,7 +73,8 @@ header {
       background: rgb(200, 201, 204);
       cursor: pointer;
     }
-    &:active{
+
+    &:active {
       background: rgb(172, 172, 173);
     }
   }
@@ -82,7 +85,8 @@ header {
     background: #fff;
   }
 }
-th{
+
+th {
   border-bottom: 1px solid #dcdfe6;
   padding: 15px;
   max-width: 250px;
@@ -91,18 +95,21 @@ th{
   color: #909399;
   font-weight: 400;
 }
-td{
+
+td {
   border-bottom: 1px solid #dcdfe6;
   padding: 15px;
   max-width: 250px;
   color: #606266;
 }
-table{
-  border-collapse:collapse;
-  border-spacing:0;
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
   width: 100%;
 }
-tr{
+
+tr {
   //border-top: 1px solid #dedede;
 }
 </style>

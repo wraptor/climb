@@ -32,4 +32,9 @@ const router = createRouter({
     routes
 })
 
+router.beforeEach((to, form, next) => {
+    document.title = (to.name ? `${to.name} - ` : '') + 'Climb-UI';
+    next();
+})
+
 export default router
