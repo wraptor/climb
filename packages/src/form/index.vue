@@ -1,37 +1,37 @@
 <template>
   <el-form
-    :inline="myOption.inline"
-    :label-position="type === 'search' ? 'left' : myOption.labelPosition"
-    :label-width="myOption.labelWidth > 0 ? `${myOption.labelWidth}px` : myOption.labelWidth"
-    ref="clFormRef"
-    :model="form"
-    :disabled="loading"
+      :inline="myOption.inline"
+      :label-position="type === 'search' ? 'left' : myOption.labelPosition"
+      :label-width="myOption.labelWidth > 0 ? `${myOption.labelWidth}px` : myOption.labelWidth"
+      ref="clFormRef"
+      :model="form"
+      :disabled="loading"
   >
     <el-row :gutter="myOption.gutter">
       <template v-for="item in myOption.columns" v-bind:key="item.prop">
         <el-col
-          v-show="item.if ? true : displayFilter(item)"
-          v-if="item.if ? displayFilter(item) : true"
-          :span="spanFilter(item)"
+            v-show="item.if ? true : displayFilter(item)"
+            v-if="item.if ? displayFilter(item) : true"
+            :span="spanFilter(item)"
         >
           <el-form-item
-            style="width: 100%"
-            :label="item.label ? item.label + '：' : ''"
-            :prop="item.prop"
-            :label-width="labelWidthFilter(item)"
-            :required="item.required"
-            :rules="rulesFilter(item)"
-            :error="item.error"
-            :show-message="item.showMessage"
-            :inline-message="item.inlineMessage"
-            :size="item.size"
+              style="width: 100%"
+              :label="item.label ? item.label + '：' : ''"
+              :prop="item.prop"
+              :label-width="labelWidthFilter(item)"
+              :required="item.required"
+              :rules="rulesFilter(item)"
+              :error="item.error"
+              :show-message="item.showMessage"
+              :inline-message="item.inlineMessage"
+              :size="item.size"
           >
             <slot :name="item.prop" :form="form">
               <cl-input
-                v-if="inputTypeArray.findIndex((i) => i === item.type) >= 0"
-                :disabled="disabledFilter(item)"
-                v-model="form[item.prop]"
-                :option="item"
+                  v-if="inputTypeArray.findIndex((i) => i === item.type) >= 0"
+                  :disabled="disabledFilter(item)"
+                  v-model="form[item.prop]"
+                  :option="item"
               >
                 <template #suffix v-if="$slots[item.prop + 'Suffix']">
                   <slot :name="item.prop + 'Suffix'"></slot>
@@ -41,64 +41,67 @@
                 </template>
               </cl-input>
               <cl-input-range
-                v-else-if="inputRangeTypeArray.findIndex((i) => i === item.type) >= 0"
-                :disabled="disabledFilter(item)"
-                v-model="form[item.prop]"
-                :option="item"
+                  v-else-if="inputRangeTypeArray.findIndex((i) => i === item.type) >= 0"
+                  :disabled="disabledFilter(item)"
+                  v-model="form[item.prop]"
+                  :option="item"
               >
               </cl-input-range>
               <cl-radio
-                v-else-if="item.type === 'radio'"
-                :disabled="disabledFilter(item)"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="item.type === 'radio'"
+                  :disabled="disabledFilter(item)"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-radio>
               <cl-check-box
-                v-else-if="item.type === 'checkbox'"
-                :disabled="disabledFilter(item)"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="item.type === 'checkbox'"
+                  :disabled="disabledFilter(item)"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-check-box>
               <cl-select
-                v-else-if="item.type === 'select'"
-                :disabled="disabledFilter(item)"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="item.type === 'select'"
+                  :disabled="disabledFilter(item)"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-select>
               <cl-cascader
-                v-else-if="item.type === 'cascader'"
-                :disabled="disabledFilter(item)"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="item.type === 'cascader'"
+                  :disabled="disabledFilter(item)"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-cascader>
               <cl-date-picker
-                v-else-if="datePickerTypeArray.findIndex((i) => i === item.type) >= 0"
-                :disabled="disabledFilter(item)"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="datePickerTypeArray.findIndex((i) => i === item.type) >= 0"
+                  :disabled="disabledFilter(item)"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-date-picker>
               <cl-time-picker
-                v-else-if="timePickerTypeArray.findIndex((i) => i === item.type) >= 0"
-                :disabled="disabledFilter(item)"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="timePickerTypeArray.findIndex((i) => i === item.type) >= 0"
+                  :disabled="disabledFilter(item)"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-time-picker>
               <cl-tree-select
-                v-else-if="treeSelectArray.findIndex((i) => i === item.type) >= 0"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="treeSelectArray.findIndex((i) => i === item.type) >= 0"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-tree-select>
               <cl-tag-input
-                v-else-if="tagInputArray.findIndex((i) => i === item.type) >= 0"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="tagInputArray.findIndex((i) => i === item.type) >= 0"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-tag-input>
               <cl-list-select
-                v-else-if="listSelectArray.findIndex((i) => i === item.type) >= 0"
-                :option="item"
-                v-model="form[item.prop]"
+                  v-else-if="listSelectArray.findIndex((i) => i === item.type) >= 0"
+                  :option="item"
+                  v-model="form[item.prop]"
               ></cl-list-select>
-
+              <cl-upload v-else-if="uploadArray.findIndex((i) => i === item.type) >= 0"
+                         :option="item"
+                         v-model="form[item.prop]">
+              </cl-upload>
               <template v-else>
                 {{ item.type }}
               </template>
@@ -107,63 +110,63 @@
         </el-col>
       </template>
       <el-col
-        :span="btnSpanFilter()"
-        style="text-align: right"
-        v-if="myOption.btn !== false && (myOption.btnRight === true || btnRight === true)"
+          :span="btnSpanFilter()"
+          style="text-align: right"
+          v-if="myOption.btn !== false && (myOption.btnRight === true || btnRight === true)"
       >
         <div style="display: flex; justify-content: flex-end; width: 100%">
           <el-button
-            type="primary"
-            :icon="
+              type="primary"
+              :icon="
               loading ? 'el-icon-loading' : submitBtn ? submitBtn.icon : myOption.submitBtn.icon
             "
-            @click="submit"
-            :size="myOption.submitBtn.size"
-            v-if="myOption.submitBtn !== false && myOption.submitBtn.display === true"
+              @click="submit"
+              :size="myOption.submitBtn.size"
+              v-if="myOption.submitBtn !== false && myOption.submitBtn.display === true"
           >
             {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
           </el-button>
           <el-button
+              type="primary"
+              plain
+              :icon="loading ? 'el-icon-loading' : myOption.resetBtn.icon"
+              @click="onReset"
+              :size="myOption.resetBtn.size"
+              v-if="myOption.resetBtn !== false && myOption.resetBtn.display === true"
+          >
+            {{ myOption.resetBtn.text }}
+          </el-button>
+          <slot name="btn"/>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row
+        justify="center"
+        type="flex"
+        v-if="myOption.btn !== false && myOption.btnRight !== true && btnRight !== true"
+    >
+      <!--      <el-form-item v-if="myOption.btn !== false">-->
+      <div :style="{ marginTop: myOption.btnTop + 'px' }">
+        <el-button
+            type="primary"
+            :icon="loading ? 'el-icon-loading' : submitBtn ? submitBtn.icon : myOption.submitBtn.icon"
+            @click="submit"
+            :size="myOption.submitBtn.size"
+            v-if="myOption.submitBtn !== false && myOption.submitBtn.display === true"
+        >
+          {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
+        </el-button>
+        <el-button
             type="primary"
             plain
             :icon="loading ? 'el-icon-loading' : myOption.resetBtn.icon"
             @click="onReset"
             :size="myOption.resetBtn.size"
             v-if="myOption.resetBtn !== false && myOption.resetBtn.display === true"
-          >
-            {{ myOption.resetBtn.text }}
-          </el-button>
-          <slot name="btn" />
-        </div>
-      </el-col>
-    </el-row>
-    <el-row
-      justify="center"
-      type="flex"
-      v-if="myOption.btn !== false && myOption.btnRight !== true && btnRight !== true"
-    >
-      <!--      <el-form-item v-if="myOption.btn !== false">-->
-      <div :style="{ marginTop: myOption.btnTop + 'px' }">
-        <el-button
-          type="primary"
-          :icon="loading ? 'el-icon-loading' : submitBtn ? submitBtn.icon : myOption.submitBtn.icon"
-          @click="submit"
-          :size="myOption.submitBtn.size"
-          v-if="myOption.submitBtn !== false && myOption.submitBtn.display === true"
-        >
-          {{ submitBtn ? submitBtn.text : myOption.submitBtn.text }}
-        </el-button>
-        <el-button
-          type="primary"
-          plain
-          :icon="loading ? 'el-icon-loading' : myOption.resetBtn.icon"
-          @click="onReset"
-          :size="myOption.resetBtn.size"
-          v-if="myOption.resetBtn !== false && myOption.resetBtn.display === true"
         >
           {{ myOption.resetBtn.text }}
         </el-button>
-        <slot name="btn" />
+        <slot name="btn"/>
       </div>
       <!--      </el-form-item>-->
     </el-row>
@@ -180,9 +183,10 @@ import {
   timePickerTypeArray,
   treeSelectArray,
   tagInputArray,
-  listSelectArray
+  listSelectArray,
+  uploadArray
 } from '../util/type'
-import { debounce } from '../util/util'
+import {debounce} from '../util/util'
 
 export default {
   name: 'ClForm',
@@ -227,7 +231,7 @@ export default {
     resetBtn: {
       handler(val) {
         if (val !== undefined) {
-          beanUtil.copyPropertiesNotEmpty({ resetBtn: val }, this.myOption)
+          beanUtil.copyPropertiesNotEmpty({resetBtn: val}, this.myOption)
         }
       },
       immediate: true,
@@ -252,6 +256,7 @@ export default {
       treeSelectArray,
       tagInputArray,
       listSelectArray,
+      uploadArray,
       loading: false,
       form: JSON.parse(JSON.stringify(this.modelValue)),
       myOption: JSON.parse(JSON.stringify(option)),
@@ -273,8 +278,8 @@ export default {
       let itemWidth = item.labelWidth
       if (this.type) {
         globalWidth = this.myOption[`${this.type}LabelWidth`]
-          ? this.myOption[`${this.type}LabelWidth`]
-          : globalWidth
+            ? this.myOption[`${this.type}LabelWidth`]
+            : globalWidth
         itemWidth = item[`${this.type}LabelWidth`] ? item[`${this.type}LabelWidth`] : itemWidth
       }
       return itemWidth && itemWidth > 0 ? `${itemWidth}px` : `${globalWidth}px`
@@ -284,8 +289,8 @@ export default {
       let itemSpan = item.span
       if (this.type) {
         globalSpan = this.myOption[`${this.type}Span`]
-          ? this.myOption[`${this.type}Span`]
-          : globalSpan
+            ? this.myOption[`${this.type}Span`]
+            : globalSpan
         itemSpan = item[`${this.type}Span`] ? item[`${this.type}Span`] : itemSpan
       }
       return itemSpan && itemSpan > 0 ? itemSpan : globalSpan
@@ -294,8 +299,8 @@ export default {
       let globalSpan = this.myOption.span
       if (this.type) {
         globalSpan = this.myOption[`${this.type}BtnSpan`]
-          ? this.myOption[`${this.type}BtnSpan`]
-          : globalSpan
+            ? this.myOption[`${this.type}BtnSpan`]
+            : globalSpan
       }
       return globalSpan
     },
@@ -351,7 +356,8 @@ export default {
         })
       })
     }),
-    validate(done = () => {}) {
+    validate(done = () => {
+    }) {
       if (this.myOption.repeat) {
         this.loading = true
       }

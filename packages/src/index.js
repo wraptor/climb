@@ -19,6 +19,7 @@ import ClListSelect from "./list-select/index";
 import ClButton from "./button/index";
 import ClCascader from "./cascader/index";
 import ClDialog from "./dialog/index";
+import ClUpload from "./upload/index"
 
 import beanUtil from "./util/bean-util";
 import dialogDrag from "./util/directive-dialog-drag";
@@ -45,6 +46,7 @@ const components = [
     ClButton,
     ClCascader,
     ClDialog,
+    ClUpload
 ];
 
 import './css/flex.scss'
